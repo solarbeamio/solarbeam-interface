@@ -1,0 +1,73 @@
+{
+  "name": "Solarbeam List",
+  "timestamp": "2021-07-15T12:15:29.993Z",
+  "version": {
+    "major": 1,
+    "minor": 0,
+    "patch": 0
+  },
+  "tags": {},
+  "logoURI": "https://raw.githubusercontent.com/sushiswap/art/master/sushi/logo-256x256.png",
+  "keywords": [
+    "sushiswap",
+    "default"
+  ],
+  "tokens": [    
+    {
+      "name": "Solarbeam Token",
+      "address": "0x6bD193Ee6D2104F14F94E2cA6efefae561A4334B",
+      "symbol": "SOLAR",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "http://solarbeam.io/icon.png"
+    },
+    {
+      "name": "Wrapped MOVR",
+      "address": "0x98878B06940aE243284CA214f92Bb71a2b032B8A",
+      "symbol": "WMOVR",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://solarbeam.io/images/tokens/movr.png"
+    },
+    {
+      "name": "RiverBoat",
+      "address": "0xbD90A6125a84E5C512129D622a75CDDE176aDE5E",
+      "symbol": "RIB",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://solarbeam.io/images/tokens/rib.png"
+    },
+    {
+      "name": "USDC Coin",
+      "address": "0xE3F5a90F9cb311505cd691a46596599aA1A0AD7D",
+      "symbol": "USDC",
+      "decimals": 6,
+      "chainId": 1285,
+      "logoURI": "https://solarbeam.io/images/tokens/usdc.png"
+    },
+    {
+      "name": "Dai Stablecoin",
+      "address": "0x80A16016cC4A2E6a2CACA8a4a498b1699fF0f844",
+      "symbol": "DAI",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://solarbeam.io/images/tokens/dai.png"
+    },
+    {
+      "name": "Binance-Peg BUSD Token",
+      "address": "0x5D9ab5522c64E1F6ef5e3627ECCc093f56167818",
+      "symbol": "BUSD",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://solarbeam.io/images/tokens/busd.png"
+    },
+    {
+      "name": "MoonSailor",
+      "address": "0xc29e9361CF1AAbD1622870D65Dd63815eE022AFf",
+      "symbol": "MOSA",
+      "decimals": 9,
+      "chainId": 1285,
+      "logoURI": "https://solarbeam.io/images/tokens/mosa.png"
+    }   
+  ]
+}
