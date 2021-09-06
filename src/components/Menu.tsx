@@ -24,7 +24,7 @@ const items = (i18n: I18n) => [
   {
     name: i18n._(t`Github`),
     description: i18n._(t`We're supporters of Open Source.`),
-    href: 'https://github.com/solarbeam-io',
+    href: 'https://github.com/solarbeamio',
     external: true,
   },
 ]
