@@ -1,5 +1,5 @@
 import { ChainId } from '../../sdk'
-import React, {  } from 'react'
+import React from 'react'
 
 import Image from 'next/image'
 import Link from 'next/link'
@@ -11,11 +11,11 @@ import { t } from '@lingui/macro'
 import { useActiveWeb3React } from '../../hooks/useActiveWeb3React'
 import { useLingui } from '@lingui/react'
 import TokenStats from '../TokenStats'
+import LanguageSwitch from '../LanguageSwitch'
 
 function AppBar(): JSX.Element {
   const { i18n } = useLingui()
   const { account, chainId } = useActiveWeb3React()
-
 
   return (
     <header className="flex-shrink-0 w-full">
@@ -65,7 +65,7 @@ function AppBar(): JSX.Element {
                         </NavLink>
                       )}
                       {chainId && [ChainId.MOONRIVER].includes(chainId) && (
-                        <NavLink href={'https://anyswap.exchange/bridge'}>
+                        <NavLink href={'https://movr.anyswap.exchange/#/bridge'}>
                           <a
                             target="_blank"
                             className="p-2 text-lg text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
@@ -98,7 +98,10 @@ function AppBar(): JSX.Element {
                     </div>
                     <div className="w-auto flex items-center rounded bg-transparent shadow-sm text-primary text-xs hover:bg-dark-900 whitespace-nowrap text-xs font-bold cursor-pointer select-none pointer-events-auto">
                       <Web3Status />
-                    </div>                  
+                    </div>
+                    <div className="hidden md:block">
+                      <LanguageSwitch />
+                    </div>
                     <More />
                   </div>
                 </div>
@@ -106,6 +109,7 @@ function AppBar(): JSX.Element {
                   <div className="flex-1">
                     <Image src="/icon.png" alt="Solarbeam" height="40px" width="40px" className="sm:hidden" />
                   </div>
+                  <LanguageSwitch />
                   <Popover.Button className="inline-flex items-center justify-center p-2 rounded-md text-primary hover:text-high-emphesis focus:outline-none">
                     <span className="sr-only">{i18n._(t`Open main menu`)}</span>
                     {open ? (
@@ -181,7 +185,7 @@ function AppBar(): JSX.Element {
                   </Link>
                 )}
                 {chainId && [ChainId.MOONRIVER].includes(chainId) && (
-                  <Link href={'https://anyswap.exchange/bridge'}>
+                  <Link href={'https://movr.anyswap.exchange/#/bridge'}>
                     <a
                       target="_blank"
                       className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"

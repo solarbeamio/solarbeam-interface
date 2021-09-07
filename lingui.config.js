@@ -11,7 +11,7 @@ module.exports = {
   fallbackLocales: {},
   format: 'po',
   sourceLocale: 'en',
-  locales: ['en', 'pt-BR'],
+  locales: ['en', 'zh-CN'],
   orderBy: 'messageId',
   pseudoLocale: '',
   rootDir: '.',

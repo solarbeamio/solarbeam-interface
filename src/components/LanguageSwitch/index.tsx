@@ -40,11 +40,11 @@ const LANGUAGES: {
   //   flag: '/images/flags/vi-flag.png',
   //   language: t`Vietnamese`,
   // },
-  // 'zh-CN': {
-  //   flag: '/images/flags/ch-flag.png',
-  //   language: t`Chinese`,
-  //   dialect: '简',
-  // },
+  'zh-CN': {
+    flag: '/images/flags/ch-flag.png',
+    language: t`Chinese`,
+    dialect: '简',
+  },
   // 'zh-TW': {
   //   flag: '/images/flags/ch-flag.png',
   //   language: t`Chinese`,
@@ -75,6 +75,7 @@ const LANGUAGES: {
 
 export default function LangSwitcher() {
   const { locale, locales, asPath } = useRouter()
+  console.log(locale)
   return (
     <Menu as="div" className="relative flex inline-block text-right justify-center">
       {({ open }) => (

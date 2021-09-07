@@ -20,6 +20,7 @@ import PriceContext from '../../contexts/priceContext'
 import useMasterChef from '../../features/farm/useMasterChef'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import { useTVL } from '../../hooks/useV2Pairs'
+import { getAddress } from '@ethersproject/address'
 
 export default function Farm(): JSX.Element {
   const { i18n } = useLingui()
@@ -41,7 +42,15 @@ export default function Farm(): JSX.Element {
   const solarPrice = priceData?.data?.['solar']
   const movrPrice = priceData?.data?.['movr']
 
-  const summTvl = useTVL();
+  const tvlInfo = useTVL()
+
+  const farmingPools = Object.keys(POOLS[chainId]).map((key) => {
+    return { ...POOLS[chainId][key], lpToken: key }
+  })
+
+  const summTvl = tvlInfo.reduce((previousValue, currentValue) => {
+    return previousValue + currentValue.tvl
+  }, 0)
 
   const blocksPerDay = 86400 / Number(AVERAGE_BLOCK_TIME[chainId])
 
@@ -150,6 +159,12 @@ export default function Farm(): JSX.Element {
     return previousValue + (currentValue.pendingSolar / 1e18) * solarPrice
   }, 0)
 
+  const valueStaked = positions.reduce((previousValue, currentValue) => {
+    const pool = farmingPools.find((r) => parseInt(r.id.toString()) == parseInt(currentValue.id))
+    const poolTvl = tvlInfo.find((r) => getAddress(r.lpToken) == getAddress(pool?.lpToken))
+    return previousValue + (currentValue.amount / 1e18) * poolTvl?.lpPrice
+  }, 0)
+
   const { harvest } = useMasterChef()
 
   return (
@@ -169,7 +184,7 @@ export default function Farm(): JSX.Element {
         </div>
         <DoubleGlowShadow maxWidth={false} opacity={'0.6'}>
           <div className={`grid grid-cols-12 gap-2 min-h-1/2`}>
-            <div className={`col-span-12 md:px-6`}>
+            {/* <div className={`col-span-12 md:px-6`}>
               <div className={`grid grid-cols-12`}>
                 <div className={`col-span-12 md:col-span-8`}>
                   <Menu positionsLength={positions.length} />
@@ -204,10 +219,54 @@ export default function Farm(): JSX.Element {
                   </div>
                 </div>
               </div>
-            </div>
-            <div className={`col-span-12`} style={{ minHeight: '40rem' }}>
-              <Card className="h-full bg-dark-900 z-4">
-                <FarmList farms={result} term={term} filter={FILTER} />
+            </div> */}
+            <div className={`col-span-12`}>
+              <Card className="bg-dark-900 z-4">
+                <div className={`grid grid-cols-12 md:space-x-4 space-y-4 md:space-y-0 `}>
+                  <div className={`col-span-12 md:col-span-3 space-y-4`}>
+                    <div className={`hidden md:block`}>
+                      <Menu positionsLength={positions.length} />
+                    </div>
+                    <div className={`flex flex-col items-center justify-between px-6 py-6 `}>
+                      <div className="flex items-center justify-between py-2 text-emphasis">
+                        Total Value Locked: {formatNumberScale(summTvl, true, 2)}
+                      </div>
+                      {positions.length > 0 && (
+                        <div className="flex items-center justify-between py-2 text-emphasis">
+                          Your Holdings: {formatNumberScale(valueStaked, true, 2)}
+                        </div>
+                      )}
+                      {positions.length > 0 && (
+                        <button
+                          disabled={pendingTx}
+                          onClick={async () => {
+                            setPendingTx(true)
+                            for (const pos of positions) {
+                              try {
+                                const tx = await harvest(parseInt(pos.id))
+                                addTransaction(tx, {
+                                  summary: `${i18n._(t`Harvest`)} SOLAR`,
+                                })
+                              } catch (error) {
+                                console.error(error)
+                              }
+                            }
+                            setPendingTx(false)
+                          }}
+                          className="flex items-center justify-between py-2 text-emphasis underline hover:text-yellow"
+                        >
+                          Harvest All (~ {formatNumberScale(allStaked, true, 2)})
+                        </button>
+                      )}
+                    </div>
+                    <div className={`md:hidden`}>
+                      <Menu positionsLength={positions.length} />
+                    </div>
+                  </div>
+                  <div className={`col-span-12 md:col-span-9 bg-dark-800 px-6 py-4 rounded`}>
+                    <FarmList farms={result} term={term} filter={FILTER} />
+                  </div>
+                </div>
               </Card>
             </div>
           </div>

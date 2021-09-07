@@ -67,28 +67,38 @@ export function useV2Pairs(currencies: [Currency | undefined, Currency | undefin
   }, [results, tokens])
 }
 
+export interface TVLInfo {
+  lpToken: string
+  tvl: number
+  lpPrice: number
+}
 
-export function useTVL(): any {
+export function useTVL(): TVLInfo[] {
   const { chainId } = useActiveWeb3React()
   const priceData = useContext(PriceContext)
   const solarPrice = priceData?.data?.['solar']
   const movrPrice = priceData?.data?.['movr']
   const ribPrice = priceData?.data?.['rib']
 
-  const farmingPools = Object.keys(POOLS[ChainId.MOONRIVER]).map(key => {return {...POOLS[ChainId.MOONRIVER][key], lpToken: key}} );
+  const farmingPools = Object.keys(POOLS[ChainId.MOONRIVER]).map((key) => {
+    return { ...POOLS[ChainId.MOONRIVER][key], lpToken: key }
+  })
 
-  const singlePools = farmingPools.filter(r=> !r.token1)
-  const singleAddresses = singlePools.map(r=> r.lpToken);
-  const lpPools = farmingPools.filter(r=> !!r.token1)
-  const pairAddresses = lpPools.map(r=> r.lpToken);
+  const singlePools = farmingPools.filter((r) => !r.token1)
+  const singleAddresses = singlePools.map((r) => r.lpToken)
+  const lpPools = farmingPools.filter((r) => !!r.token1)
+  const pairAddresses = lpPools.map((r) => r.lpToken)
 
   const results = useMultipleContractSingleData(pairAddresses, PAIR_INTERFACE, 'getReserves')
   const totalSupply = useMultipleContractSingleData(pairAddresses, PAIR_INTERFACE, 'totalSupply')
-  const distributorBalance = useMultipleContractSingleData(pairAddresses, PAIR_INTERFACE, 'balanceOf', [SOLAR_DISTRIBUTOR_ADDRESS[ChainId.MOONRIVER]])
-  const distributorBalanceSingle = useMultipleContractSingleData(singleAddresses, PAIR_INTERFACE, 'balanceOf', [SOLAR_DISTRIBUTOR_ADDRESS[ChainId.MOONRIVER]])
+  const distributorBalance = useMultipleContractSingleData(pairAddresses, PAIR_INTERFACE, 'balanceOf', [
+    SOLAR_DISTRIBUTOR_ADDRESS[ChainId.MOONRIVER],
+  ])
+  const distributorBalanceSingle = useMultipleContractSingleData(singleAddresses, PAIR_INTERFACE, 'balanceOf', [
+    SOLAR_DISTRIBUTOR_ADDRESS[ChainId.MOONRIVER],
+  ])
 
   return useMemo(() => {
-    
     function isKnownToken(token: TokenInfo) {
       return (
         token.id.toLowerCase() == SOLAR_ADDRESS[chainId].toLowerCase() ||
@@ -118,16 +128,17 @@ export function useTVL(): any {
     const lpTVL = results.map((result, i) => {
       const { result: reserves, loading } = result
 
-      if (loading) return 0;
-      if (!reserves) return 0;
+      const { token0, token1, lpToken } = lpPools[i]
+
+      if (loading) return { lpToken, tvl: 0, lpPrice: 0 }
+      if (!reserves) return { lpToken, tvl: 0, lpPrice: 0 }
 
       const { reserve0, reserve1 } = reserves
 
       const lpTotalSupply = totalSupply[i]?.result?.[0]
-    
+
       const distributorRatio = distributorBalance[i]?.result?.[0] / lpTotalSupply
 
-      const { token0, token1} = lpPools[i];
       const token0price = getPrice(token0)
       const token1price = getPrice(token1)
 
@@ -144,37 +155,52 @@ export function useTVL(): any {
         lpTotalPrice = token1total * 2
       }
 
-      const lpPrice = lpTotalPrice / (lpTotalSupply / 10 ** 18);
-      const tvl = lpTotalPrice * distributorRatio;
+      const lpPrice = lpTotalPrice / (lpTotalSupply / 10 ** 18)
+      const tvl = lpTotalPrice * distributorRatio
 
-      return tvl;
-    });
+      return {
+        lpToken,
+        tvl,
+        lpPrice,
+      }
+    })
 
     const singleTVL = distributorBalanceSingle.map((result, i) => {
       const { result: balance, loading } = result
 
-      if (loading) return 0;
-      if (!balance) return 0;
+      const { token0, lpToken } = singlePools[i]
 
-      const { token0 } = singlePools[i];
+      if (loading) return { lpToken, tvl: 0, lpPrice: 0 }
+      if (!balance) return { lpToken, tvl: 0, lpPrice: 0 }
+
       const token0price = getPrice(token0)
-      
+
       const token0total = Number(Number(token0price * (Number(balance) / 10 ** token0?.decimals)).toString())
 
-      const lpPrice = token0price;
-      const tvl = token0total;
+      const lpPrice = token0price
+      const tvl = token0total
 
-      return tvl;
+      return {
+        lpToken,
+        tvl,
+        lpPrice,
+      }
     })
 
-    return concat(singleTVL, lpTVL).reduce((previousValue, currentValue) => {
-      return previousValue + currentValue
-    }, 0);
-
-  }, [results, distributorBalanceSingle, chainId, solarPrice, movrPrice, ribPrice, totalSupply, distributorBalance, lpPools, singlePools])
+    return concat(singleTVL, lpTVL)
+  }, [
+    results,
+    distributorBalanceSingle,
+    chainId,
+    solarPrice,
+    movrPrice,
+    ribPrice,
+    totalSupply,
+    distributorBalance,
+    lpPools,
+    singlePools,
+  ])
 }
-
-
 
 export function useV2PairsWithPrice(
   currencies: [Currency | undefined, Currency | undefined][]
