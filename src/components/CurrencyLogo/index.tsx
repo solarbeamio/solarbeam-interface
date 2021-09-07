@@ -5,7 +5,7 @@ import { WrappedTokenInfo } from '../../state/lists/wrappedTokenInfo'
 import useHttpLocations from '../../hooks/useHttpLocations'
 
 export const getTokenLogoURL = (address: string, chainId: ChainId) => {
-  return `https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/smartchain/assets/${address}/logo.png`
+  return `https://raw.githubusercontent.com/solarbeamio/assets/master/blockchains/${BLOCKCHAIN[chainId]}/assets/${address}/logo.png`
 }
 
 const BLOCKCHAIN = {
@@ -16,6 +16,7 @@ const BLOCKCHAIN = {
   [ChainId.HARMONY]: 'harmony',
   [ChainId.MATIC]: 'polygon',
   [ChainId.XDAI]: 'xdai',
+  [ChainId.MOONRIVER]: 'xdai',
   // [ChainId.OKEX]: 'okex',
 }
 
