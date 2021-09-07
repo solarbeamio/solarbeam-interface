@@ -184,42 +184,6 @@ export default function Farm(): JSX.Element {
         </div>
         <DoubleGlowShadow maxWidth={false} opacity={'0.6'}>
           <div className={`grid grid-cols-12 gap-2 min-h-1/2`}>
-            {/* <div className={`col-span-12 md:px-6`}>
-              <div className={`grid grid-cols-12`}>
-                <div className={`col-span-12 md:col-span-8`}>
-                  <Menu positionsLength={positions.length} />
-                </div>
-                <div className={`col-span-12 md:col-span-4`}>
-                  <div className="col-span-12 flex flex-row center md:justify-end space-x-2">
-                    <div className="flex items-center justify-between px-6 py-2 text-base font-bold border border-transparent rounded cursor-pointer">
-                      TVL {formatNumberScale(summTvl, true, 2)}
-                    </div>
-                    {positions.length > 0 && (
-                      <button
-                        disabled={pendingTx}
-                        onClick={async () => {
-                          setPendingTx(true)
-                          for (const pos of positions) {
-                            try {
-                              const tx = await harvest(parseInt(pos.id))
-                              addTransaction(tx, {
-                                summary: `${i18n._(t`Harvest`)} SOLAR`,
-                              })
-                            } catch (error) {
-                              console.error(error)
-                            }
-                          }
-                          setPendingTx(false)
-                        }}
-                        className="flex items-center justify-between px-6 py-2 text-base font-bold border border-transparent rounded cursor-pointer"
-                      >
-                        Harvest All (~ {formatNumberScale(allStaked, true, 2)})
-                      </button>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div> */}
             <div className={`col-span-12`}>
               <Card className="bg-dark-900 z-4">
                 <div className={`grid grid-cols-12 md:space-x-4 space-y-4 md:space-y-0 `}>
@@ -233,7 +197,7 @@ export default function Farm(): JSX.Element {
                       </div>
                       {positions.length > 0 && (
                         <div className="flex items-center justify-between py-2 text-emphasis">
-                          Your Holdings: {formatNumberScale(valueStaked, true, 2)}
+                          My Holdings: {formatNumberScale(valueStaked, true, 2)}
                         </div>
                       )}
                       {positions.length > 0 && (

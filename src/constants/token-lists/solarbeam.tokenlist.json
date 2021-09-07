@@ -68,6 +68,13 @@
       "decimals": 9,
       "chainId": 1285,
       "logoURI": "https://solarbeam.io/images/tokens/mosa.png"
-    }   
+    },{
+      "name": "KusaMOON",
+      "address": "0x480cd4fa911eeeff93cb11135c97237455617862",
+      "symbol": "KMOON",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://solarbeam.io/images/tokens/kmoon.png"
+    }
   ]
 }
