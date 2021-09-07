@@ -34,7 +34,6 @@ import PriceContext from '../contexts/priceContext'
 import FarmContext from '../contexts/farmContext'
 import { usePricesApi } from '../features/farm/hooks'
 
-
 const Web3ProviderNetwork = dynamic(() => import('../components/Web3ProviderNetwork'), { ssr: false })
 
 if (typeof window !== 'undefined' && !!window.ethereum) {

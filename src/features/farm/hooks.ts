@@ -15,7 +15,6 @@ import { useActiveWeb3React } from '../../hooks/useActiveWeb3React'
 import zip from 'lodash/zip'
 import { useToken } from '../../hooks/Tokens'
 const { default: axios } = require('axios')
-import { farms } from '../../pages/api/farms'
 
 export function useChefContract(chef: Chef) {
   const solarDistributorContract = useSolarDistributorContract()
@@ -190,8 +189,8 @@ const useAsync = (asyncFunction, immediate = true) => {
   // on every render, but only if asyncFunction changes.
   const execute = useCallback(() => {
     return asyncFunction().then((response) => {
-      let [prices, farms] = response
-      setValue({ data: { ...prices?.data, farms } })
+      let [prices] = response
+      setValue({ data: { ...prices?.data } })
     })
   }, [asyncFunction])
   // Call execute if we want to fire it right away.
@@ -217,7 +216,7 @@ const useAsync = (asyncFunction, immediate = true) => {
 }
 
 export function usePriceApi() {
-  return Promise.all([axios.get('/api/prices'), farms()])
+  return Promise.all([axios.get('/api/prices')])
 }
 
 export function usePrice(pairContract?: Contract | null, pairDecimals?: number | null) {

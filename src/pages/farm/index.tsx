@@ -1,35 +1,13 @@
 /* eslint-disable @next/next/link-passhref */
-import { Chef, PairType } from '../../features/farm/enum'
 import { useActiveWeb3React, useFuse } from '../../hooks'
-import {
-  useAlcxPrice,
-  useAverageBlockTime,
-  useCvxPrice,
-  useEthPrice,
-  useFarmPairAddresses,
-  // useFarms,
-  useKashiPairs,
-  useMasterChefV1SushiPerBlock,
-  useMasterChefV1TotalAllocPoint,
-  useMaticPrice,
-  useOnePrice,
-  useStakePrice,
-  useSushiPairs,
-  useSushiPrice,
-} from '../../services/graph'
 
-import Container from '../../components/Container'
-import Image from '../../components/Image'
 import FarmList from '../../features/farm/FarmList'
 import Head from 'next/head'
 import Menu from '../../features/farm/FarmMenu'
 import React, { useContext, useState } from 'react'
-import Search from '../../components/Search'
-import { classNames, formatCurrencyAmount, formatNumberScale } from '../../functions'
-import dynamic from 'next/dynamic'
+import { formatNumberScale } from '../../functions'
 import { usePositions, useFarms, useDistributorInfo } from '../../features/farm/hooks'
 import { useRouter } from 'next/router'
-import NavLink from '../../components/NavLink'
 import Link from 'next/link'
 import Card from '../../components/Card'
 import { t } from '@lingui/macro'
@@ -38,13 +16,10 @@ import DoubleGlowShadow from '../../components/DoubleGlowShadow'
 import { SOLAR_ADDRESS, AVERAGE_BLOCK_TIME, WNATIVE } from '../../constants'
 import { POOLS } from '../../constants/farms'
 import SolarbeamLogo from '../../components/SolarbeamLogo'
-import ExternalLink from '../../components/ExternalLink'
-import { ExternalLink as LinkIcon } from 'react-feather'
-import Typography from '../../components/Typography'
 import PriceContext from '../../contexts/priceContext'
 import useMasterChef from '../../features/farm/useMasterChef'
 import { useTransactionAdder } from '../../state/transactions/hooks'
-import FarmContext from '../../contexts/farmContext'
+import { useTVL } from '../../hooks/useV2Pairs'
 
 export default function Farm(): JSX.Element {
   const { i18n } = useLingui()
@@ -66,12 +41,7 @@ export default function Farm(): JSX.Element {
   const solarPrice = priceData?.data?.['solar']
   const movrPrice = priceData?.data?.['movr']
 
-  let summTvl = 0
-  if (priceData?.data?.farms) {
-    for (const stats of priceData?.data?.farms) {
-      summTvl += stats.baseAmount * priceData?.data?.[stats.baseSymbol] * (stats.single ? 1 : 2)
-    }
-  }
+  const summTvl = useTVL();
 
   const blocksPerDay = 86400 / Number(AVERAGE_BLOCK_TIME[chainId])
 

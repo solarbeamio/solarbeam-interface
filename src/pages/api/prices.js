@@ -1,7 +1,7 @@
 const Web3 = require('web3')
 const { default: axios } = require('axios')
 import IUniswapV2PairABI from '../../constants/abis/uniswap-v2-pair.json'
-const NETWORK_URL = 'https://rpc.moonriver.moonbeam.network'
+const NETWORK_URL = 'https://moonriver.api.onfinality.io/public'
 const web3 = new Web3(NETWORK_URL)
 
 export default async function handler(req, res) {
