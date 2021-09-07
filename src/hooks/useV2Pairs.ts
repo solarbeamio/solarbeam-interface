@@ -119,7 +119,7 @@ export function useTVL(): TVLInfo[] {
       if (token.symbol == 'RIB' || token.symbol == 'RIB') {
         return ribPrice
       }
-      if (token.symbol == 'USDC' || token.symbol == 'DAI') {
+      if (token.symbol == 'USDC') {
         return 1
       }
       return 0
@@ -128,7 +128,10 @@ export function useTVL(): TVLInfo[] {
     const lpTVL = results.map((result, i) => {
       const { result: reserves, loading } = result
 
-      const { token0, token1, lpToken } = lpPools[i]
+      let { token0, token1, lpToken } = lpPools[i]
+
+      token0 = token0.id.toLowerCase() < token1.id.toLowerCase() ? token0 : token1
+      token1 = token0.id.toLowerCase() < token1.id.toLowerCase() ? token1 : token0
 
       if (loading) return { lpToken, tvl: 0, lpPrice: 0 }
       if (!reserves) return { lpToken, tvl: 0, lpPrice: 0 }
@@ -149,9 +152,7 @@ export function useTVL(): TVLInfo[] {
 
       if (isKnownToken(token0)) {
         lpTotalPrice = token0total * 2
-      }
-
-      if (isKnownToken(token1)) {
+      } else if (isKnownToken(token1)) {
         lpTotalPrice = token1total * 2
       }
 
@@ -260,7 +261,7 @@ export function useV2PairsWithPrice(
       if (token.symbol == 'RIB' || token.symbol == 'RIB') {
         return ribPrice
       }
-      if (token.symbol == 'USDC' || token.symbol == 'DAI') {
+      if (token.symbol == 'USDC') {
         return 1
       }
       return 0
@@ -289,9 +290,7 @@ export function useV2PairsWithPrice(
 
       if (isKnownToken(token0)) {
         lpTotalPrice = token0total * 2
-      }
-
-      if (isKnownToken(token1)) {
+      } else if (isKnownToken(token1)) {
         lpTotalPrice = token1total * 2
       }
 
