@@ -34,9 +34,9 @@ function getCurrencyLogoUrls(currency) {
   const urls = []
   if (currency.chainId in BLOCKCHAIN) {
     urls.push(
-      `https://raw.githubusercontent.com/solarbeamio/assets/master/blockchains/${
-        BLOCKCHAIN[currency.chainId]
-      }/assets/${currency.address}/logo.png`
+      `https://raw.githubusercontent.com/solarbeamio/assets/master/blockchains/${BLOCKCHAIN[currency.chainId]}/assets/${
+        currency.address
+      }/logo.png`
     )
   }
 
@@ -46,8 +46,7 @@ function getCurrencyLogoUrls(currency) {
 const AvalancheLogo = 'https://raw.githubusercontent.com/sushiswap/icons/master/token/avax.jpg'
 const BinanceCoinLogo =
   'https://raw.githubusercontent.com/solarbeamio/assets/master/blockchains/smartchain/info/logo.png'
-const EthereumLogo =
-  'https://raw.githubusercontent.com/solarbeamio/assets/master/blockchains/ethereum/info/logo.png'
+const EthereumLogo = 'https://raw.githubusercontent.com/solarbeamio/assets/master/blockchains/ethereum/info/logo.png'
 const FantomLogo = 'https://raw.githubusercontent.com/sushiswap/icons/master/token/ftm.jpg'
 const HarmonyLogo = 'https://raw.githubusercontent.com/sushiswap/icons/master/token/one.jpg'
 const HecoLogo = 'https://raw.githubusercontent.com/sushiswap/icons/master/token/heco.jpg'
@@ -108,7 +107,7 @@ const CurrencyLogo: FunctionComponent<CurrencyLogoProps> = ({
     if (!currency) {
       return [unknown]
     }
-    if (currency?.symbol == "SOLAR") {
+    if (currency?.symbol == 'SOLAR') {
       return [solar]
     }
     if (currency.isNative || currency.equals(WNATIVE[currency.chainId])) {
