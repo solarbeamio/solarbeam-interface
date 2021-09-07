@@ -30,7 +30,7 @@ interface TokenStatsProps {
 function TokenStatusInner({ token }) {
   const { account } = useWeb3React()
 
-  const toggleModal = useTokenStatsModalToggle()
+  const toggleModal = useTokenStatsModalToggle(token)
 
   const priceData = useContext(PriceContext)
 
@@ -59,7 +59,7 @@ export default function TokenStats({ token, ...rest }: TokenStatsProps) {
   return (
     <>
       <TokenStatusInner token={selectedToken} />
-      {token == 'SOLAR' && <TokenStatsModal token={selectedToken} />}
+      <TokenStatsModal token={selectedToken} />
     </>
   )
 }

@@ -71,19 +71,18 @@ const WALLET_VIEWS = {
 }
 
 export default function TokenStatsModal({ token }: { token: any }) {
-  // console.log({ ENSName })
-  // important that these are destructed from the account-specific web3-react context
-  const { active, account, connector, activate, error, deactivate, chainId } = useWeb3React()
-
   const { i18n } = useLingui()
 
   const priceData = useContext(PriceContext)
-  const solarInfo = useTokenInfo(useSolarContract())
+  let tokenInfo = useTokenInfo(useSolarContract())
 
-  const price = formatNumberScale(priceData?.data?.['solar'], true, 2)
+  if (token.symbol == 'MOVR') tokenInfo = { circulatingSupply: '1500000', burnt: '0', totalSupply: '0' }
 
-  const modalOpen = useModalOpen(ApplicationModal.SOLAR_STATS)
-  const toggleWalletModal = useTokenStatsModalToggle()
+  const price = formatNumberScale(priceData?.data?.[token.symbol.toLowerCase()], true, 2)
+
+  const modalOpen = useModalOpen(token.symbol == 'SOLAR' ? ApplicationModal.SOLAR_STATS : ApplicationModal.MOVR_STATS)
+
+  const toggleWalletModal = useTokenStatsModalToggle(token)
 
   function getSummaryLine(title, value) {
     return (
@@ -121,18 +120,20 @@ export default function TokenStatsModal({ token }: { token: any }) {
                 <div className="text-primary text-2xl">{token['symbol']}</div>
               </div>
               <div className="flex items-center justify-between space-x-3 gap-2">
-                <ExternalLink
-                  href={
-                    'https://blockscout.moonriver.moonbeam.network/tokens/0x6bD193Ee6D2104F14F94E2cA6efefae561A4334B'
-                  }
-                  className="px-3 ring-0 ring-transparent ring-opacity-0"
-                  color="light-green"
-                  startIcon={<LinkIcon size={16} />}
-                >
-                  <Typography variant="xs" className="hover:underline py-0.5 currentColor">
-                    {i18n._(t`View Contract`)}
-                  </Typography>
-                </ExternalLink>
+                {token.address && (
+                  <ExternalLink
+                    href={
+                      'https://blockscout.moonriver.moonbeam.network/tokens/0x6bD193Ee6D2104F14F94E2cA6efefae561A4334B'
+                    }
+                    className="px-3 ring-0 ring-transparent ring-opacity-0"
+                    color="light-green"
+                    startIcon={<LinkIcon size={16} />}
+                  >
+                    <Typography variant="xs" className="hover:underline py-0.5 currentColor">
+                      {i18n._(t`View Contract`)}
+                    </Typography>
+                  </ExternalLink>
+                )}
               </div>
             </div>
             <div className="flex items-center  text-primary text-bold">
@@ -145,10 +146,14 @@ export default function TokenStatsModal({ token }: { token: any }) {
             <Typography weight={700}>{i18n._(t`Supply & Market Cap`)}</Typography>
           </div>
           <div className="flex flex-col flex-nowrap gap-1 -m-1">
-            {getSummaryLine(i18n._(t`Circulating Supply`), formatNumberScale(solarInfo.circulatingSupply, false, 2))}
+            {getSummaryLine(i18n._(t`Circulating Supply`), formatNumberScale(tokenInfo.circulatingSupply, false, 2))}
             {getSummaryLine(
               i18n._(t`Market Cap`),
-              formatNumberScale(Number(solarInfo.circulatingSupply) * (priceData?.data?.['solar'] || 0), true, 3)
+              formatNumberScale(
+                Number(tokenInfo.circulatingSupply) * (priceData?.data?.[token.symbol.toLowerCase()] || 0),
+                true,
+                3
+              )
             )}
           </div>
         </div>
