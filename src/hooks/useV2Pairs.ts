@@ -246,8 +246,7 @@ export function useV2PairsWithPrice(
         token.symbol == 'WMOVR' ||
         token.symbol == 'MOVR' ||
         token.symbol == 'RIB' ||
-        token.symbol == 'USDC' ||
-        token.symbol == 'DAI'
+        token.symbol == 'USDC'
       )
     }
 
@@ -305,7 +304,7 @@ export function useV2PairsWithPrice(
         lpPrice,
       ]
     })
-  }, [results, tokens, totalSupply, chainId, movrPrice, solarPrice])
+  }, [results, chainId, solarPrice, movrPrice, ribPrice, tokens, totalSupply])
 }
 
 export function useV2Pair(tokenA?: Currency, tokenB?: Currency): [PairState, Pair | null] {
