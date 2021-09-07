@@ -80,7 +80,7 @@ const FarmListItem = ({ farm }) => {
               <div className="pr-4 mb-2 text-left cursor-pointer text-secondary">
                 {i18n._(t`Wallet Balance`)}: {formatNumberScale(balance?.toSignificant(4, undefined, 2) ?? 0, false, 4)}
                 {farm.lpPrice && balance
-                  ? ` (` + formatNumberScale(farm.lpPrice * Number(balance?.toFixed(2) ?? 0), true, 2) + `)`
+                  ? ` (` + formatNumberScale(farm.lpPrice * Number(balance?.toFixed(18) ?? 0), true, 2) + `)`
                   : ``}
               </div>
             )}
@@ -165,7 +165,7 @@ const FarmListItem = ({ farm }) => {
               <div className="pr-4 mb-2 text-left cursor-pointer text-secondary">
                 {i18n._(t`Your Staked`)}: {formatNumberScale(amount?.toSignificant(6)) ?? 0}
                 {farm.lpPrice && amount
-                  ? ` (` + formatNumberScale(farm.lpPrice * Number(amount?.toSignificant(6) ?? 0), true, 2) + `)`
+                  ? ` (` + formatNumberScale(farm.lpPrice * Number(amount?.toSignificant(18) ?? 0), true, 2) + `)`
                   : ``}
               </div>
             )}
