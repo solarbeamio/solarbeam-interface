@@ -16,7 +16,7 @@ const BLOCKCHAIN = {
   [ChainId.HARMONY]: 'harmony',
   [ChainId.MATIC]: 'polygon',
   [ChainId.XDAI]: 'xdai',
-  [ChainId.MOONRIVER]: 'xdai',
+  [ChainId.MOONRIVER]: 'moonriver',
   // [ChainId.OKEX]: 'okex',
 }
 
