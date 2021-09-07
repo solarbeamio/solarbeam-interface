@@ -33,7 +33,7 @@ const RPC = {
   [ChainId.OKEX]: 'https://exchainrpc.okex.org',
   [ChainId.OKEX_TESTNET]: 'https://exchaintestrpc.okex.org',
   [ChainId.ARBITRUM]: 'https://arb1.arbitrum.io/rpc',
-  [ChainId.MOONRIVER]: 'https://rpc.moonriver.moonbeam.network',
+  [ChainId.MOONRIVER]: 'https://moonriver.api.onfinality.io/public',
 }
 
 export const network = new NetworkConnector({

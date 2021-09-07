@@ -146,7 +146,7 @@ export const SUPPORTED_NETWORKS: {
       symbol: 'MOVR',
       decimals: 18,
     },
-    rpcUrls: ['https://rpc.moonriver.moonbeam.network'],
+    rpcUrls: ['https://rpc.moonriver.moonbeam.network','https://moonriver.api.onfinality.io/public'],
     blockExplorerUrls: ['https://blockscout.moonriver.moonbeam.network/'],
   },
 }
