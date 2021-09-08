@@ -15,6 +15,10 @@ const FarmList = ({ farms, term, filter }) => {
 
   const isBeefy = query['filter'] == 'beefy'
 
+  const singlePools = items.filter((i) => i.pair.token1).sort((a, b) => b.allocPoint - a.allocPoint)
+  const liquidityPools = items.filter((i) => !i.pair.token1).sort((a, b) => b.allocPoint - a.allocPoint)
+  const pools = singlePools.concat(liquidityPools)
+
   return isBeefy ? (
     <div className="w-full py-6 text-center">{i18n._(t`Soon`)}</div>
   ) : items ? (
@@ -59,7 +63,7 @@ const FarmList = ({ farms, term, filter }) => {
         </div>
       </div>
       <div className="flex-col mt-2">
-        {items.map((farm, index) => (
+        {pools.map((farm, index) => (
           <FarmListItem2 key={index} farm={farm} />
         ))}
       </div>
