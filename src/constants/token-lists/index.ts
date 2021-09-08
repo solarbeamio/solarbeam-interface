@@ -4,7 +4,7 @@ const BA_LIST = 'https://raw.githubusercontent.com/The-Blockchain-Association/se
 /**
  * @TODO add list from blockchain association
  */
-export const UNSUPPORTED_LIST_URLS: string[] = [BA_LIST]
+export const UNSUPPORTED_LIST_URLS: string[] = []
 
 const YEARN_LIST = 'https://yearn.science/static/tokenlist.json'
 const NFTX_LIST_V1 = 'https://nftx.ethereumdb.com/v1/tokenlist/'
