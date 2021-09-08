@@ -74,7 +74,7 @@ export default function Locker(): JSX.Element {
             </Link>
           </div>
         </div>
-        <DoubleGlowShadow maxWidth={false} opacity={'0.6'}>
+        <DoubleGlowShadow maxWidth={false} opacity={'0.3'}>
           <div className={`grid grid-cols-12 gap-2 min-h-1/2`}>
             <div className={`col-span-12 flex flex-col md:flex-row md:space-x-2`}>
               <NavLink

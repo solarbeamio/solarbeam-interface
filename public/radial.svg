@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1600" height="1200" viewBox="0 0 1600 1200">
+	<defs>
+		<linearGradient id="lg3">
+			<stop style="stop-color:#ffc000;stop-opacity:1" offset="0" />
+			<stop style="stop-color:#000;stop-opacity:0" offset="1" />
+		</linearGradient>
+		<radialGradient xlink:href="#lg3" id="lg4" cx="800" cy="600" fx="800" fy="600" r="800" gradientTransform="matrix(1,0,0,0.75,0,150)" gradientUnits="userSpaceOnUse" />
+	</defs>
+	<g>
+		<rect style="fill:url(#lg4)" width="1800" height="1400" x="0" y="0" />
+	</g>
+</svg>

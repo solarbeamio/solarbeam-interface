@@ -158,3 +158,30 @@ td.rdtMonth:hover, td.rdtYear:hover {
   background-color: transparent !important;
   color: #fff !important;
 }
+/* 
+main:after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    min-height: 100%;
+    background-image: url(../../public/radial.svg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    opacity: 0.3;
+    z-index: 0;
+} */
+
+.force-gpu{
+-webkit-backface-visibility: hidden;
+-webkit-perspective: 1000;
+-webkit-transform: translate3d(0,0,0);
+-webkit-transform: translateZ(0);
+backface-visibility: hidden;
+perspective: 1000;
+transform: translate3d(0,0,0);
+transform: translateZ(0);
+}

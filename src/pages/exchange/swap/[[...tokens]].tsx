@@ -171,7 +171,6 @@ export default function Swap() {
   )
 
   const routeNotFound = !trade?.route
-  
 
   // check whether the user has approved the router on the input token
   const [approvalState, approveCallback] = useApproveCallbackFromTrade(trade, allowedSlippage, false)
@@ -609,7 +608,6 @@ export default function Swap() {
             <UnsupportedCurrencyFooter show={swapIsUnsupported} currencies={[currencies.INPUT, currencies.OUTPUT]} />
           )}
         </div>
-      
       </DoubleGlowShadow>
     </>
   )

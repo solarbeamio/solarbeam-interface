@@ -5,6 +5,8 @@ import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
 import useSortableData from '../../hooks/useSortableData'
 import { useRouter } from 'next/router'
+import { FixedSizeList } from 'react-window'
+import AutoSizer from 'react-virtualized-auto-sizer'
 
 const FarmList = ({ farms, term, filter }) => {
   const { asPath, pathname, route, query, basePath } = useRouter()
@@ -57,18 +59,9 @@ const FarmList = ({ farms, term, filter }) => {
         </div>
       </div>
       <div className="flex-col mt-2">
-        {items
-          .filter((a) => a.pair.token1)
-          .sort((a, b) => b.allocPoint - a.allocPoint)
-          .map((farm, index) => (
-            <FarmListItem2 key={index} farm={farm} />
-          ))}
-        {items
-          .filter((a) => !a.pair.token1)
-          .sort((a, b) => b.allocPoint - a.allocPoint)
-          .map((farm, index) => (
-            <FarmListItem2 key={index} farm={farm} />
-          ))}
+        {items.map((farm, index) => (
+          <FarmListItem2 key={index} farm={farm} />
+        ))}
       </div>
     </>
   ) : (
