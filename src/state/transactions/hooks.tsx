@@ -105,7 +105,7 @@ export function useHasPendingApproval(tokenAddress: string | undefined, spender:
     () =>
       typeof tokenAddress === 'string' &&
       typeof spender === 'string' &&
-      Object.keys(allTransactions).some((hash) => {
+      Object.keys(allTransactions || {}).some((hash) => {
         const tx = allTransactions[hash]
         if (!tx) return false
         if (tx.receipt) {
@@ -130,7 +130,7 @@ export function useUserHasSubmittedClaim(account?: string): {
 
   // get the txn if it has been submitted
   const claimTxn = useMemo(() => {
-    const txnIndex = Object.keys(allTransactions).find((hash) => {
+    const txnIndex = Object.keys(allTransactions || {}).find((hash) => {
       const tx = allTransactions[hash]
       return tx.claim && tx.claim.recipient === account
     })

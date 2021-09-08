@@ -129,7 +129,7 @@ msgstr "A portion of each trade (0.25%) goes Solarbeam Treasury."
 msgid "A portion of each trade (0.25%) goes to liquidity providers as a protocol incentive."
 msgstr "A portion of each trade (0.25%) goes to liquidity providers as a protocol incentive."
 
-#: src/features/farm/FarmList.tsx:52
+#: src/features/farm/FarmList.tsx:58
 msgid "APR"
 msgstr "APR"
 
@@ -212,7 +212,7 @@ msgstr "Added"
 #~ msgid "All Farms"
 #~ msgstr "All Farms"
 
-#: src/features/farm/FarmList.tsx:49
+#: src/features/farm/FarmList.tsx:55
 msgid "Allocation"
 msgstr "Allocation"
 
@@ -254,7 +254,7 @@ msgstr "Approve Limit Order"
 #: src/features/limit-order/LimitOrderButton.tsx:160
 #: src/pages/exchange/add/[[...tokens]].tsx:442
 #: src/pages/exchange/add/[[...tokens]].tsx:459
-#: src/pages/exchange/swap/[[...tokens]].tsx:536
+#: src/pages/exchange/swap/[[...tokens]].tsx:535
 msgid "Approve {0}"
 msgstr "Approve {0}"
 
@@ -477,7 +477,6 @@ msgstr "Change"
 #~ msgstr "Check out our website for more info."
 
 #: src/components/LanguageSwitch/index.tsx:45
-#: src/components/LanguageSwitch/index.tsx:50
 msgid "Chinese"
 msgstr "Chinese"
 
@@ -937,7 +936,7 @@ msgstr "Go Back"
 
 #: src/features/farm/FarmListItem.tsx:97
 #: src/features/farm/FarmListItemDetails.tsx:235
-#: src/pages/farm/index.tsx:191
+#: src/pages/farm/index.tsx:212
 msgid "Harvest"
 msgstr "Harvest"
 
@@ -1050,7 +1049,7 @@ msgstr "Input is estimated. You will sell at most"
 #~ msgid "Insufficient WETH balance"
 #~ msgstr "Insufficient WETH balance"
 
-#: src/pages/exchange/swap/[[...tokens]].tsx:521
+#: src/pages/exchange/swap/[[...tokens]].tsx:520
 msgid "Insufficient liquidity for this trade"
 msgstr "Insufficient liquidity for this trade"
 
@@ -1191,7 +1190,7 @@ msgstr "Lists"
 
 #: src/components/PositionCard/index.tsx:171
 #: src/components/TransactionList.tsx:40
-#: src/features/farm/FarmList.tsx:76
+#: src/features/farm/FarmList.tsx:73
 #: src/pages/exchange/find/index.tsx:171
 #: src/pages/exchange/pool/index.tsx:129
 msgid "Loading"
@@ -1389,7 +1388,7 @@ msgstr "New to Crypto?"
 #~ msgid "No Liquidity found"
 #~ msgstr "No Liquidity found"
 
-#: src/features/farm/FarmList.tsx:76
+#: src/features/farm/FarmList.tsx:73
 msgid "No Results"
 msgstr "No Results"
 
@@ -1594,11 +1593,11 @@ msgstr "Pooled {0}"
 msgid "Price Impact"
 msgstr "Price Impact"
 
-#: src/pages/exchange/swap/[[...tokens]].tsx:566
+#: src/pages/exchange/swap/[[...tokens]].tsx:565
 msgid "Price Impact High"
 msgstr "Price Impact High"
 
-#: src/pages/exchange/swap/[[...tokens]].tsx:595
+#: src/pages/exchange/swap/[[...tokens]].tsx:594
 msgid "Price Impact Too High"
 msgstr "Price Impact Too High"
 
@@ -1662,7 +1661,7 @@ msgstr "Remove Liquidity"
 msgid "Remove liquidity of Solarbeam"
 msgstr "Remove liquidity of Solarbeam"
 
-#: src/pages/exchange/swap/[[...tokens]].tsx:459
+#: src/pages/exchange/swap/[[...tokens]].tsx:458
 msgid "Remove recipient"
 msgstr "Remove recipient"
 
@@ -1829,7 +1828,7 @@ msgstr "Slippage tolerance"
 #~ msgid "SolarBeam"
 #~ msgstr "SolarBeam"
 
-#: src/pages/exchange/swap/[[...tokens]].tsx:370
+#: src/pages/exchange/swap/[[...tokens]].tsx:369
 msgid "Solarbeam"
 msgstr "Solarbeam"
 
@@ -1838,7 +1837,7 @@ msgstr "Solarbeam"
 msgid "Something went wrong during signing of the approval. This is expected for hardware wallets, such as Trezor and Ledger. Click again and the fallback method will be used"
 msgstr "Something went wrong during signing of the approval. This is expected for hardware wallets, such as Trezor and Ledger. Click again and the fallback method will be used"
 
-#: src/features/farm/FarmList.tsx:17
+#: src/features/farm/FarmList.tsx:23
 msgid "Soon"
 msgstr "Soon"
 
@@ -1851,7 +1850,7 @@ msgstr "Soon"
 #~ msgid "Stack Yields with SAAVE"
 #~ msgstr "Stack Yields with SAAVE"
 
-#: src/features/farm/FarmList.tsx:35
+#: src/features/farm/FarmList.tsx:41
 #: src/features/farm/FarmListItemDetails.tsx:156
 msgid "Stake"
 msgstr "Stake"
@@ -1939,29 +1938,29 @@ msgstr "Supplying {0} {1} and {2} {3}"
 #: src/components/ExchangeHeader.tsx:42
 #: src/components/Header/index.tsx:36
 #: src/components/Header/index.tsx:154
-#: src/pages/exchange/swap/[[...tokens]].tsx:569
-#: src/pages/exchange/swap/[[...tokens]].tsx:598
+#: src/pages/exchange/swap/[[...tokens]].tsx:568
+#: src/pages/exchange/swap/[[...tokens]].tsx:597
 msgid "Swap"
 msgstr "Swap"
 
-#: src/pages/exchange/swap/[[...tokens]].tsx:568
-#: src/pages/exchange/swap/[[...tokens]].tsx:597
+#: src/pages/exchange/swap/[[...tokens]].tsx:567
+#: src/pages/exchange/swap/[[...tokens]].tsx:596
 msgid "Swap Anyway"
 msgstr "Swap Anyway"
 
-#: src/pages/exchange/swap/[[...tokens]].tsx:410
+#: src/pages/exchange/swap/[[...tokens]].tsx:409
 msgid "Swap From (est.):"
 msgstr "Swap From (est.):"
 
-#: src/pages/exchange/swap/[[...tokens]].tsx:410
+#: src/pages/exchange/swap/[[...tokens]].tsx:409
 msgid "Swap From:"
 msgstr "Swap From:"
 
-#: src/pages/exchange/swap/[[...tokens]].tsx:469
+#: src/pages/exchange/swap/[[...tokens]].tsx:468
 msgid "Swap To (est.):"
 msgstr "Swap To (est.):"
 
-#: src/pages/exchange/swap/[[...tokens]].tsx:469
+#: src/pages/exchange/swap/[[...tokens]].tsx:468
 msgid "Swap To:"
 msgstr "Swap To:"
 
@@ -1977,7 +1976,7 @@ msgstr "Swapping {0} {1} for {2} {3}"
 #~ msgid "Swapping {0}) {1} for {2} {3}"
 #~ msgstr "Swapping {0}) {1} for {2} {3}"
 
-#: src/features/farm/FarmList.tsx:42
+#: src/features/farm/FarmList.tsx:48
 msgid "TVL"
 msgstr "TVL"
 
@@ -2146,7 +2145,7 @@ msgstr "Transaction deadline"
 #~ msgid "Transactions"
 #~ msgstr "Transactions"
 
-#: src/pages/exchange/swap/[[...tokens]].tsx:522
+#: src/pages/exchange/swap/[[...tokens]].tsx:521
 msgid "Try enabling multi-hop trades"
 msgstr "Try enabling multi-hop trades"
 
@@ -2179,11 +2178,11 @@ msgstr "Unstake"
 #~ msgstr "Unstaked"
 
 #: src/pages/exchange/add/[[...tokens]].tsx:412
-#: src/pages/exchange/swap/[[...tokens]].tsx:500
+#: src/pages/exchange/swap/[[...tokens]].tsx:499
 msgid "Unsupported Asset"
 msgstr "Unsupported Asset"
 
-#: src/pages/exchange/swap/[[...tokens]].tsx:516
+#: src/pages/exchange/swap/[[...tokens]].tsx:515
 msgid "Unwrap"
 msgstr "Unwrap"
 
@@ -2328,7 +2327,7 @@ msgstr "Withdraw from locker {id}"
 #~ msgid "Withdraw {assetSymbol}"
 #~ msgstr "Withdraw {assetSymbol}"
 
-#: src/pages/exchange/swap/[[...tokens]].tsx:514
+#: src/pages/exchange/swap/[[...tokens]].tsx:513
 msgid "Wrap"
 msgstr "Wrap"
 

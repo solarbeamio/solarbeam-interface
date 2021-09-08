@@ -109,7 +109,7 @@ export function useActiveListUrls(): string[] | undefined {
 export function useInactiveListUrls(): string[] {
   const lists = useAllLists()
   const allActiveListUrls = useActiveListUrls()
-  return Object.keys(lists).filter((url) => !allActiveListUrls?.includes(url) && !UNSUPPORTED_LIST_URLS.includes(url))
+  return Object.keys(lists || {}).filter((url) => !allActiveListUrls?.includes(url) && !UNSUPPORTED_LIST_URLS.includes(url))
 }
 
 // get all the tokens from active lists, combine with local default tokens
