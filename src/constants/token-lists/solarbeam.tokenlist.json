@@ -12,7 +12,7 @@
     "sushiswap",
     "default"
   ],
-  "tokens": [    
+  "tokens": [
     {
       "name": "Solarbeam Token",
       "address": "0x6bD193Ee6D2104F14F94E2cA6efefae561A4334B",
@@ -83,6 +83,13 @@
       "decimals": 18,
       "chainId": 1285,
       "logoURI": "https://solarbeam.io/images/tokens/bnb.png"      
+    },{
+      "name": "MoonBeans",
+      "address": "0xC2392DD3e3fED2c8Ed9f7f0bDf6026fcd1348453",
+      "symbol": "BEANS",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://solarbeam.io/images/tokens/beans.png"
     }
   ]
 }
