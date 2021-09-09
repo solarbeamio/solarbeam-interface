@@ -60,14 +60,6 @@
       "decimals": 18,
       "chainId": 1285,
       "logoURI": "https://solarbeam.io/images/tokens/busd.png"
-    },
-    {
-      "name": "MoonSailor",
-      "address": "0xc29e9361CF1AAbD1622870D65Dd63815eE022AFf",
-      "symbol": "MOSA",
-      "decimals": 9,
-      "chainId": 1285,
-      "logoURI": "https://solarbeam.io/images/tokens/mosa.png"
     },{
       "name": "KusaMOON",
       "address": "0x480cd4fa911eeeff93cb11135c97237455617862",
@@ -75,6 +67,22 @@
       "decimals": 18,
       "chainId": 1285,
       "logoURI": "https://solarbeam.io/images/tokens/kmoon.png"
+    },
+    {
+      "name": "Ethereum",
+      "address": "0x639A647fbe20b6c8ac19E48E2de44ea792c62c5C",
+      "symbol": "ETH",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://solarbeam.io/images/tokens/eth.png"      
+    },
+    {
+      "name": "Binance Coin",
+      "address": "0x2bF9b864cdc97b08B6D79ad4663e71B8aB65c45c",
+      "symbol": "BNB",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://solarbeam.io/images/tokens/bnb.png"      
     }
   ]
 }

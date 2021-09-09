@@ -1,9 +1,8 @@
-import { ChainId } from "../sdk"
+import { ChainId } from '../sdk'
 
 type AddressMap = { [chainId: number]: string }
 
 export const TIMELOCK_ADDRESS = '0x1a9C8182C09F50C8318d769245beA52c32BE35BC'
-
 
 export const LOCKER_ADDRESS: AddressMap = {
   [ChainId.ROPSTEN]: '',
@@ -15,6 +14,10 @@ export const SOLAR_DISTRIBUTOR_ADDRESS: AddressMap = {
   [ChainId.ROPSTEN]: '',
   [ChainId.BSC]: '',
   [ChainId.MOONRIVER]: '0xf03b75831397D4695a6b9dDdEEA0E578faa30907',
+}
+
+export const SOLAR_VAULT_ADDRESS: AddressMap = {
+  [ChainId.MOONRIVER]: '0x783D5eB06CE15b43B0635035Bae9a73750c3A0B1',
 }
 
 export const SOLAR_MOVR_PAIR: AddressMap = {
@@ -82,7 +85,6 @@ export const MULTICALL2_ADDRESS: AddressMap = {
   [ChainId.OKEX_TESTNET]: '',
 }
 
-
 export const WETH9: AddressMap = {
   [ChainId.MAINNET]: '',
   [ChainId.ROPSTEN]: '',
@@ -110,7 +112,6 @@ export const WETH9: AddressMap = {
   [ChainId.OKEX]: '',
   [ChainId.OKEX_TESTNET]: '',
 }
-
 
 export const WNATIVE: AddressMap = {
   [ChainId.MAINNET]: '',

@@ -4,11 +4,12 @@ import IUniswapV2PairABI from '@sushiswap/core/abi/IUniswapV2Pair.json'
 import { Interface } from '@ethersproject/abi'
 import { useContext, useMemo } from 'react'
 import { useMultipleContractSingleData } from '../state/multicall/hooks'
-import { SOLAR_ADDRESS, FACTORY_ADDRESS, SOLAR_DISTRIBUTOR_ADDRESS } from '../constants'
+import { SOLAR_ADDRESS, FACTORY_ADDRESS, SOLAR_DISTRIBUTOR_ADDRESS, SOLAR_VAULT_ADDRESS } from '../constants'
 import { useActiveWeb3React } from '../hooks/useActiveWeb3React'
 import PriceContext from '../contexts/priceContext'
 import { POOLS, TokenInfo } from '../constants/farms'
 import { concat } from 'lodash'
+import { VAULTS } from '../constants/vaults'
 
 const PAIR_INTERFACE = new Interface(IUniswapV2PairABI)
 
@@ -68,9 +69,143 @@ export function useV2Pairs(currencies: [Currency | undefined, Currency | undefin
 }
 
 export interface TVLInfo {
+  id?: string
   lpToken: string
   tvl: number
   lpPrice: number
+}
+
+export function useVaultTVL(): TVLInfo[] {
+  const { chainId } = useActiveWeb3React()
+  const priceData = useContext(PriceContext)
+  const solarPrice = priceData?.data?.['solar']
+  const movrPrice = priceData?.data?.['movr']
+  const ribPrice = priceData?.data?.['rib']
+
+  const farmingPools = Object.keys(VAULTS[ChainId.MOONRIVER]).map((key) => {
+    return { ...VAULTS[ChainId.MOONRIVER][key] }
+  })
+
+  const singlePools = farmingPools.filter((r) => !r.token1)
+  const singleAddresses = singlePools.map((r) => r.lpToken)
+  const lpPools = farmingPools.filter((r) => !!r.token1)
+  const pairAddresses = lpPools.map((r) => r.lpToken)
+
+  const results = useMultipleContractSingleData(pairAddresses, PAIR_INTERFACE, 'getReserves')
+  const totalSupply = useMultipleContractSingleData(pairAddresses, PAIR_INTERFACE, 'totalSupply')
+  const distributorBalance = useMultipleContractSingleData(pairAddresses, PAIR_INTERFACE, 'balanceOf', [
+    SOLAR_VAULT_ADDRESS[ChainId.MOONRIVER],
+  ])
+  const distributorBalanceSingle = useMultipleContractSingleData(singleAddresses, PAIR_INTERFACE, 'balanceOf', [
+    SOLAR_VAULT_ADDRESS[ChainId.MOONRIVER],
+  ])
+
+  return useMemo(() => {
+    function isKnownToken(token: TokenInfo) {
+      return (
+        token.id.toLowerCase() == SOLAR_ADDRESS[chainId].toLowerCase() ||
+        token.symbol == 'WMOVR' ||
+        token.symbol == 'MOVR' ||
+        token.symbol == 'RIB' ||
+        token.symbol == 'USDC'||
+        token.symbol == 'BUSD'
+      )
+    }
+
+    function getPrice(token: TokenInfo) {
+      if (token.id.toLowerCase() == SOLAR_ADDRESS[chainId].toLowerCase()) {
+        return solarPrice
+      }
+      if (token.symbol == 'WMOVR' || token.symbol == 'MOVR') {
+        return movrPrice
+      }
+      if (token.symbol == 'RIB' || token.symbol == 'RIB') {
+        return ribPrice
+      }
+      if (token.symbol == 'USDC' || token.symbol == 'BUSD') {
+        return 1
+      }
+      return 0
+    }
+
+    const lpTVL = results.map((result, i) => {
+      const { result: reserves, loading } = result
+
+      let { token0, token1, lpToken } = lpPools[i]
+
+      token0 = token0.id.toLowerCase() < token1.id.toLowerCase() ? token0 : token1
+      token1 = token0.id.toLowerCase() < token1.id.toLowerCase() ? token1 : token0
+
+      if (loading) return { lpToken, tvl: 0, lpPrice: 0, id: '0' }
+      if (!reserves) return { lpToken, tvl: 0, lpPrice: 0, id: '0' }
+
+      const { reserve0, reserve1 } = reserves
+
+      const lpTotalSupply = totalSupply[i]?.result?.[0]
+
+      const distributorRatio = distributorBalance[i]?.result?.[0] / lpTotalSupply
+
+      const token0price = getPrice(token0)
+      const token1price = getPrice(token1)
+
+      const token0total = Number(Number(token0price * (Number(reserve0) / 10 ** token0?.decimals)).toString())
+      const token1total = Number(Number(token1price * (Number(reserve1) / 10 ** token1?.decimals)).toString())
+
+      let lpTotalPrice = Number(token0total + token1total)
+
+      if (isKnownToken(token0)) {
+        lpTotalPrice = token0total * 2
+      } else if (isKnownToken(token1)) {
+        lpTotalPrice = token1total * 2
+      }
+
+      const lpPrice = lpTotalPrice / (lpTotalSupply / 10 ** 18)
+      const tvl = lpTotalPrice * distributorRatio
+
+      return {
+        lpToken,
+        tvl,
+        lpPrice,
+        id: '0',
+      }
+    })
+
+    const singleTVL = distributorBalanceSingle.map((result, i) => {
+      const { result: balance, loading } = result
+
+      const { token0, lpToken } = singlePools[i]
+
+      if (loading) return { lpToken, tvl: 0, lpPrice: 0, id: '0' }
+      if (!balance) return { lpToken, tvl: 0, lpPrice: 0, id: '0' }
+
+      const token0price = getPrice(token0)
+
+      const token0total = Number(Number(token0price * (Number(balance) / 10 ** token0?.decimals)).toString())
+
+      const lpPrice = token0price
+      const tvl = token0total
+
+      return {
+        lpToken,
+        tvl,
+        lpPrice,
+        id: i.toString(),
+      }
+    })
+
+    return concat(singleTVL, lpTVL)
+  }, [
+    results,
+    distributorBalanceSingle,
+    chainId,
+    solarPrice,
+    movrPrice,
+    ribPrice,
+    totalSupply,
+    distributorBalance,
+    lpPools,
+    singlePools,
+  ])
 }
 
 export function useTVL(): TVLInfo[] {
@@ -105,7 +240,8 @@ export function useTVL(): TVLInfo[] {
         token.symbol == 'WMOVR' ||
         token.symbol == 'MOVR' ||
         token.symbol == 'RIB' ||
-        token.symbol == 'USDC'
+        token.symbol == 'USDC' ||
+        token.symbol == 'BUSD'
       )
     }
 
@@ -119,7 +255,7 @@ export function useTVL(): TVLInfo[] {
       if (token.symbol == 'RIB' || token.symbol == 'RIB') {
         return ribPrice
       }
-      if (token.symbol == 'USDC') {
+      if (token.symbol == 'USDC' || token.symbol == 'BUSD') {
         return 1
       }
       return 0
@@ -246,7 +382,8 @@ export function useV2PairsWithPrice(
         token.symbol == 'WMOVR' ||
         token.symbol == 'MOVR' ||
         token.symbol == 'RIB' ||
-        token.symbol == 'USDC'
+        token.symbol == 'USDC' ||
+        token.symbol == 'BUSD'
       )
     }
 
@@ -260,7 +397,7 @@ export function useV2PairsWithPrice(
       if (token.symbol == 'RIB' || token.symbol == 'RIB') {
         return ribPrice
       }
-      if (token.symbol == 'USDC') {
+      if (token.symbol == 'USDC' || token.symbol == 'BUSD') {
         return 1
       }
       return 0

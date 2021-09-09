@@ -54,6 +54,16 @@ function AppBar(): JSX.Element {
                           </a>
                         </NavLink>
                       )}
+                      {/* {chainId && [ChainId.MOONRIVER].includes(chainId) && (
+                        <NavLink href={'/vault'}>
+                          <a
+                            id={`vault-nav-link`}
+                            className="p-2 text-lg text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                          >
+                            {i18n._(t`Vault`)}
+                          </a>
+                        </NavLink>
+                      )} */}
                       {chainId && [ChainId.MOONRIVER].includes(chainId) && (
                         <NavLink href={'/locker'}>
                           <a
@@ -77,7 +87,7 @@ function AppBar(): JSX.Element {
                       {chainId && [ChainId.MOONRIVER].includes(chainId) && (
                         <NavLink href={'/nft/launchpad'}>
                           <a
-                            id={`farm-nav-link`}
+                            id={`nft-nav-link`}
                             className="p-2 text-lg text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
                           >
                             {i18n._(t`NFT Launchpad`)}
@@ -173,7 +183,16 @@ function AppBar(): JSX.Element {
                     </a>
                   </Link>
                 )}
-
+                {/* {chainId && [ChainId.MOONRIVER].includes(chainId) && (
+                  <Link href={'/vault'}>
+                    <a
+                      id={`vault-nav-link`}
+                      className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                    >
+                      {i18n._(t`Vault`)}
+                    </a>
+                  </Link>
+                )} */}
                 {chainId && [ChainId.MOONRIVER].includes(chainId) && (
                   <Link href={'/locker'}>
                     <a

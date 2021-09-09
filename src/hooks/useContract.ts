@@ -5,6 +5,7 @@ import {
   MINICHEF_ADDRESS,
   MULTICALL2_ADDRESS,
   SOLAR_MOVR_PAIR,
+  SOLAR_VAULT_ADDRESS,
   WNATIVE,
   ZAPPER_ADDRESS,
 } from '../constants/addresses'
@@ -58,6 +59,7 @@ import KASHIPAIR_ABI from '../constants/abis/kashipair.json'
 import MAKER_ABI from '../constants/abis/maker.json'
 import MASTERCHEF_ABI from '../constants/abis/masterchef.json'
 import SOLAR_DISTRIBUTOR_ABI from '../constants/abis/solar-distributor.json'
+import SOLAR_VAULT_ABI from '../constants/abis/solar-vault.json'
 import SOLAR_LOCKER_ABI from '../constants/abis/solar-locker.json'
 import MASTERCHEF_V2_ABI from '../constants/abis/masterchef-v2.json'
 import MEOWSHI_ABI from '../constants/abis/meowshi.json'
@@ -186,6 +188,11 @@ export function useMasterChefContract(withSignerIfPossible?: boolean): Contract 
 export function useSolarDistributorContract(withSignerIfPossible?: boolean): Contract | null {
   const { chainId } = useActiveWeb3React()
   return useContract(chainId && SOLAR_DISTRIBUTOR_ADDRESS[chainId], SOLAR_DISTRIBUTOR_ABI, withSignerIfPossible)
+}
+
+export function useSolarVaultContract(withSignerIfPossible?: boolean): Contract | null {
+  const { chainId } = useActiveWeb3React()
+  return useContract(chainId && SOLAR_VAULT_ADDRESS[chainId], SOLAR_VAULT_ABI, withSignerIfPossible)
 }
 
 

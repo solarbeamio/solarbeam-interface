@@ -1,6 +1,5 @@
 import { ChainId } from '../sdk'
 
-
 export type TokenInfo = {
   id: string
   name: string
@@ -9,7 +8,7 @@ export type TokenInfo = {
 }
 
 type PairInfo = {
-  id: number,
+  id: number
   token0: TokenInfo
   token1?: TokenInfo
   name?: string
@@ -166,6 +165,40 @@ export const POOLS: AddressMap = {
         name: 'USDC Coin',
         symbol: 'USDC',
         decimals: 6,
+      },
+      name: 'Solarbeam LP',
+      symbol: 'SLP',
+    },
+    '0xA0D8DFB2CC9dFe6905eDd5B71c56BA92AD09A3dC': {
+      id: 10,
+      token0: {
+        id: '0x639A647fbe20b6c8ac19E48E2de44ea792c62c5C',
+        name: 'Ethereum',
+        symbol: 'ETH',
+        decimals: 18,
+      },
+      token1: {
+        id: '0xE3F5a90F9cb311505cd691a46596599aA1A0AD7D',
+        name: 'USDC Coin',
+        symbol: 'USDC',
+        decimals: 6,
+      },
+      name: 'Solarbeam LP',
+      symbol: 'SLP',
+    },
+    '0xfb1d0D6141Fc3305C63f189E39Cc2f2F7E58f4c2': {
+      id: 11,
+      token0: {
+        id: '0x2bF9b864cdc97b08B6D79ad4663e71B8aB65c45c',
+        name: 'Binance Coin',
+        symbol: 'BNB',
+        decimals: 18,
+      },
+      token1: {
+        id: '0x5D9ab5522c64E1F6ef5e3627ECCc093f56167818',
+        name: 'Binance-Peg BUSD Token',
+        symbol: 'BUSD',
+        decimals: 18,
       },
       name: 'Solarbeam LP',
       symbol: 'SLP',
