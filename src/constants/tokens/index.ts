@@ -54,6 +54,7 @@ export const MOONRIVER: { [key: string]: Token } = {
   DAI: new Token(ChainId.MOONRIVER, '0x80A16016cC4A2E6a2CACA8a4a498b1699fF0f844', 18, 'DAI', 'Dai Stablecoin'),
   USDC: new Token(ChainId.MOONRIVER, '0xE3F5a90F9cb311505cd691a46596599aA1A0AD7D', 6, 'USDC', 'USD Coin'),
   SOLAR: new Token(ChainId.MOONRIVER, '0x6bD193Ee6D2104F14F94E2cA6efefae561A4334B', 18, 'SOLAR', 'Solarbeam Token'),
+  BUSD: new Token(ChainId.MOONRIVER, '0x5D9ab5522c64E1F6ef5e3627ECCc093f56167818', 18, 'BUSD', 'Binance-Peg BUSD Token'),
 }
 
 export const HECO: { [key: string]: Token } = {
