@@ -82,6 +82,14 @@
       "decimals": 18,
       "chainId": 1285,
       "logoURI": "https://solarbeam.io/images/tokens/beans.png"
+    },
+    {
+      "name": "MoonPizza",
+      "address": "0x737A589811Bc20D114Dc6878522867352f3DED81",
+      "symbol": "PIZZA",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://raw.githubusercontent.com/MoonPizzaChef/pizza/main/moonpizza.jpg"
     }
   ]
 }
