@@ -49,6 +49,8 @@ const VaultListItem = ({ farm }) => {
   // TODO: Replace these
   const { amount, nextHarvestUntil, userLockedUntil } = useUserInfo(farm, liquidityToken)
 
+  console.log(`amount staked ${farm.id}: ${amount}`)
+
   const pendingSolar = usePendingSolar(farm)
 
   const typedDepositValue = tryParseAmount(depositValue, liquidityToken)
@@ -242,7 +244,9 @@ const VaultListItem = ({ farm }) => {
                   pendingTx ||
                   !typedWithdrawValue ||
                   amount.lessThan(typedWithdrawValue) ||
-                  (!amount.equalTo(ZERO) && farm?.lockupDuration > 0 && moment.unix(userLockedUntil).isAfter(new Date()))
+                  (!amount.equalTo(ZERO) &&
+                    farm?.lockupDuration > 0 &&
+                    moment.unix(userLockedUntil).isAfter(new Date()))
                 }
                 onClick={async () => {
                   setPendingTx(true)
