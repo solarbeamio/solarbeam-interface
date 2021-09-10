@@ -55,12 +55,12 @@ function AppBar(): JSX.Element {
                         </NavLink>
                       )}
                       {chainId && [ChainId.MOONRIVER].includes(chainId) && (
-                        <NavLink href={'/vault'}>
+                        <NavLink href={'/vaults'}>
                           <a
-                            id={`vault-nav-link`}
+                            id={`vaults-nav-link`}
                             className="p-2 text-lg text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
                           >
-                            {i18n._(t`Vault`)}
+                            {i18n._(t`Vaults`)}
                           </a>
                         </NavLink>
                       )}
@@ -184,12 +184,12 @@ function AppBar(): JSX.Element {
                   </Link>
                 )}
                 {chainId && [ChainId.MOONRIVER].includes(chainId) && (
-                  <Link href={'/vault'}>
+                  <Link href={'/saults'}>
                     <a
-                      id={`vault-nav-link`}
+                      id={`vaults-nav-link`}
                       className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
                     >
-                      {i18n._(t`Vault`)}
+                      {i18n._(t`Vaults`)}
                     </a>
                   </Link>
                 )}
