@@ -7,6 +7,7 @@ import {
   useSolarDistributorContract,
   useBNBPairContract,
   useSolarMovrContract,
+  useSolarVaultContract,
 } from '../../hooks'
 
 import { Contract } from '@ethersproject/contracts'
@@ -14,6 +15,7 @@ import { Zero } from '@ethersproject/constants'
 import { useActiveWeb3React } from '../../hooks/useActiveWeb3React'
 import zip from 'lodash/zip'
 import { useToken } from '../../hooks/Tokens'
+import { useVaultInfo, useVaults } from '../vault/hooks'
 const { default: axios } = require('axios')
 
 export function useChefContract(chef: Chef) {
@@ -30,7 +32,6 @@ export function useChefContract(chef: Chef) {
     return contracts[chef]
   }, [contracts, chef])
 }
-
 
 export function useChefContracts(chefs: Chef[]) {
   const solarDistributorContract = useSolarDistributorContract()
@@ -234,6 +235,7 @@ export function usePrice(pairContract?: Contract | null, pairDecimals?: number |
 
 export function useTokenInfo(tokenContract?: Contract | null) {
   const { account, chainId } = useActiveWeb3React()
+  const vaults = useVaults()
 
   const _totalSupply = useSingleCallResult(tokenContract ? tokenContract : null, 'totalSupply', undefined, NEVER_RELOAD)
     ?.result?.[0]
@@ -245,10 +247,18 @@ export function useTokenInfo(tokenContract?: Contract | null) {
     NEVER_RELOAD
   )?.result?.[0]
 
+  let lockedInVaults = JSBI.BigInt(0)
+
+  vaults
+    .filter((r) => r.lockupDuration > 0)
+    .forEach((r) => {
+      lockedInVaults = JSBI.add(lockedInVaults, JSBI.BigInt(r.totalLp.toString()))
+    })
+
   const totalSupply = _totalSupply ? JSBI.BigInt(_totalSupply.toString()) : JSBI.BigInt(0)
   const burnt = _burnt ? JSBI.BigInt(_burnt.toString()) : JSBI.BigInt(0)
 
-  const circulatingSupply = JSBI.subtract(totalSupply, burnt)
+  const circulatingSupply = JSBI.subtract(JSBI.subtract(totalSupply, burnt), lockedInVaults)
 
   const token = useToken(tokenContract.address)
 
@@ -258,15 +268,17 @@ export function useTokenInfo(tokenContract?: Contract | null) {
         totalSupply: '0',
         burnt: '0',
         circulatingSupply: '0',
+        lockedInVaults: '0',
       }
     }
 
     return {
       totalSupply: CurrencyAmount.fromRawAmount(token, totalSupply).toFixed(0),
       burnt: CurrencyAmount.fromRawAmount(token, burnt).toFixed(0),
+      vaults: CurrencyAmount.fromRawAmount(token, lockedInVaults).toFixed(0),
       circulatingSupply: CurrencyAmount.fromRawAmount(token, circulatingSupply).toFixed(0),
     }
-  }, [totalSupply, burnt, circulatingSupply, token])
+  }, [totalSupply, burnt, circulatingSupply, token, lockedInVaults])
 }
 
 export function useFarms() {

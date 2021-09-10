@@ -16,6 +16,7 @@ import { formatNumberScale } from '../../functions'
 import { ExternalLink as LinkIcon } from 'react-feather'
 import PriceContext from '../../contexts/priceContext'
 import { useSolarContract } from '../../hooks'
+import QuestionHelper from '../../components/QuestionHelper'
 
 const CloseIcon = styled.div`
   position: absolute;
@@ -76,7 +77,7 @@ export default function TokenStatsModal({ token }: { token: any }) {
   const priceData = useContext(PriceContext)
   let tokenInfo = useTokenInfo(useSolarContract())
 
-  if (token.symbol == 'MOVR') tokenInfo = { circulatingSupply: '1500000', burnt: '0', totalSupply: '0' }
+  if (token.symbol == 'MOVR') tokenInfo = { circulatingSupply: '1500000', burnt: '0', totalSupply: '0', vaults: '0' }
 
   const price = formatNumberScale(priceData?.data?.[token.symbol.toLowerCase()], true, 2)
 
@@ -88,9 +89,7 @@ export default function TokenStatsModal({ token }: { token: any }) {
     return (
       <div className="flex flex-col gap-2 bg-dark-800 rounded py-1 px-3 w-full">
         <div className="flex items-center justify-between">
-          <Typography variant="sm" className="flex items-center py-0.5">
-            {title}
-          </Typography>
+          {title}
           <Typography variant="sm" className="flex items-center font-bold py-0.5">
             {value}
           </Typography>
@@ -146,13 +145,63 @@ export default function TokenStatsModal({ token }: { token: any }) {
             <Typography weight={700}>{i18n._(t`Supply & Market Cap`)}</Typography>
           </div>
           <div className="flex flex-col flex-nowrap gap-1 -m-1">
-            {getSummaryLine(i18n._(t`Circulating Supply`), formatNumberScale(tokenInfo.circulatingSupply, false, 2))}
             {getSummaryLine(
-              i18n._(t`Market Cap`),
+              <div className="flex items-center">
+                <Typography variant="sm" className="flex items-center py-0.5">
+                  {i18n._(t`Circulating Supply`)}
+                </Typography>
+                {token.symbol == 'SOLAR' && (
+                  <QuestionHelper
+                    text={
+                      <div className="flex flex-col gap-2 py-1 px-3 w-full">
+                        <div className="flex items-center justify-between">
+                          <Typography variant="sm" className="flex items-center font-bold py-0.5">
+                            Total
+                          </Typography>
+                          <Typography variant="sm" className="flex items-center font-bold py-0.5">
+                            {formatNumberScale(tokenInfo.totalSupply, false, 2)}
+                          </Typography>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <Typography variant="sm" className="flex items-center font-bold py-0.5">
+                            Burnt
+                          </Typography>
+                          <Typography variant="sm" className="flex items-center font-bold py-0.5">
+                            - {formatNumberScale(tokenInfo.burnt, false, 2)}
+                          </Typography>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <Typography variant="sm" className="flex items-center font-bold py-0.5">
+                            Locked
+                          </Typography>
+                          <Typography variant="sm" className="flex items-center font-bold py-0.5">
+                            - {formatNumberScale(tokenInfo.vaults, false, 2)}
+                          </Typography>
+                        </div>
+                        <hr></hr>
+                        <div className="flex items-center justify-between">
+                          <Typography variant="sm" className="flex items-center font-bold py-0.5">
+                            Circulating
+                          </Typography>
+                          <Typography variant="sm" className="flex items-center font-bold py-0.5">
+                            {formatNumberScale(tokenInfo.circulatingSupply, false, 2)}
+                          </Typography>
+                        </div>
+                      </div>
+                    }
+                  />
+                )}
+              </div>,
+              formatNumberScale(tokenInfo.circulatingSupply, false, 2)
+            )}
+            {getSummaryLine(
+              <Typography variant="sm" className="flex items-center py-0.5">
+                {i18n._(t`Market Cap`)}
+              </Typography>,
               formatNumberScale(
                 Number(tokenInfo.circulatingSupply) * (priceData?.data?.[token.symbol.toLowerCase()] || 0),
                 true,
-                3
+                2
               )
             )}
           </div>
