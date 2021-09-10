@@ -36,8 +36,13 @@ export default function Vault(): JSX.Element {
   const solarPrice = priceData?.data?.['solar']
   const movrPrice = priceData?.data?.['movr']
 
+  const tvlInfo = useTVL()
   
-  const summTvl = vaults.reduce((previousValue, currentValue) => {
+  const summTvl = tvlInfo.reduce((previousValue, currentValue) => {
+    return previousValue + currentValue.tvl
+  }, 0)
+
+  const summTvlVaults = vaults.reduce((previousValue, currentValue) => {
     return previousValue + (currentValue.totalLp / 1e18)  * solarPrice
   }, 0)
 
@@ -167,7 +172,10 @@ export default function Vault(): JSX.Element {
                     </div>
                     <div className={`flex flex-col items-center justify-between px-6 py-6 `}>
                       <div className="flex items-center justify-between py-2 text-emphasis">
-                        Total Value Locked: {formatNumberScale(summTvl, true, 2)}
+                        Total Value Locked: {formatNumberScale(summTvl + summTvlVaults, true, 2)}
+                      </div>
+                      <div className="flex items-center justify-between py-2 text-emphasis">
+                        Vaults TVL: {formatNumberScale(summTvlVaults, true, 2)}
                       </div>
                       {positions.length > 0 && (
                         <div className="flex items-center justify-between py-2 text-emphasis">

@@ -100,6 +100,11 @@ function AppBar(): JSX.Element {
 
                 <div className="fixed bottom-0 left-0 z-10 flex flex-row items-center justify-center w-full p-4 lg:w-auto bg-dark-1000 lg:relative lg:p-0 lg:bg-transparent">
                   <div className="flex items-center justify-between w-full space-x-2 sm:justify-end">
+                    {/* <div className="w-auto flex items-center rounded mr-1 bg-dark-800 shadow-sm text-primary text-xs hover:bg-dark-700 whitespace-nowrap text-xs font-bold cursor-pointer select-none pointer-events-auto hidden sm:block">
+                      <div className="flex">
+                        <div className="px-3 py-2 text-primary text-bold">Total Value Locked: $51.34 M</div>
+                      </div>
+                    </div> */}
                     <div className="w-auto flex items-center rounded mr-1 bg-dark-800 shadow-sm text-primary text-xs hover:bg-dark-700 whitespace-nowrap text-xs font-bold cursor-pointer select-none pointer-events-auto hidden sm:block">
                       <TokenStats token="MOVR" />
                     </div>
@@ -184,7 +189,7 @@ function AppBar(): JSX.Element {
                   </Link>
                 )}
                 {chainId && [ChainId.MOONRIVER].includes(chainId) && (
-                  <Link href={'/saults'}>
+                  <Link href={'/vaults'}>
                     <a
                       id={`vaults-nav-link`}
                       className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"

@@ -21,6 +21,7 @@ import useMasterChef from '../../features/farm/useMasterChef'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import { useTVL } from '../../hooks/useV2Pairs'
 import { getAddress } from '@ethersproject/address'
+import { useVaults } from '../../features/vault/hooks'
 
 export default function Farm(): JSX.Element {
   const { i18n } = useLingui()
@@ -34,6 +35,7 @@ export default function Farm(): JSX.Element {
   const positions = usePositions()
 
   const farms = useFarms()
+  const vaults = useVaults()
 
   const distributorInfo = useDistributorInfo()
 
@@ -48,9 +50,14 @@ export default function Farm(): JSX.Element {
     return { ...POOLS[chainId][key], lpToken: key }
   })
 
-  const summTvl = tvlInfo.reduce((previousValue, currentValue) => {
+  let summTvl = tvlInfo.reduce((previousValue, currentValue) => {
     return previousValue + currentValue.tvl
   }, 0)
+  
+  let summTvlVaults = vaults.reduce((previousValue, currentValue) => {
+    return previousValue + (currentValue.totalLp / 1e18)  * solarPrice
+  }, 0)
+
 
   const blocksPerDay = 86400 / Number(AVERAGE_BLOCK_TIME[chainId])
 
@@ -192,8 +199,11 @@ export default function Farm(): JSX.Element {
                       <Menu positionsLength={positions.length} />
                     </div>
                     <div className={`flex flex-col items-center justify-between px-6 py-6 `}>
-                      <div className="flex items-center justify-between py-2 text-emphasis">
-                        Total Value Locked: {formatNumberScale(summTvl, true, 2)}
+                      <div className="flex items-center text-center justify-between py-2 text-emphasis">
+                        Total Value Locked: {formatNumberScale(summTvl + summTvlVaults, true, 2)}
+                      </div>
+                      <div className="flex items-center text-center justify-between py-2 text-emphasis">
+                        Farms TVL: {formatNumberScale(summTvl, true, 2)}
                       </div>
                       {positions.length > 0 && (
                         <div className="flex items-center justify-between py-2 text-emphasis">
