@@ -5,10 +5,10 @@ const NETWORK_URL = 'https://moonriver.api.onfinality.io/public'
 const web3 = new Web3(NETWORK_URL)
 
 export default async function handler(req, res) {
-  const cg_price = await axios.get('https://api.coingecko.com/api/v3/simple/price?ids=moonriver&vs_currencies=usd')
-  let ret = {
-    movr: cg_price.data['moonriver']['usd'],
-  }
+  let movrUSDCContract = new web3.eth.Contract(IUniswapV2PairABI, '0xe537f70a8b62204832B8Ba91940B77d3f79AEb81')
+  const movrUSDCReserves = await movrUSDCContract.methods.getReserves().call()
+
+  const movrUSDCPrice = (Number(movrUSDCReserves.reserve1) / Number(movrUSDCReserves.reserve0) ) * 1e12
 
   let solarMovrContract = new web3.eth.Contract(IUniswapV2PairABI, '0x7eDA899b3522683636746a2f3a7814e6fFca75e1')
   const solarMovrReserves = await solarMovrContract.methods.getReserves().call()
@@ -20,9 +20,11 @@ export default async function handler(req, res) {
 
   const ribMovrPrice = Number(ribMovrReserves.reserve0) / Number(ribMovrReserves.reserve1)
 
-  ret['solar'] = solarMovrPrice * ret.movr
-  ret['rib'] = ribMovrPrice * ret.movr
-  ret['usdc'] = 1;
+  let ret = {}
+  ret['movr'] = movrUSDCPrice
+  ret['solar'] = solarMovrPrice * movrUSDCPrice
+  ret['rib'] = ribMovrPrice * movrUSDCPrice
+  ret['usdc'] = 1
 
   res.status(200).json(ret)
 }
