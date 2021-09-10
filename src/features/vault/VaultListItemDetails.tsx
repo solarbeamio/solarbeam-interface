@@ -268,7 +268,7 @@ const VaultListItem = ({ farm }) => {
                 }}
               >
                 {!amount.equalTo(ZERO) && farm?.lockupDuration > 0 && moment.unix(userLockedUntil).isAfter(new Date())
-                  ? `Unlocks in ${moment.unix(userLockedUntil).fromNow()}`
+                  ? `Unlocks ${moment.unix(userLockedUntil/1000).fromNow()} (${moment.unix(userLockedUntil/1000).format()})`
                   : i18n._(t`Unstake`)}
               </Button>
             </div>
