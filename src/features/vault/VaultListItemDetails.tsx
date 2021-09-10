@@ -96,7 +96,9 @@ const VaultListItem = ({ farm }) => {
               }
             }}
           >
-            <Typography variant="lg">{i18n._(t`Lock for ${currentAction.lockup}`)}</Typography>
+            <Typography variant="lg">
+              {i18n._(t`${currentAction.action == 'deposit' ? 'Stake' : 'Harvest'} & Lock for ${currentAction.lockup}`)}
+            </Typography>
           </Button>
         </div>
       </Modal>
@@ -268,7 +270,9 @@ const VaultListItem = ({ farm }) => {
                 }}
               >
                 {!amount.equalTo(ZERO) && farm?.lockupDuration > 0 && moment.unix(userLockedUntil).isAfter(new Date())
-                  ? `Unlocks ${moment.unix(userLockedUntil/1000).fromNow()} (${moment.unix(userLockedUntil/1000).format()})`
+                  ? `Unlocks ${moment.unix(userLockedUntil / 1000).fromNow()} (${moment
+                      .unix(userLockedUntil / 1000)
+                      .format()})`
                   : i18n._(t`Unstake`)}
               </Button>
             </div>
