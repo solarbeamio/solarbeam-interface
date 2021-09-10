@@ -36,8 +36,9 @@ export default function Vault(): JSX.Element {
   const solarPrice = priceData?.data?.['solar']
   const movrPrice = priceData?.data?.['movr']
 
+  
   const summTvl = vaults.reduce((previousValue, currentValue) => {
-    return previousValue + currentValue.totalLp * solarPrice
+    return previousValue + (currentValue.totalLp / 1e18)  * solarPrice
   }, 0)
 
   const blocksPerDay = 86400 / Number(AVERAGE_BLOCK_TIME[chainId])
@@ -126,7 +127,7 @@ export default function Vault(): JSX.Element {
     <>
       <Head>
         <title>Vaults | Solarbeam</title>
-        <meta key="description" name="description" content="Solar Vault" />
+        <meta key="description" name="description" content="Solar Vaults" />
       </Head>
 
       <div className="container px-0 mx-auto pb-6">
