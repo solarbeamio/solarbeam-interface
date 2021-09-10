@@ -85,10 +85,10 @@ const FarmListItem2 = ({ farm, ...rest }) => {
               <div className="grid grid-cols-4 ">
                 <div className="flex col-span-2 space-x-4 md:col-span-1">
                   {token1 ? (
-                    <DoubleLogo currency0={token0} currency1={token1} size={isMobile ? 32 : 40} />
+                    <DoubleLogo currency0={token0} currency1={token1} size={isMobile ? 24 : 40} />
                   ) : (
                     <div className="flex items-center">
-                      <CurrencyLogo currency={token0} size={isMobile ? 40 : 50} />
+                      <CurrencyLogo currency={token0} size={isMobile ? 32 : 50} />
                      
                     </div>
                   )}

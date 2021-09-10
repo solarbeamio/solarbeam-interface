@@ -54,7 +54,7 @@ function AppBar(): JSX.Element {
                           </a>
                         </NavLink>
                       )}
-                      {/* {chainId && [ChainId.MOONRIVER].includes(chainId) && (
+                      {chainId && [ChainId.MOONRIVER].includes(chainId) && (
                         <NavLink href={'/vault'}>
                           <a
                             id={`vault-nav-link`}
@@ -63,7 +63,7 @@ function AppBar(): JSX.Element {
                             {i18n._(t`Vault`)}
                           </a>
                         </NavLink>
-                      )} */}
+                      )}
                       {chainId && [ChainId.MOONRIVER].includes(chainId) && (
                         <NavLink href={'/locker'}>
                           <a
@@ -183,7 +183,7 @@ function AppBar(): JSX.Element {
                     </a>
                   </Link>
                 )}
-                {/* {chainId && [ChainId.MOONRIVER].includes(chainId) && (
+                {chainId && [ChainId.MOONRIVER].includes(chainId) && (
                   <Link href={'/vault'}>
                     <a
                       id={`vault-nav-link`}
@@ -192,7 +192,7 @@ function AppBar(): JSX.Element {
                       {i18n._(t`Vault`)}
                     </a>
                   </Link>
-                )} */}
+                )}
                 {chainId && [ChainId.MOONRIVER].includes(chainId) && (
                   <Link href={'/locker'}>
                     <a

@@ -2,7 +2,7 @@ import { classNames, formatNumber, formatNumberScale, formatPercent } from '../.
 
 import { Disclosure } from '@headlessui/react'
 import DoubleLogo from '../../components/DoubleLogo'
-import FarmListItemDetails from './VaultListItemDetails'
+import VaultListItemDetails from './VaultListItemDetails'
 import Image from '../../components/Image'
 import React, { useContext, useState } from 'react'
 import { useCurrency } from '../../hooks/Tokens'
@@ -98,7 +98,9 @@ const VaultListItem = ({ farm, ...rest }) => {
                     </div>
                   </div>
                 </div>
-                <div className="flex flex-col justify-center font-bold">{farm?.lockupDuration / 86400} days</div>
+                <div className="flex flex-col justify-center font-bold">
+                  {farm?.lockupDuration == 0 ? 'No lockup' : `${farm?.lockupDuration / 86400} days`}
+                </div>
                 <div className="flex flex-col justify-center font-bold">{formatNumberScale(tvl, true, 2)}</div>
                 <div className="flex-row items-center hidden space-x-4 lg:flex">
                   <div className="flex items-center space-x-2">
@@ -140,7 +142,7 @@ const VaultListItem = ({ farm, ...rest }) => {
                 </div>
               </div>
             </Disclosure.Button>
-            {open && <FarmListItemDetails farm={farm} />}
+            {open && <VaultListItemDetails farm={farm} />}
           </div>
         )}
       </Disclosure>

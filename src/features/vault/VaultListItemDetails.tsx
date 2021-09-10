@@ -183,12 +183,16 @@ const VaultListItem = ({ farm }) => {
                       }
                       setPendingTx(false)
                     }
-                    setCurrentAction({
-                      action: 'deposit',
-                      lockup: `${farm?.lockupDuration / 86400} days`,
-                      callback: fn,
-                    })
-                    setShowConfirmation(true)
+                    if (farm?.lockupDuration == 0) {
+                      fn()
+                    } else {
+                      setCurrentAction({
+                        action: 'deposit',
+                        lockup: `${farm?.lockupDuration / 86400} days`,
+                        callback: fn,
+                      })
+                      setShowConfirmation(true)
+                    }
                   }}
                 >
                   {i18n._(t`Stake`)}
@@ -238,7 +242,7 @@ const VaultListItem = ({ farm }) => {
                   pendingTx ||
                   !typedWithdrawValue ||
                   amount.lessThan(typedWithdrawValue) ||
-                  (!amount.equalTo(ZERO) && moment.unix(userLockedUntil).isAfter(new Date()))
+                  (!amount.equalTo(ZERO) && farm?.lockupDuration > 0 && moment.unix(userLockedUntil).isAfter(new Date()))
                 }
                 onClick={async () => {
                   setPendingTx(true)
@@ -290,12 +294,16 @@ const VaultListItem = ({ farm }) => {
                     setPendingTx(false)
                   }
 
-                  setCurrentAction({
-                    action: 'harvest',
-                    lockup: `${farm?.lockupDuration / 86400} days`,
-                    callback: fn,
-                  })
-                  setShowConfirmation(true)
+                  if (farm?.lockupDuration == 0) {
+                    fn()
+                  } else {
+                    setCurrentAction({
+                      action: 'harvest',
+                      lockup: `${farm?.lockupDuration / 86400} days`,
+                      callback: fn,
+                    })
+                    setShowConfirmation(true)
+                  }
                 }}
               >
                 {i18n._(t`Harvest ${formatNumber(pendingSolar.toFixed(18))} SOLAR`)}

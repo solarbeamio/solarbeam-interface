@@ -149,7 +149,7 @@ export default function Vault(): JSX.Element {
                         <div className="mb-4 text-base text-secondary">
                           <p>
                             {i18n._(
-                              t`Solar Vault is a high incentivized pool for long term supporters that choose to lock their SOLAR for a determined period.`
+                              t`Solar Vault is a set of high incentivized pools. Long term supporters can choose to lock SOLAR for a determined period for higher rewards.`
                             )}
                           </p>
                           <p className="mt-2">
@@ -175,7 +175,7 @@ export default function Vault(): JSX.Element {
                       )}
                     </div>
                   </div>
-                  <div className={`col-span-12 md:col-span-9 bg-dark-800 px-6 py-4 rounded`}>
+                  <div className={`col-span-12 md:col-span-9 bg-dark-800  py-4 md:px-6 md:py-4 rounded`}>
                     <VaultList farms={data} />
                   </div>
                 </div>

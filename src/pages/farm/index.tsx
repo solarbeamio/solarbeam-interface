@@ -227,7 +227,7 @@ export default function Farm(): JSX.Element {
                       <Menu positionsLength={positions.length} />
                     </div>
                   </div>
-                  <div className={`col-span-12 md:col-span-9 bg-dark-800 px-6 py-4 rounded`}>
+                  <div className={`col-span-12 md:col-span-9 bg-dark-800  py-4 md:px-6 md:py-4 rounded`}>
                     <FarmList farms={result} term={term} filter={FILTER} />
                   </div>
                 </div>

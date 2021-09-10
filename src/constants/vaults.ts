@@ -53,6 +53,6 @@ export const VAULTS: AddressMap = {
         symbol: 'SOLAR',
         decimals: 18,
       },
-    },
+    }
   },
 }
