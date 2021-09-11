@@ -29,6 +29,7 @@ export enum ApplicationModal {
   VOTE,
   LANGUAGE,
   NETWORK,
+  CHAIN,
   SOLAR_STATS,
   MOVR_STATS,
   YIELD_DETAILS,

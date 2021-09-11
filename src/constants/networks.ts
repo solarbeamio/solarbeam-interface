@@ -1,16 +1,17 @@
-import { ChainId } from "../sdk"
+import { ChainId } from '../sdk'
 
 const Arbitrum = '/images/networks/arbitrum-network.jpg'
 const Avalanche = '/images/networks/avalanche-network.jpg'
-const Bsc = '/images/networks/bsc-network.jpg'
+const Bsc = '/images/networks/bsc.png'
 const Fantom = '/images/networks/fantom-network.jpg'
 const Goerli = '/images/networks/goerli-network.jpg'
 const Harmony = '/images/networks/harmonyone-network.jpg'
 const Heco = '/images/networks/heco-network.jpg'
 const Kovan = '/images/networks/kovan-network.jpg'
-const Mainnet = '/images/networks/mainnet-network.jpg'
+const Mainnet = '/images/networks/ethereum.png'
 const Matic = '/images/networks/matic-network.jpg'
 const Moonbeam = '/images/networks/moonbeam-network.jpg'
+const Moonriver = '/images/networks/moonriver.png'
 const OKEx = '/images/networks/okex-network.jpg'
 const Polygon = '/images/networks/polygon-network.jpg'
 const Rinkeby = '/images/networks/rinkeby-network.jpg'
@@ -33,7 +34,7 @@ export const NETWORK_ICON = {
   [ChainId.ARBITRUM]: Arbitrum,
   [ChainId.ARBITRUM_TESTNET]: Arbitrum,
   [ChainId.MOONBEAM_TESTNET]: Moonbeam,
-  [ChainId.MOONRIVER]: Moonbeam,
+  [ChainId.MOONRIVER]: Moonriver,
   [ChainId.AVALANCHE]: Avalanche,
   [ChainId.AVALANCHE_TESTNET]: Avalanche,
   [ChainId.HECO]: Heco,

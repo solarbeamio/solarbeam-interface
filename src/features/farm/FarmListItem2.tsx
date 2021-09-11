@@ -18,18 +18,19 @@ import IconWrapper from '../../components/IconWrapper'
 import { WNATIVE } from '../../constants'
 import PriceContext from '../../contexts/priceContext'
 import { Info } from 'react-feather'
+import Link from 'next/link'
 
 const FarmListItem2 = ({ farm, ...rest }) => {
   const { chainId } = useActiveWeb3React()
 
   let token0 = useCurrency(farm.pair.token0?.id)
   let token1 = useCurrency(farm.pair.token1?.id)
-  
-  const priceData = useContext(PriceContext);
 
-  const solarPrice = priceData?.data?.["solar"];
-  const movrPrice = priceData?.data?.["movr"];
-  const ribPrice = priceData?.data?.["rib"];
+  const priceData = useContext(PriceContext)
+
+  const solarPrice = priceData?.data?.['solar']
+  const movrPrice = priceData?.data?.['movr']
+  const ribPrice = priceData?.data?.['rib']
 
   const [selectedFarm, setSelectedFarm] = useState<string>(null)
 
@@ -44,10 +45,9 @@ const FarmListItem2 = ({ farm, ...rest }) => {
       decimals = farm.pair.token0?.decimals
     } else if (farm.lpToken.toLowerCase() == WNATIVE[chainId].toLowerCase()) {
       lpPrice = movrPrice
-    } else if (farm.lpToken.toLowerCase() == "0xbD90A6125a84E5C512129D622a75CDDE176aDE5E".toLowerCase()) {
+    } else if (farm.lpToken.toLowerCase() == '0xbD90A6125a84E5C512129D622a75CDDE176aDE5E'.toLowerCase()) {
       lpPrice = ribPrice
-    }
-    else {
+    } else {
       lpPrice = pairPrice
     }
 
@@ -89,7 +89,6 @@ const FarmListItem2 = ({ farm, ...rest }) => {
                   ) : (
                     <div className="flex items-center">
                       <CurrencyLogo currency={token0} size={isMobile ? 32 : 50} />
-                     
                     </div>
                   )}
 
@@ -97,6 +96,14 @@ const FarmListItem2 = ({ farm, ...rest }) => {
                     <div>
                       <span className="flex font-bold">{farm?.pair?.token0?.symbol}</span>
                       {token1 && <span className="flex font-bold">{farm?.pair?.token1?.symbol}</span>}
+                      {!token1 && token0?.symbol == 'SOLAR' && (
+                        <div className="flex flex-col">
+                          <span className="text-emphasis underline hover:text-yellow">Unstake</span>
+                          <Link href="/vaults">
+                            <span className="text-emphasis underline hover:text-yellow">Use Vaults</span>
+                          </Link>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>

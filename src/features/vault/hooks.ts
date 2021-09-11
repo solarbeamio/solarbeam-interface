@@ -186,9 +186,7 @@ const useAsync = (asyncFunction, immediate = true) => {
     }
   }, [execute, immediate])
 
-  return useMemo(() => {
-    return value
-  }, [value])
+  return value
 }
 
 export function usePriceApi() {

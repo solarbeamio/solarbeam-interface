@@ -43,6 +43,10 @@ export function useYieldDetailsModalToggle(): () => void {
   return useToggleModal(ApplicationModal.YIELD_DETAILS)
 }
 
+export function useChainModalToggle(): () => void {
+  return useToggleModal(ApplicationModal.CHAIN)
+}
+
 export function useNetworkModalToggle(): () => void {
   return useToggleModal(ApplicationModal.NETWORK)
 }
