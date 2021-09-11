@@ -69,6 +69,7 @@ msgid "- You will not be able to withdraw your tokens before the unlock time"
 msgstr "- 在锁定时间之前，你将无法提取你的代币"
 
 #: src/features/farm/FarmListItem2.tsx:122
+#: src/features/vault/VaultListItem.tsx:123
 msgid "/ DAY"
 msgstr "/ 天"
 
@@ -127,6 +128,7 @@ msgid "A portion of each trade (0.25%) goes to liquidity providers as a protocol
 msgstr "每笔交易的0.25%都会分给协议的流动性提供者。"
 
 #: src/features/farm/FarmList.tsx:58
+#: src/features/vault/VaultList.tsx:16
 msgid "APR"
 msgstr "APR"
 
@@ -206,6 +208,7 @@ msgstr "已添加"
 #~ msgstr ""
 
 #: src/features/farm/FarmList.tsx:55
+#: src/features/vault/VaultList.tsx:15
 msgid "Allocation"
 msgstr "分配"
 
@@ -231,6 +234,7 @@ msgstr "在试图执行该交换时发生了错误。你可能需要增加你的
 
 #: src/features/farm/FarmListItemDetails.tsx:128
 #: src/features/lending/Button.tsx:64
+#: src/features/vault/VaultListItemDetails.tsx:162
 #: src/pages/exchange/remove/[[...tokens]].tsx:826
 #: src/pages/locker/create/index.tsx:307
 msgid "Approve"
@@ -366,8 +370,8 @@ msgstr "余额"
 #~ msgid "Borrowing allows you to obtain liquidity without selling. Your borrow limit depends on the amount of deposited collateral. You will be able to borrow up to 75% of your collateral and repay at any time with accrued interest."
 #~ msgstr "借款让您在不出售资产的情况下获得流动性。您的借款上限取决于您抵押物的价值。您可以借出您抵押品价值的75%，随时可以还款，并附上利息。"
 
-#: src/components/Header/index.tsx:73
-#: src/components/Header/index.tsx:193
+#: src/components/Header/index.tsx:83
+#: src/components/Header/index.tsx:227
 msgid "Bridge"
 msgstr "跨链桥"
 
@@ -530,6 +534,10 @@ msgstr "确认提取"
 msgid "Confirm this transaction in your wallet"
 msgstr "在钱包中确认这笔交易"
 
+#: src/features/vault/VaultListItemDetails.tsx:68
+msgid "Confirm {0}"
+msgstr ""
+
 #: src/features/farm/FarmListItem.tsx:125
 #: src/features/limit-order/LimitOrderButton.tsx:145
 #: src/state/burn/hooks.ts:134
@@ -560,6 +568,7 @@ msgid "Connected with {name}"
 msgstr "与{name}链接"
 
 #: src/pages/locker/create/index.tsx:352
+#: src/pages/vaults/index.tsx:167
 msgid "Considerations"
 msgstr "考虑因素"
 
@@ -609,10 +618,12 @@ msgid "Current"
 msgstr "目前"
 
 #: src/features/farm/FarmListItemDetails.tsx:144
+#: src/features/vault/VaultListItemDetails.tsx:179
 msgid "Deposit"
 msgstr "存款"
 
 #: src/features/farm/FarmListItemDetails.tsx:75
+#: src/features/vault/VaultListItemDetails.tsx:119
 msgid "Deposit Fee"
 msgstr "存款费用"
 
@@ -727,6 +738,11 @@ msgstr "连接错误"
 msgid "Error connecting. Try refreshing the page."
 msgstr "连接错误 尝试刷新网络"
 
+#: src/features/vault/VaultListItemDetails.tsx:79
+#: src/pages/vaults/index.tsx:169
+msgid "Everytime you stake or claim rewards your lock time renews."
+msgstr ""
+
 #: src/features/swap/TradePrice.tsx:47
 msgid "Exchange Rate"
 msgstr "交换比率"
@@ -758,9 +774,13 @@ msgid "Expired"
 msgstr "过期"
 
 #: src/components/Header/index.tsx:53
-#: src/components/Header/index.tsx:172
+#: src/components/Header/index.tsx:197
 msgid "Farm"
 msgstr "农耕"
+
+#: src/components/Header/index.tsx:93
+msgid "Faucet"
+msgstr ""
 
 #: src/pages/locker/create/index.tsx:348
 msgid "Fees"
@@ -849,11 +869,13 @@ msgstr "返回"
 
 #: src/features/farm/FarmListItem.tsx:97
 #: src/features/farm/FarmListItemDetails.tsx:235
-#: src/pages/farm/index.tsx:212
+#: src/features/vault/VaultListItemDetails.tsx:293
+#: src/pages/farm/index.tsx:224
 msgid "Harvest"
 msgstr "收获"
 
 #: src/features/farm/FarmListItemDetails.tsx:247
+#: src/features/vault/VaultListItemDetails.tsx:317
 msgid "Harvest {0} SOLAR"
 msgstr "收获 {0} SOLAR"
 
@@ -1093,6 +1115,7 @@ msgstr "清单"
 #: src/components/PositionCard/index.tsx:171
 #: src/components/TransactionList.tsx:40
 #: src/features/farm/FarmList.tsx:73
+#: src/features/vault/VaultList.tsx:28
 #: src/pages/exchange/find/index.tsx:171
 #: src/pages/exchange/pool/index.tsx:129
 msgid "Loading"
@@ -1122,14 +1145,20 @@ msgstr "加载余额"
 msgid "Lock"
 msgstr "锁定"
 
-#: src/components/Header/index.tsx:63
-#: src/components/Header/index.tsx:183
+#: src/components/Header/index.tsx:73
+#: src/components/Header/index.tsx:217
 msgid "Locker"
 msgstr "锁"
+
+#: src/features/vault/VaultList.tsx:13
+msgid "Lockup"
+msgstr ""
 
 #: src/components/PercentInputPanel/index.tsx:22
 #: src/features/farm/FarmListItemDetails.tsx:115
 #: src/features/farm/FarmListItemDetails.tsx:190
+#: src/features/vault/VaultListItemDetails.tsx:149
+#: src/features/vault/VaultListItemDetails.tsx:236
 msgid "MAX"
 msgstr "最大数量"
 
@@ -1254,8 +1283,8 @@ msgstr "我的订单"
 #~ msgid "My SUSHI"
 #~ msgstr ""
 
-#: src/components/Header/index.tsx:83
-#: src/components/Header/index.tsx:200
+#: src/components/Header/index.tsx:103
+#: src/components/Header/index.tsx:234
 msgid "NFT Launchpad"
 msgstr "NFT Launchpad"
 
@@ -1340,7 +1369,7 @@ msgstr "打开订单"
 #~ msgid "Open Source"
 #~ msgstr "开源"
 
-#: src/components/Header/index.tsx:114
+#: src/components/Header/index.tsx:139
 msgid "Open main menu"
 msgstr "打开主菜单"
 
@@ -1418,8 +1447,12 @@ msgstr "请链接正确的以太坊网络"
 msgid "Please type the word \"confirm\" to enable expert mode."
 msgstr "请输入“确认”以开启专家模式。"
 
+#: src/features/vault/VaultListItemDetails.tsx:88
+msgid "Please type the word \"confirm\" to {0} and lock your tokens for {1}."
+msgstr ""
+
 #: src/components/Header/index.tsx:44
-#: src/components/Header/index.tsx:162
+#: src/components/Header/index.tsx:187
 #: src/pages/exchange/pool/index.tsx:97
 msgid "Pool"
 msgstr "资金池"
@@ -1689,6 +1722,14 @@ msgstr "可容忍滑点"
 #~ msgid "Slippage tolerance..."
 #~ msgstr ""
 
+#: src/pages/vaults/index.tsx:154
+msgid "Solar Vault"
+msgstr ""
+
+#: src/pages/vaults/index.tsx:158
+msgid "Solar Vault is a set of high incentivized pools. Long term supporters can choose to lock SOLAR for a determined period for higher rewards."
+msgstr ""
+
 #: src/pages/exchange/swap/[[...tokens]].tsx:369
 msgid "Solarbeam"
 msgstr "Solarbeam"
@@ -1713,6 +1754,8 @@ msgstr "马上"
 
 #: src/features/farm/FarmList.tsx:41
 #: src/features/farm/FarmListItemDetails.tsx:156
+#: src/features/vault/VaultList.tsx:12
+#: src/features/vault/VaultListItemDetails.tsx:202
 msgid "Stake"
 msgstr "质押"
 
@@ -1791,7 +1834,7 @@ msgstr "提供{0} {1}和{2} {3}"
 
 #: src/components/ExchangeHeader.tsx:42
 #: src/components/Header/index.tsx:36
-#: src/components/Header/index.tsx:154
+#: src/components/Header/index.tsx:179
 #: src/pages/exchange/swap/[[...tokens]].tsx:568
 #: src/pages/exchange/swap/[[...tokens]].tsx:597
 msgid "Swap"
@@ -1826,6 +1869,7 @@ msgid "Swapping {0} {1} for {2} {3}"
 msgstr "将{0} {1}换成{2} {3}"
 
 #: src/features/farm/FarmList.tsx:48
+#: src/features/vault/VaultList.tsx:14
 msgid "TVL"
 msgstr "TVL"
 
@@ -1859,6 +1903,10 @@ msgstr "输入代币不能被转移。 输入代币可能有问题。"
 #: src/hooks/useSwapCallback.ts:201
 msgid "The output token cannot be transferred. There may be an issue with the output token."
 msgstr "输出代币不能被转移。输出代币可能有问题。"
+
+#: src/pages/vaults/index.tsx:163
+msgid "The participants receive various benefits such as higher rewards according to lock duration, higher allocations in Solar Launchpad and more."
+msgstr ""
 
 #: src/hooks/useSwapCallback.ts:139 src/hooks/useSwapCallback.ts:139
 #~ msgid "The transaction cannot succeed due to error: {0}. This is probably an issue with one of the tokens you are swapping."
@@ -2011,6 +2059,7 @@ msgid "Unlock date"
 msgstr "解锁日期"
 
 #: src/features/farm/FarmListItemDetails.tsx:219
+#: src/features/vault/VaultListItemDetails.tsx:276
 msgid "Unstake"
 msgstr "解除抵押"
 
@@ -2058,6 +2107,11 @@ msgstr "解开"
 #: src/pages/Yield/minichefv2/index.tsx:44
 #~ msgid "V2 Rewarder"
 #~ msgstr "V2奖励器"
+
+#: src/components/Header/index.tsx:63
+#: src/components/Header/index.tsx:207
+msgid "Vaults"
+msgstr ""
 
 #: src/components/Header/More.tsx:44
 #~ msgid "Vesting"
@@ -2127,6 +2181,7 @@ msgid "Wallet"
 msgstr "钱包"
 
 #: src/features/farm/FarmListItemDetails.tsx:81
+#: src/features/vault/VaultListItemDetails.tsx:124
 msgid "Wallet Balance"
 msgstr "钱包余额"
 
@@ -2148,6 +2203,7 @@ msgstr "我们是开源计划的支持者"
 #~ msgstr "当创建一个交易对时，您是第一个流动性提供者。您添加的代币比例将决定这个池子的价格。一旦您对该比率满意，点击供应进行查看"
 
 #: src/features/farm/FarmListItemDetails.tsx:206
+#: src/features/vault/VaultListItemDetails.tsx:259
 msgid "Withdraw"
 msgstr "提取"
 
@@ -2258,6 +2314,7 @@ msgid "Your Position"
 msgstr "你的仓位"
 
 #: src/features/farm/FarmListItemDetails.tsx:166
+#: src/features/vault/VaultListItemDetails.tsx:212
 msgid "Your Staked"
 msgstr "您在流动性池的占比"
 
@@ -2333,6 +2390,7 @@ msgstr "你的交易将在这里显示"
 #~ msgstr ""
 
 #: src/features/farm/FarmListItem2.tsx:142
+#: src/features/vault/VaultListItem.tsx:141
 msgid "annualized"
 msgstr "年化"
 
@@ -2356,7 +2414,7 @@ msgstr "加载失败"
 msgid "home page"
 msgstr "主页"
 
-#: src/modals/SearchModal/ManageLists.tsx:325
+#: src/modals/SearchModal/ManageLists.tsx:326
 msgid "https:// or ipfs:// or ENS name"
 msgstr "https:// 或 ipfs:// 或 ENS name"
 
@@ -2405,6 +2463,10 @@ msgstr "否则交易将会被拒绝"
 msgid "{0}"
 msgstr "{0}"
 
+#: src/features/vault/VaultListItemDetails.tsx:100
+msgid "{0} & Lock for {1}"
+msgstr ""
+
 #: src/features/liquidity/ConfirmAddModalBottom.tsx:48
 #: src/features/liquidity/ConfirmAddModalBottom.tsx:55
 msgid "{0} Deposited"
@@ -2418,6 +2480,10 @@ msgstr "{0}存入的"
 #: src/pages/AddLiquidity/PoolPriceBar.tsx:26
 #~ msgid "{0} per {1}"
 #~ msgstr "{0}每{1}"
+
+#: src/features/vault/VaultListItemDetails.tsx:73
+msgid "{0} will lock your tokens for {1}."
+msgstr ""
 
 #: src/features/liquidity/LiquidityPrice.tsx:30
 #: src/features/liquidity/LiquidityPrice.tsx:37

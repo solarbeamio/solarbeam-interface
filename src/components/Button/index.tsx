@@ -7,6 +7,19 @@ const SIZE = {
   default: 'px-4 py-3 text-base',
   lg: 'px-6 py-4 text-base',
   none: 'p-0 text-base',
+  nobase: 'px-4 py-3',
+}
+
+const FLEXED = {
+  default: 'bg-transparent opacity-80 hover:opacity-100',
+  red: 'bg-red bg-opacity-80 flex rounded text-high-emphesis hover:bg-opacity-100 disabled:bg-opacity-80',
+  blue: 'bg-blue bg-opacity-80 flex rounded text-high-emphesis hover:bg-opacity-100 disabled:bg-opacity-80',
+  pink: 'bg-gradient-to-r from-pink to-opaque-pink flex rounded text-high-emphesis opacity-80 hover:opacity-100 disabled:bg-opacity-80',
+  gray: 'border rounded shadow-sm focus:ring-2 focus:ring-offset-2 bg-dark-700 bg-opacity-80 flex text-primary border-dark-800 hover:bg-opacity-100 focus:ring-offset-dark-700 focus:ring-dark-800 disabled:bg-opacity-80',
+  green: 'bg-green bg-opacity-80 flex rounded text-high-emphesis hover:bg-opacity-100 disabled:bg-opacity-80',
+  'light-green': 'bg-yellow bg-opacity-80 flex rounded text-dark-900 hover:bg-opacity-100 disabled:bg-opacity-80',
+  gradient:
+    'flex text-high-emphesis bg-gradient-to-r from-opaque-yellow to-opaque-yellow opacity-80 hover:opacity-100 disabled:bg-opacity-80',
 }
 
 const FILLED = {
@@ -16,8 +29,7 @@ const FILLED = {
   pink: 'bg-gradient-to-r from-pink to-opaque-pink w-full rounded text-high-emphesis opacity-80 hover:opacity-100 disabled:bg-opacity-80',
   gray: 'border rounded shadow-sm focus:ring-2 focus:ring-offset-2 bg-dark-700 bg-opacity-80 w-full text-primary border-dark-800 hover:bg-opacity-100 focus:ring-offset-dark-700 focus:ring-dark-800 disabled:bg-opacity-80',
   green: 'bg-green bg-opacity-80 w-full rounded text-high-emphesis hover:bg-opacity-100 disabled:bg-opacity-80',
-  'light-green':
-    'bg-yellow bg-opacity-80 w-full rounded text-dark-900 hover:bg-opacity-100 disabled:bg-opacity-80',
+  'light-green': 'bg-yellow bg-opacity-80 w-full rounded text-dark-900 hover:bg-opacity-100 disabled:bg-opacity-80',
   gradient:
     'w-full text-high-emphesis bg-gradient-to-r from-opaque-yellow to-opaque-yellow opacity-80 hover:opacity-100 disabled:bg-opacity-80',
 }
@@ -52,13 +64,14 @@ const VARIANT = {
   filled: FILLED,
   empty: EMPTY,
   link: LINK,
+  flexed: FLEXED,
 }
 
 export type ButtonColor = 'blue' | 'pink' | 'gradient' | 'gray' | 'default' | 'red' | 'green' | 'light-green'
 
-export type ButtonSize = 'xs' | 'sm' | 'lg' | 'default' | 'none'
+export type ButtonSize = 'xs' | 'sm' | 'lg' | 'default' | 'none' | 'nobase'
 
-export type ButtonVariant = 'outlined' | 'filled' | 'empty' | 'link'
+export type ButtonVariant = 'outlined' | 'filled' | 'empty' | 'link' | 'flexed'
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   color?: ButtonColor
