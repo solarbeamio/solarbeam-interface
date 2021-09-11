@@ -246,7 +246,7 @@ const VaultListItem = ({ farm }) => {
                   pendingTx ||
                   !typedWithdrawValue ||
                   amount.lessThan(typedWithdrawValue) ||
-                  (!amount.equalTo(ZERO) &&
+                  (amount && !amount.equalTo(ZERO) &&
                     farm?.lockupDuration > 0 &&
                     moment.unix(userLockedUntil).isAfter(new Date()))
                 }
@@ -269,7 +269,10 @@ const VaultListItem = ({ farm }) => {
                   setPendingTx(false)
                 }}
               >
-                {!amount.equalTo(ZERO) && farm?.lockupDuration > 0 && moment.unix(userLockedUntil).isAfter(new Date())
+                {amount &&
+                !amount.equalTo(ZERO) &&
+                farm?.lockupDuration > 0 &&
+                moment.unix(userLockedUntil).isAfter(new Date())
                   ? `Unlocks ${moment.unix(userLockedUntil / 1000).fromNow()} (${moment
                       .unix(userLockedUntil / 1000)
                       .format()})`
