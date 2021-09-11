@@ -135,28 +135,16 @@ export default function Add() {
   async function onAdd() {
     if (!chainId || !library || !account || !routerContract) return
 
-    console.log('after check')
-
     const { [Field.CURRENCY_A]: parsedAmountA, [Field.CURRENCY_B]: parsedAmountB } = parsedAmounts
-
-    console.log(parsedAmountA)
-    console.log(parsedAmountB)
-    console.log(currencyA)
-    console.log(currencyB)
-    console.log(deadline)
 
     if (!parsedAmountA || !parsedAmountB || !currencyA || !currencyB || !deadline) {
       return
     }
 
-    console.log('after parse')
-
     const amountsMin = {
       [Field.CURRENCY_A]: calculateSlippageAmount(parsedAmountA, noLiquidity ? ZERO_PERCENT : allowedSlippage)[0],
       [Field.CURRENCY_B]: calculateSlippageAmount(parsedAmountB, noLiquidity ? ZERO_PERCENT : allowedSlippage)[0],
     }
-
-    console.log('after amountsMin')
 
     let estimate,
       method: (...args: any) => Promise<TransactionResponse>,
@@ -191,15 +179,16 @@ export default function Add() {
       value = null
     }
 
-    console.log('after estimate')
-
     setAttemptingTxn(true)
     await estimate(...args, value ? { value } : {})
-      .then((estimatedGasLimit) =>
-        method(...args, {
+      .then((estimatedGasLimit) => {
+        console.log('estimatedGasLimit')
+        console.log(estimatedGasLimit)
+        return method(...args, {
           ...(value ? { value } : {}),
           gasLimit: calculateGasMargin(estimatedGasLimit),
         }).then((response) => {
+          console.log('estimate gas try')
           setAttemptingTxn(false)
 
           addTransaction(response, {
@@ -218,9 +207,42 @@ export default function Add() {
             label: [currencies[Field.CURRENCY_A]?.symbol, currencies[Field.CURRENCY_B]?.symbol].join('/'),
           })
         })
-      )
+      })
       .catch((error) => {
-        setAttemptingTxn(false)
+        //fallback
+        method(...args, {
+          ...(value ? { value } : {}),
+          gasLimit: '500000',
+        })
+          .then((response) => {
+            console.log('estimate gas try')
+            setAttemptingTxn(false)
+
+            addTransaction(response, {
+              summary: i18n._(
+                t`Add ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)} ${
+                  currencies[Field.CURRENCY_A]?.symbol
+                } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)} ${currencies[Field.CURRENCY_B]?.symbol}`
+              ),
+            })
+
+            setTxHash(response.hash)
+
+            ReactGA.event({
+              category: 'Liquidity',
+              action: 'Add',
+              label: [currencies[Field.CURRENCY_A]?.symbol, currencies[Field.CURRENCY_B]?.symbol].join('/'),
+            })
+          })
+          .catch((e) => {
+            setAttemptingTxn(false)
+
+            // we only care if the error is something _other_ than the user rejected the tx
+            if (e?.code !== 4001) {
+              console.error(e)
+            }
+          })
+
         // we only care if the error is something _other_ than the user rejected the tx
         if (error?.code !== 4001) {
           console.error(error)
