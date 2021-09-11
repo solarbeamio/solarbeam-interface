@@ -212,7 +212,7 @@ export default function Add() {
         //fallback
         method(...args, {
           ...(value ? { value } : {}),
-          gasLimit: '500000',
+          gasLimit: '1000000',
         })
           .then((response) => {
             console.log('estimate gas try')
