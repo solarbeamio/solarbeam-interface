@@ -53,23 +53,23 @@ async function faucetSend(req) {
     }
     const signedTransaction = await web3.eth.accounts.signTransaction(transactionParams, wallet.privateKey)
 
-    history.ips[event.headers['client-ip']] = Date.now()
+    history.ips[req.headers['client-ip']] = Date.now()
     history.wallets[to] = Date.now()
 
     web3.eth
       .sendSignedTransaction(signedTransaction.rawTransaction)
       .then(() => {
-        history.ips[event.headers['client-ip']] = Date.now()
+        history.ips[req.headers['client-ip']] = Date.now()
         history.wallets[to] = Date.now()
       })
       .catch((ex) => {
-        delete history.ips[event.headers['client-ip']]
+        delete history.ips[req.headers['client-ip']]
         delete history.wallets[to]
       })
 
     resolve({
       status: 200,
-      message: 'You will receive MOVR in your wallet soon.',
+      message: `[${req.headers['client-ip']}] You will receive MOVR in your wallet soon.`,
     })
   })
 }
