@@ -27,7 +27,8 @@ async function verifyRecaptcha(req) {
 
 function checkLimit(req) {
   const address = req.body['address'].toLowerCase()
-  const ip = req.connection.remoteAddress
+  const ip = req.headers['X-Nf-Client-Connection-Ip'] || req.connection.remoteAddress
+
   const timeLimit = parseInt(serverRuntimeConfig.faucetTimeLimit) * 60 * 1000
   if (
     (history.ips.hasOwnProperty(ip) && history.ips[ip] > Date.now() - timeLimit) ||
