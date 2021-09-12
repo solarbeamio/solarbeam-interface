@@ -1,3 +1,6 @@
+import getConfig from 'next/config'
+const { serverRuntimeConfig } = getConfig()
+
 const Web3 = require('web3')
 const { default: axios } = require('axios')
 const NETWORK_URL = 'https://rpc.moonriver.moonbeam.network'
@@ -11,11 +14,9 @@ let history = {
 
 async function verifyRecaptcha(req) {
   const key = req.body['g-recaptcha-response']
-  console.log(process.env.GOOGLE_CAPTCHA_SECRET)
-  console.log(key)
   try {
     const response = await axios.get(
-      `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.GOOGLE_CAPTCHA_SECRET}&response=${key}`
+      `https://www.google.com/recaptcha/api/siteverify?secret=${serverRuntimeConfig.captchaSecret}&response=${key}`
     )
     if (response.data.success) {
       return true
@@ -27,7 +28,7 @@ async function verifyRecaptcha(req) {
 function checkLimit(req) {
   const address = req.body['address'].toLowerCase()
   const ip = req.connection.remoteAddress
-  const timeLimit = parseInt(process.env.FAUCET_TIME_LIMIT_MIN) * 60 * 1000
+  const timeLimit = parseInt(serverRuntimeConfig.faucetTimeLimit) * 60 * 1000
   if (
     (history.ips.hasOwnProperty(ip) && history.ips[ip] > Date.now() - timeLimit) ||
     (history.wallets.hasOwnProperty(address) && history.wallets[address] > Date.now() - timeLimit)
@@ -38,9 +39,9 @@ function checkLimit(req) {
 
 async function faucetSend(req) {
   const to = req.body['address']
-  const value = process.env.FAUCET_AMOUNT_ADD
-  const wallet = await web3.eth.accounts.wallet.add(process.env.FAUCET_WALLET_PRIVATE_KEY)
-  const gasPrice = await web3.utils.toWei(process.env.FAUCET_GAS_PRICE_GWEI, 'gwei')
+  const value = serverRuntimeConfig.faucetAmountAdd
+  const wallet = await web3.eth.accounts.wallet.add(serverRuntimeConfig.faucetWalletPrivateKey)
+  const gasPrice = await web3.utils.toWei(serverRuntimeConfig.faucetGas, 'gwei')
   return new Promise(async (resolve, reject) => {
     const transactionParams = {
       gasPrice: web3.utils.toHex(gasPrice),
@@ -88,7 +89,7 @@ function secondsToString(uptime) {
 }
 
 function timeLeft(timestamp) {
-  const timeNeeded = process.env.FAUCET_TIME_LIMIT_MIN * 60 * 1000
+  const timeNeeded = serverRuntimeConfig.faucetTimeLimit * 60 * 1000
   const timePassed = Date.now() - timestamp
   const timeLeft = timeNeeded - timePassed
   return secondsToString(timeLeft / 1000)
