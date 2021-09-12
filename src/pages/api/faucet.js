@@ -1,4 +1,5 @@
 import getConfig from 'next/config'
+import faunadb from 'faunadb' /* Import faunaDB sdk */
 const { serverRuntimeConfig } = getConfig()
 
 const Web3 = require('web3')
@@ -11,6 +12,11 @@ let history = {
   ips: {},
   wallets: {},
 }
+
+const q = faunadb.query
+const client = new faunadb.Client({
+  secret: serverRuntimeConfig.faunadbSecret,
+})
 
 async function verifyRecaptcha(req) {
   const key = req.body['g-recaptcha-response']
@@ -40,6 +46,7 @@ function checkLimit(req) {
 
 async function faucetSend(req) {
   const to = req.body['address']
+  const ip = req.headers['x-nf-client-connection-ip']
   const value = serverRuntimeConfig.faucetAmountAdd
   const wallet = await web3.eth.accounts.wallet.add(serverRuntimeConfig.faucetWalletPrivateKey)
   const gasPrice = await web3.utils.toWei(serverRuntimeConfig.faucetGas, 'gwei')
@@ -53,19 +60,12 @@ async function faucetSend(req) {
     }
     const signedTransaction = await web3.eth.accounts.signTransaction(transactionParams, wallet.privateKey)
 
-    history.ips[req.headers['x-nf-client-connection-ip']] = Date.now()
-    history.wallets[to] = Date.now()
+    await blackList(to, ip)
 
     web3.eth
       .sendSignedTransaction(signedTransaction.rawTransaction)
-      .then(() => {
-        history.ips[req.headers['x-nf-client-connection-ip']] = Date.now()
-        history.wallets[to] = Date.now()
-      })
-      .catch((ex) => {
-        delete history.ips[req.headers['x-nf-client-connection-ip']]
-        delete history.wallets[to]
-      })
+      .then(async () => {})
+      .catch((ex) => {})
 
     resolve({
       status: 200,
@@ -96,35 +96,81 @@ function timeLeft(timestamp) {
   return secondsToString(timeLeft / 1000)
 }
 
+async function isBlacklisted(addr, ip) {
+  let ref
+  if (addr) {
+    addr = addr.toLowerCase()
+  }
+  if (ip) {
+    ip = ip.toLowerCase()
+  }
+
+  try {
+    ref = await client.query(q.Get(q.Match(q.Index('address'), addr)))
+  } catch (ex) {
+    try {
+      ref = await client.query(q.Get(q.Match(q.Index('ip'), ip)))
+    } catch (ex2) {}
+  }
+
+  return ref
+}
+
+async function blackList(addr, ip) {
+  if (addr) {
+    addr = addr.toLowerCase()
+  }
+  if (ip) {
+    ip = ip.toLowerCase()
+  }
+  await client.query(q.Create(q.Collection('wallets'), { data: { address: addr, ip: ip } }))
+}
+
+// async function removeFromBlackList(addr, ip) {
+//   await client.query(q.Create(q.Collection('wallets'), { data: { address: addr, ip } }))
+// }
+
 export default async function handler(req, res) {
-  if (!inOrder) {
-    inOrder = true
-    const verified = await verifyRecaptcha(req)
-    if (verified) {
-      const limitMessage = checkLimit(req)
-      if (!limitMessage) {
+  const address = req.body['address']
+  const ip = req.headers['x-nf-client-connection-ip']
+
+  const ref = await isBlacklisted(address, ip)
+
+  if (ref) {
+    res.status(200).json({
+      status: 400,
+      message: 'Personal limit reached.',
+    })
+  } else {
+    if (!inOrder) {
+      inOrder = true
+      const verified = await verifyRecaptcha(req)
+      if (verified) {
+        // const limitMessage = checkLimit(req)
+        // if (!limitMessage) {
         const ret = await faucetSend(req)
         inOrder = false
         res.status(200).json(ret)
+        // } else {
+        //   inOrder = false
+        //   res.status(200).json({
+        //     status: 400,
+        //     message: limitMessage,
+        //   })
+        // }
       } else {
         inOrder = false
         res.status(200).json({
           status: 400,
-          message: limitMessage,
+          message: 'Invalid captcha.',
         })
       }
     } else {
       inOrder = false
       res.status(200).json({
-        status: 400,
-        message: 'Invalid captcha.',
+        status: 429,
+        message: 'Processing too many orders, please try again in a moment.',
       })
     }
-  } else {
-    inOrder = false
-    res.status(200).json({
-      status: 429,
-      message: 'Processing too many orders, please try again in a moment.',
-    })
   }
 }

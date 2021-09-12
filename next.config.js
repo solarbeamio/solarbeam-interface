@@ -27,6 +27,7 @@ module.exports = withBundleAnalyzer(
       faucetAmountAdd: process.env.FAUCET_AMOUNT_ADD,
       faucetGas: process.env.FAUCET_GAS_PRICE_GWEI,
       faucetTimeLimit: process.env.FAUCET_TIME_LIMIT_MIN,
+      faunadbSecret: process.env.FAUNADB_SECRET,
     },
     i18n: {
       locales,
