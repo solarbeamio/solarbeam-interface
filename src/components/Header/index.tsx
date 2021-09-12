@@ -31,7 +31,7 @@ function AppBar(): JSX.Element {
                       <NavLink href="/exchange/swap">
                         <a
                           id={`swap-nav-link`}
-                          className="p-2 text-lg text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                          className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
                         >
                           {i18n._(t`Swap`)}
                         </a>
@@ -39,7 +39,7 @@ function AppBar(): JSX.Element {
                       <NavLink href="/exchange/pool">
                         <a
                           id={`pool-nav-link`}
-                          className="p-2 text-lg text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                          className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
                         >
                           {i18n._(t`Pool`)}
                         </a>
@@ -48,7 +48,7 @@ function AppBar(): JSX.Element {
                         <NavLink href={'/farm'}>
                           <a
                             id={`farm-nav-link`}
-                            className="p-2 text-lg text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                            className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
                           >
                             {i18n._(t`Farm`)}
                           </a>
@@ -58,7 +58,7 @@ function AppBar(): JSX.Element {
                         <NavLink href={'/vaults'}>
                           <a
                             id={`vaults-nav-link`}
-                            className="p-2 text-lg text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                            className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
                           >
                             {i18n._(t`Vaults`)}
                           </a>
@@ -68,7 +68,7 @@ function AppBar(): JSX.Element {
                         <NavLink href={'/locker'}>
                           <a
                             id={`farm-nav-link`}
-                            className="p-2 text-lg text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                            className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
                           >
                             {i18n._(t`Locker`)}
                           </a>
@@ -78,7 +78,7 @@ function AppBar(): JSX.Element {
                         <NavLink href={'https://movr.anyswap.exchange/#/bridge'}>
                           <a
                             target="_blank"
-                            className="p-2 text-lg text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                            className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
                           >
                             {i18n._(t`Bridge`)}
                           </a>
@@ -88,7 +88,7 @@ function AppBar(): JSX.Element {
                         <NavLink href={'/faucet'}>
                           <a
                             id={`nft-nav-link`}
-                            className="p-2 text-lg text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                            className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
                           >
                             {i18n._(t`Faucet`)}
                           </a>
@@ -98,7 +98,7 @@ function AppBar(): JSX.Element {
                         <NavLink href={'/nft/launchpad'}>
                           <a
                             id={`nft-nav-link`}
-                            className="p-2 text-lg text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                            className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
                           >
                             {i18n._(t`NFT Launchpad`)}
                           </a>
