@@ -27,7 +27,7 @@ async function verifyRecaptcha(req) {
 
 function checkLimit(req) {
   const address = req.body['address'].toLowerCase()
-  const ip = req.headers['client-ip']
+  const ip = req.headers['x-nf-client-connection-ip']
 
   const timeLimit = parseInt(serverRuntimeConfig.faucetTimeLimit) * 60 * 1000
   if (
@@ -53,23 +53,23 @@ async function faucetSend(req) {
     }
     const signedTransaction = await web3.eth.accounts.signTransaction(transactionParams, wallet.privateKey)
 
-    history.ips[req.headers['client-ip']] = Date.now()
+    history.ips[req.headers['x-nf-client-connection-ip']] = Date.now()
     history.wallets[to] = Date.now()
 
     web3.eth
       .sendSignedTransaction(signedTransaction.rawTransaction)
       .then(() => {
-        history.ips[req.headers['client-ip']] = Date.now()
+        history.ips[req.headers['x-nf-client-connection-ip']] = Date.now()
         history.wallets[to] = Date.now()
       })
       .catch((ex) => {
-        delete history.ips[req.headers['client-ip']]
+        delete history.ips[req.headers['x-nf-client-connection-ip']]
         delete history.wallets[to]
       })
 
     resolve({
       status: 200,
-      message: `[${req.headers['client-ip']}] You will receive MOVR in your wallet soon.`,
+      message: `[${req.headers['x-nf-client-connection-ip']}] You will receive MOVR in your wallet soon.`,
     })
   })
 }
