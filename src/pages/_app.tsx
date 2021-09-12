@@ -3,11 +3,11 @@ import '../styles/index.css'
 import '@fontsource/dm-sans/index.css'
 import 'react-virtualized/styles.css'
 import 'react-tabs/style/react-tabs.css'
-import "react-datetime/css/react-datetime.css";
+import 'react-datetime/css/react-datetime.css'
 
 import * as plurals from 'make-plural/plurals'
 
-import { Fragment, FunctionComponent } from 'react'
+import React, { Fragment, FunctionComponent } from 'react'
 import { NextComponentType, NextPageContext } from 'next'
 
 import type { AppProps } from 'next/app'
@@ -33,6 +33,7 @@ import { useRouter } from 'next/router'
 import PriceContext from '../contexts/priceContext'
 import FarmContext from '../contexts/farmContext'
 import { usePricesApi } from '../features/farm/hooks'
+import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3'
 
 const Web3ProviderNetwork = dynamic(() => import('../components/Web3ProviderNetwork'), { ssr: false })
 
@@ -130,13 +131,25 @@ function MyApp({
         <meta key="og:image" property="og:image" content="https://solarbeam.io/icon.png" />
         <meta key="og:description" property="og:description" content="Solarbeam - AMM on Moonriver." />
       </Head>
-      <I18nProvider i18n={i18n} forceRenderOnLocaleChange={false}>
-        <Web3ReactProvider getLibrary={getLibrary}>
-          <Web3ProviderNetwork getLibrary={getLibrary}>
-            <Web3ReactManager>
-              <ReduxProvider store={store}>
-                <PriceContext.Provider value={priceData}>
-                  {/* <FarmContext.Provider value={priceData}> */}
+
+      {/* <GoogleReCaptchaProvider
+        reCaptchaKey="6LeaGV4cAAAAAE2HKmub-Ilnb7raS1JfhdfhfrP1"
+        useRecaptchaNet={true}
+        useEnterprise={false}
+        scriptProps={{
+          async: false,
+          defer: false,
+          appendTo: 'head',
+          nonce: undefined,
+        }}
+      > */}
+        <I18nProvider i18n={i18n} forceRenderOnLocaleChange={false}>
+          <Web3ReactProvider getLibrary={getLibrary}>
+            <Web3ProviderNetwork getLibrary={getLibrary}>
+              <Web3ReactManager>
+                <ReduxProvider store={store}>
+                  <PriceContext.Provider value={priceData}>
+                    {/* <FarmContext.Provider value={priceData}> */}
                     <>
                       <ListsUpdater />
                       <UserUpdater />
@@ -151,13 +164,14 @@ function MyApp({
                         </Guard>
                       </Layout>
                     </Provider>
-                  {/* </FarmContext.Provider> */}
-                </PriceContext.Provider>
-              </ReduxProvider>
-            </Web3ReactManager>
-          </Web3ProviderNetwork>
-        </Web3ReactProvider>
-      </I18nProvider>
+                    {/* </FarmContext.Provider> */}
+                  </PriceContext.Provider>
+                </ReduxProvider>
+              </Web3ReactManager>
+            </Web3ProviderNetwork>
+          </Web3ReactProvider>
+        </I18nProvider>
+      {/* </GoogleReCaptchaProvider> */}
     </Fragment>
   )
 }

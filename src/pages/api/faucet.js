@@ -3,74 +3,85 @@ const { default: axios } = require('axios')
 const NETWORK_URL = 'https://rpc.moonriver.moonbeam.network'
 const web3 = new Web3(NETWORK_URL)
 
-export default async function handler(req, res) {
-  const ret = await faucet(req)
-  res.status(200).json(ret)
-}
-
 let inOrder = false
 let history = {
   ips: {},
-  wallets: {}
+  wallets: {},
 }
 
-async function faucet(request) {
-  const ret = []
-  if (!inOrder) {
-    inOrder = true
-    try {
-      checkLimit(request)
-      const { address } = request.query
-      const amount = process.env.FAUCET_AMOUNT_ADD
-      const receipt = await web3Request(address, amount)
-      ret.push({
-        status: 200,
-        message: `You have successfuly been sent ${amount} MOVR`
-      })
-    } catch (error) {
-      ret.push({
-        status: 429,
-        message: error.message
-      })
+async function verifyRecaptcha(req) {
+  const key = req.body['g-recaptcha-response']
+  try {
+    const response = await axios.get(
+      `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.GOOGLE_CAPTCHA_SECRET}&response=${key}`
+    )
+    if (response.data.success) {
+      return true
     }
-    inOrder = false
-  } else {
-    ret.push({
-      status: 429,
-      message: 'Processing too many orders, please try again in a moment'
-    })
-  }
-  return ret
+  } catch (ex) {}
+  return false
 }
 
-function checkLimit(request) {
-  const address = request.query.address.toLowerCase()
-  const ip = request.connection.remoteAddress
+function checkLimit(req) {
+  const address = req.body['address'].toLowerCase()
+  const ip = req.connection.remoteAddress
   const timeLimit = parseInt(process.env.FAUCET_TIME_LIMIT_MIN) * 60 * 1000
   if (
     (history.ips.hasOwnProperty(ip) && history.ips[ip] > Date.now() - timeLimit) ||
     (history.wallets.hasOwnProperty(address) && history.wallets[address] > Date.now() - timeLimit)
   ) {
-    throw new Error(
-      `You have reached the daily limit. <br> <b>Limit expires</b> in ${timeLeft(history.ips[ip])}`
-    )
+    return `You have reached the daily limit. Try again in ${timeLeft(history.ips[ip])}`
   }
-  history.ips[ip] = Date.now()
-  history.wallets[address] = Date.now()
+}
+
+async function faucetSend(req) {
+  const to = req.body['address']
+  const value = process.env.FAUCET_AMOUNT_ADD
+  const wallet = await web3.eth.accounts.wallet.add(process.env.FAUCET_WALLET_PRIVATE_KEY)
+  const gasPrice = await web3.utils.toWei(process.env.FAUCET_GAS_PRICE_GWEI, 'gwei')
+  return new Promise(async (resolve, reject) => {
+    const transactionParams = {
+      gasPrice: web3.utils.toHex(gasPrice),
+      gasLimit: '0x9C40',
+      to: to,
+      from: wallet.address,
+      value: web3.utils.toWei(`${value}`, 'ether'),
+    }
+    const signedTransaction = await web3.eth.accounts.signTransaction(transactionParams, wallet.privateKey)
+
+    history.ips[req.connection.remoteAddress] = Date.now()
+    history.wallets[to] = Date.now()
+
+    web3.eth
+      .sendSignedTransaction(signedTransaction.rawTransaction)
+      .then(() => {
+        history.ips[req.connection.remoteAddress] = Date.now()
+        history.wallets[to] = Date.now()
+      })
+      .catch((ex) => {
+        delete history.ips[req.connection.remoteAddress]
+        delete history.wallets[to]
+      })
+
+    resolve({
+      status: 200,
+      message: 'You will receive MOVR in your wallet soon.',
+    })
+  })
 }
 
 function secondsToString(uptime) {
   if (uptime > 86400) {
     uptime = uptime / 86400
-    return uptime.toFixed(3) + ' days'
+    return uptime.toFixed(3) + ' days.'
   } else if (uptime > 3600) {
     uptime = uptime / 3600
-    return uptime.toFixed(2) + ' hours'
+    return uptime.toFixed(0) + ' hours.'
   } else if (uptime > 60) {
     uptime = uptime / 60
-    return uptime.toFixed(2) + ' minutes'
+    return uptime.toFixed(0) + ' minutes.'
   } else {
-    return uptime.toFixed(0) + ' seconds'
+    return uptime.toFixed(0) + ' seconds.'
   }
 }
 
@@ -81,31 +92,35 @@ function timeLeft(timestamp) {
   return secondsToString(timeLeft / 1000)
 }
 
-async function web3Request(to, value) {
-  const wallet = await web3.eth.accounts.wallet.add(process.env.FAUCET_WALLET_PRIVATE_KEY)
-  const nonce = await web3.eth.getTransactionCount(wallet.address, 'pending')
-  const gasPrice = await web3.utils.toWei(process.env.FAUCET_GAS_PRICE_GWEI, 'gwei')
-  return new Promise(async (resolve, reject) => {
-    const transactionParams = {
-      nonce: web3.utils.toBN(nonce),
-      gasPrice: web3.utils.toHex(gasPrice),
-      gasLimit: '0x9C40',
-      to: to,
-      from: wallet.address,
-      value: web3.utils.toWei(`${value}`, 'ether')
+export default async function handler(req, res) {
+  if (!inOrder) {
+    inOrder = true
+    const verified = await verifyRecaptcha(req)
+    if (verified) {
+      const limitMessage = checkLimit(req)
+      if (!limitMessage) {
+        const ret = await faucetSend(req)
+        inOrder = false
+        res.status(200).json(ret)
+      } else {
+        inOrder = false
+        res.status(200).json({
+          status: 400,
+          message: limitMessage,
+        })
+      }
+    } else {
+      inOrder = false
+      res.status(200).json({
+        status: 400,
+        message: 'Invalid captcha.',
+      })
     }
-    const signedTransaction = await web3.eth.accounts.signTransaction(transactionParams, wallet.privateKey)
-
-    web3.eth
-      .sendSignedTransaction(signedTransaction.rawTransaction)
-      .then((tx) => {
-        console.log(tx)
-        resolve(tx)
-      })
-      .catch((error) => {
-        console.log(error)
-        reject(error)
-      })
-    console.log(`Sent ${value} MOVR to ${to}`)
-  })
+  } else {
+    inOrder = false
+    res.status(200).json({
+      status: 429,
+      message: 'Processing too many orders, please try again in a moment.',
+    })
+  }
 }

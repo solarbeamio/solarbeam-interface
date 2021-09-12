@@ -3,6 +3,7 @@ import { ChainId } from '../sdk'
 type AddressMap = { [chainId: number]: string }
 
 export const TIMELOCK_ADDRESS = '0x1a9C8182C09F50C8318d769245beA52c32BE35BC'
+export const FAUCET_ADDRESS = '0x5aec27384DbE84d46C29A20DFeFF09493711CD15'
 
 export const LOCKER_ADDRESS: AddressMap = {
   [ChainId.ROPSTEN]: '',
