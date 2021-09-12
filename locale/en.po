@@ -67,6 +67,7 @@ msgid "- You will not be able to withdraw your tokens before the unlock time"
 msgstr "- You will not be able to withdraw your tokens before the unlock time"
 
 #: src/features/farm/FarmListItem2.tsx:122
+#: src/features/vault/VaultListItem.tsx:123
 msgid "/ DAY"
 msgstr "/ DAY"
 
@@ -130,6 +131,7 @@ msgid "A portion of each trade (0.25%) goes to liquidity providers as a protocol
 msgstr "A portion of each trade (0.25%) goes to liquidity providers as a protocol incentive."
 
 #: src/features/farm/FarmList.tsx:58
+#: src/features/vault/VaultList.tsx:16
 msgid "APR"
 msgstr "APR"
 
@@ -213,6 +215,7 @@ msgstr "Added"
 #~ msgstr "All Farms"
 
 #: src/features/farm/FarmList.tsx:55
+#: src/features/vault/VaultList.tsx:15
 msgid "Allocation"
 msgstr "Allocation"
 
@@ -238,6 +241,7 @@ msgstr "An error occurred when trying to execute this swap. You may need to incr
 
 #: src/features/farm/FarmListItemDetails.tsx:128
 #: src/features/lending/Button.tsx:64
+#: src/features/vault/VaultListItemDetails.tsx:162
 #: src/pages/exchange/remove/[[...tokens]].tsx:826
 #: src/pages/locker/create/index.tsx:307
 msgid "Approve"
@@ -381,8 +385,8 @@ msgstr "Balance:"
 #~ msgid "Borrowing allows you to obtain liquidity without selling. Your borrow limit depends on the amount of deposited collateral. You will be able to borrow up to 75% of your collateral and repay at any time with accrued interest."
 #~ msgstr "Borrowing allows you to obtain liquidity without selling. Your borrow limit depends on the amount of deposited collateral. You will be able to borrow up to 75% of your collateral and repay at any time with accrued interest."
 
-#: src/components/Header/index.tsx:73
-#: src/components/Header/index.tsx:193
+#: src/components/Header/index.tsx:83
+#: src/components/Header/index.tsx:227
 msgid "Bridge"
 msgstr "Bridge"
 
@@ -575,6 +579,10 @@ msgstr "Confirm Withdrawal"
 msgid "Confirm this transaction in your wallet"
 msgstr "Confirm this transaction in your wallet"
 
+#: src/features/vault/VaultListItemDetails.tsx:68
+msgid "Confirm {0}"
+msgstr "Confirm {0}"
+
 #: src/features/farm/FarmListItem.tsx:125
 #: src/features/limit-order/LimitOrderButton.tsx:145
 #: src/state/burn/hooks.ts:134
@@ -606,6 +614,7 @@ msgid "Connected with {name}"
 msgstr "Connected with {name}"
 
 #: src/pages/locker/create/index.tsx:352
+#: src/pages/vaults/index.tsx:167
 msgid "Considerations"
 msgstr "Considerations"
 
@@ -655,10 +664,12 @@ msgid "Current"
 msgstr "Current"
 
 #: src/features/farm/FarmListItemDetails.tsx:144
+#: src/features/vault/VaultListItemDetails.tsx:179
 msgid "Deposit"
 msgstr "Deposit"
 
 #: src/features/farm/FarmListItemDetails.tsx:75
+#: src/features/vault/VaultListItemDetails.tsx:119
 msgid "Deposit Fee"
 msgstr "Deposit Fee"
 
@@ -787,6 +798,11 @@ msgstr "Error connecting"
 msgid "Error connecting. Try refreshing the page."
 msgstr "Error connecting. Try refreshing the page."
 
+#: src/features/vault/VaultListItemDetails.tsx:79
+#: src/pages/vaults/index.tsx:169
+msgid "Everytime you stake or claim rewards your lock time renews."
+msgstr "Everytime you stake or claim rewards your lock time renews."
+
 #: src/features/swap/TradePrice.tsx:47
 msgid "Exchange Rate"
 msgstr "Exchange Rate"
@@ -822,9 +838,13 @@ msgid "Expired"
 msgstr "Expired"
 
 #: src/components/Header/index.tsx:53
-#: src/components/Header/index.tsx:172
+#: src/components/Header/index.tsx:197
 msgid "Farm"
 msgstr "Farm"
+
+#: src/components/Header/index.tsx:93
+msgid "Faucet"
+msgstr "Faucet"
 
 #: src/pages/locker/create/index.tsx:348
 msgid "Fees"
@@ -936,11 +956,13 @@ msgstr "Go Back"
 
 #: src/features/farm/FarmListItem.tsx:97
 #: src/features/farm/FarmListItemDetails.tsx:235
-#: src/pages/farm/index.tsx:212
+#: src/features/vault/VaultListItemDetails.tsx:293
+#: src/pages/farm/index.tsx:226
 msgid "Harvest"
 msgstr "Harvest"
 
 #: src/features/farm/FarmListItemDetails.tsx:247
+#: src/features/vault/VaultListItemDetails.tsx:317
 msgid "Harvest {0} SOLAR"
 msgstr "Harvest {0} SOLAR"
 
@@ -1191,6 +1213,7 @@ msgstr "Lists"
 #: src/components/PositionCard/index.tsx:171
 #: src/components/TransactionList.tsx:40
 #: src/features/farm/FarmList.tsx:73
+#: src/features/vault/VaultList.tsx:28
 #: src/pages/exchange/find/index.tsx:171
 #: src/pages/exchange/pool/index.tsx:129
 msgid "Loading"
@@ -1220,14 +1243,20 @@ msgstr "Loading balance"
 msgid "Lock"
 msgstr "Lock"
 
-#: src/components/Header/index.tsx:63
-#: src/components/Header/index.tsx:183
+#: src/components/Header/index.tsx:73
+#: src/components/Header/index.tsx:217
 msgid "Locker"
 msgstr "Locker"
+
+#: src/features/vault/VaultList.tsx:13
+msgid "Lockup"
+msgstr "Lockup"
 
 #: src/components/PercentInputPanel/index.tsx:22
 #: src/features/farm/FarmListItemDetails.tsx:115
 #: src/features/farm/FarmListItemDetails.tsx:190
+#: src/features/vault/VaultListItemDetails.tsx:149
+#: src/features/vault/VaultListItemDetails.tsx:236
 msgid "MAX"
 msgstr "MAX"
 
@@ -1362,8 +1391,8 @@ msgstr "My Orders"
 #~ msgid "My SUSHI"
 #~ msgstr "My SUSHI"
 
-#: src/components/Header/index.tsx:83
-#: src/components/Header/index.tsx:200
+#: src/components/Header/index.tsx:103
+#: src/components/Header/index.tsx:234
 msgid "NFT Launchpad"
 msgstr "NFT Launchpad"
 
@@ -1450,7 +1479,7 @@ msgstr "Open Orders"
 #~ msgid "Open Source"
 #~ msgstr "Open Source"
 
-#: src/components/Header/index.tsx:114
+#: src/components/Header/index.tsx:139
 msgid "Open main menu"
 msgstr "Open main menu"
 
@@ -1537,8 +1566,12 @@ msgstr "Please connect to the appropriate Ethereum network."
 msgid "Please type the word \"confirm\" to enable expert mode."
 msgstr "Please type the word \"confirm\" to enable expert mode."
 
+#: src/features/vault/VaultListItemDetails.tsx:88
+msgid "Please type the word \"confirm\" to {0} and lock your tokens for {1}."
+msgstr "Please type the word \"confirm\" to {0} and lock your tokens for {1}."
+
 #: src/components/Header/index.tsx:44
-#: src/components/Header/index.tsx:162
+#: src/components/Header/index.tsx:187
 #: src/pages/exchange/pool/index.tsx:97
 msgid "Pool"
 msgstr "Pool"
@@ -1824,6 +1857,14 @@ msgstr "Slippage tolerance"
 #~ msgid "Slippage tolerance..."
 #~ msgstr "Slippage tolerance..."
 
+#: src/pages/vaults/index.tsx:154
+msgid "Solar Vault"
+msgstr "Solar Vault"
+
+#: src/pages/vaults/index.tsx:158
+msgid "Solar Vault is a set of high incentivized pools. Long term supporters can choose to lock SOLAR for a determined period for higher rewards."
+msgstr "Solar Vault is a set of high incentivized pools. Long term supporters can choose to lock SOLAR for a determined period for higher rewards."
+
 #: src/pages/exchange/swap/[[...tokens]].tsx:371
 #~ msgid "SolarBeam"
 #~ msgstr "SolarBeam"
@@ -1852,6 +1893,8 @@ msgstr "Soon"
 
 #: src/features/farm/FarmList.tsx:41
 #: src/features/farm/FarmListItemDetails.tsx:156
+#: src/features/vault/VaultList.tsx:12
+#: src/features/vault/VaultListItemDetails.tsx:202
 msgid "Stake"
 msgstr "Stake"
 
@@ -1937,7 +1980,7 @@ msgstr "Supplying {0} {1} and {2} {3}"
 
 #: src/components/ExchangeHeader.tsx:42
 #: src/components/Header/index.tsx:36
-#: src/components/Header/index.tsx:154
+#: src/components/Header/index.tsx:179
 #: src/pages/exchange/swap/[[...tokens]].tsx:568
 #: src/pages/exchange/swap/[[...tokens]].tsx:597
 msgid "Swap"
@@ -1977,6 +2020,7 @@ msgstr "Swapping {0} {1} for {2} {3}"
 #~ msgstr "Swapping {0}) {1} for {2} {3}"
 
 #: src/features/farm/FarmList.tsx:48
+#: src/features/vault/VaultList.tsx:14
 msgid "TVL"
 msgstr "TVL"
 
@@ -2010,6 +2054,10 @@ msgstr "The input token cannot be transferred. There may be an issue with the in
 #: src/hooks/useSwapCallback.ts:201
 msgid "The output token cannot be transferred. There may be an issue with the output token."
 msgstr "The output token cannot be transferred. There may be an issue with the output token."
+
+#: src/pages/vaults/index.tsx:163
+msgid "The participants receive various benefits such as higher rewards according to lock duration, higher allocations in Solar Launchpad and more."
+msgstr "The participants receive various benefits such as higher rewards according to lock duration, higher allocations in Solar Launchpad and more."
 
 #: src/hooks/useSwapCallback.ts:139
 #: src/hooks/useSwapCallback.ts:139
@@ -2170,6 +2218,7 @@ msgid "Unlock date"
 msgstr "Unlock date"
 
 #: src/features/farm/FarmListItemDetails.tsx:219
+#: src/features/vault/VaultListItemDetails.tsx:276
 msgid "Unstake"
 msgstr "Unstake"
 
@@ -2221,6 +2270,11 @@ msgstr "Unwrap"
 #: src/pages/farm/index.tsx:203
 #~ msgid "VFAT FARMING CALCULATOR"
 #~ msgstr "VFAT FARMING CALCULATOR"
+
+#: src/components/Header/index.tsx:63
+#: src/components/Header/index.tsx:207
+msgid "Vaults"
+msgstr "Vaults"
 
 #: src/components/Header/More.tsx:44
 #~ msgid "Vesting"
@@ -2290,6 +2344,7 @@ msgid "Wallet"
 msgstr "Wallet"
 
 #: src/features/farm/FarmListItemDetails.tsx:81
+#: src/features/vault/VaultListItemDetails.tsx:124
 msgid "Wallet Balance"
 msgstr "Wallet Balance"
 
@@ -2316,6 +2371,7 @@ msgstr "We're supporters of Open Source."
 #~ msgstr "When creating a pair you are the first liquidity provider. The ratio of tokens you add will set the price of this pool. Once you are happy with the rate, click supply to review"
 
 #: src/features/farm/FarmListItemDetails.tsx:206
+#: src/features/vault/VaultListItemDetails.tsx:259
 msgid "Withdraw"
 msgstr "Withdraw"
 
@@ -2433,6 +2489,7 @@ msgid "Your Position"
 msgstr "Your Position"
 
 #: src/features/farm/FarmListItemDetails.tsx:166
+#: src/features/vault/VaultListItemDetails.tsx:212
 msgid "Your Staked"
 msgstr "Your Staked"
 
@@ -2508,6 +2565,7 @@ msgstr "Your transactions will appear here..."
 #~ msgstr "above"
 
 #: src/features/farm/FarmListItem2.tsx:142
+#: src/features/vault/VaultListItem.tsx:141
 msgid "annualized"
 msgstr "annualized"
 
@@ -2531,7 +2589,7 @@ msgstr "failed to load"
 msgid "home page"
 msgstr "home page"
 
-#: src/modals/SearchModal/ManageLists.tsx:325
+#: src/modals/SearchModal/ManageLists.tsx:326
 msgid "https:// or ipfs:// or ENS name"
 msgstr "https:// or ipfs:// or ENS name"
 
@@ -2584,6 +2642,10 @@ msgstr "or the transaction will revert."
 msgid "{0}"
 msgstr "{0}"
 
+#: src/features/vault/VaultListItemDetails.tsx:100
+msgid "{0} & Lock for {1}"
+msgstr "{0} & Lock for {1}"
+
 #: src/features/liquidity/ConfirmAddModalBottom.tsx:48
 #: src/features/liquidity/ConfirmAddModalBottom.tsx:55
 msgid "{0} Deposited"
@@ -2598,6 +2660,10 @@ msgstr "{0} Deposited"
 #: src/pages/AddLiquidity/PoolPriceBar.tsx:26
 #~ msgid "{0} per {1}"
 #~ msgstr "{0} per {1}"
+
+#: src/features/vault/VaultListItemDetails.tsx:73
+msgid "{0} will lock your tokens for {1}."
+msgstr "{0} will lock your tokens for {1}."
 
 #: src/features/liquidity/LiquidityPrice.tsx:30
 #: src/features/liquidity/LiquidityPrice.tsx:37

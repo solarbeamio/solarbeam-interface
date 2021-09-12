@@ -85,6 +85,16 @@ function AppBar(): JSX.Element {
                         </NavLink>
                       )}
                       {chainId && [ChainId.MOONRIVER].includes(chainId) && (
+                        <NavLink href={'/faucet'}>
+                          <a
+                            id={`nft-nav-link`}
+                            className="p-2 text-lg text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                          >
+                            {i18n._(t`Faucet`)}
+                          </a>
+                        </NavLink>
+                      )}
+                      {chainId && [ChainId.MOONRIVER].includes(chainId) && (
                         <NavLink href={'/nft/launchpad'}>
                           <a
                             id={`nft-nav-link`}

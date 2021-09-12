@@ -48,10 +48,11 @@ export const RowFlat = styled.div`
   align-items: flex-end;
 `
 
-export const AutoRow = styled(Row)<{ gap?: string; justify?: string }>`
+export const AutoRow = styled(Row)<{ gap?: string; justify?: string; align?: string }>`
   flex-wrap: wrap;
   margin: ${({ gap }) => gap && `-${gap}`};
   justify-content: ${({ justify }) => justify && justify};
+  align-content: ${({ align }) => align && align};
 
   & > * {
     margin: ${({ gap }) => gap} !important;

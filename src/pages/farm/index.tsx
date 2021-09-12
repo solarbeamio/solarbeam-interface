@@ -10,6 +10,7 @@ import { usePositions, useFarms, useDistributorInfo } from '../../features/farm/
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Card from '../../components/Card'
+import Button from '../../components/Button'
 import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
 import DoubleGlowShadow from '../../components/DoubleGlowShadow'
@@ -53,11 +54,10 @@ export default function Farm(): JSX.Element {
   let summTvl = tvlInfo.reduce((previousValue, currentValue) => {
     return previousValue + currentValue.tvl
   }, 0)
-  
-  let summTvlVaults = vaults.reduce((previousValue, currentValue) => {
-    return previousValue + (currentValue.totalLp / 1e18)  * solarPrice
-  }, 0)
 
+  let summTvlVaults = vaults.reduce((previousValue, currentValue) => {
+    return previousValue + (currentValue.totalLp / 1e18) * solarPrice
+  }, 0)
 
   const blocksPerDay = 86400 / Number(AVERAGE_BLOCK_TIME[chainId])
 
@@ -211,7 +211,11 @@ export default function Farm(): JSX.Element {
                         </div>
                       )}
                       {positions.length > 0 && (
-                        <button
+                        <Button
+                          color="gradient"
+                          className="text-emphasis text-yellow"
+                          variant={'flexed'}
+                          size={'nobase'}
                           disabled={pendingTx}
                           onClick={async () => {
                             setPendingTx(true)
@@ -227,10 +231,9 @@ export default function Farm(): JSX.Element {
                             }
                             setPendingTx(false)
                           }}
-                          className="flex items-center justify-between py-2 text-emphasis underline hover:text-yellow"
                         >
                           Harvest All (~ {formatNumberScale(allStaked, true, 2)})
-                        </button>
+                        </Button>
                       )}
                     </div>
                     <div className={`md:hidden`}>
