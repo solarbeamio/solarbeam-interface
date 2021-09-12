@@ -1,18 +1,11 @@
 import getConfig from 'next/config'
-import faunadb from 'faunadb' /* Import faunaDB sdk */
-const { serverRuntimeConfig } = getConfig()
+import faunadb from 'faunadb'
 
+const { serverRuntimeConfig } = getConfig()
 const Web3 = require('web3')
 const { default: axios } = require('axios')
 const NETWORK_URL = 'https://rpc.moonriver.moonbeam.network'
 const web3 = new Web3(NETWORK_URL)
-
-let inOrder = false
-let history = {
-  ips: {},
-  wallets: {}
-}
-
 const q = faunadb.query
 const client = new faunadb.Client({
   secret: serverRuntimeConfig.faunadbSecret
@@ -32,22 +25,9 @@ async function verifyRecaptcha(req) {
   return false
 }
 
-function checkLimit(req) {
-  const address = req.body['address'].toLowerCase()
-  const ip = req.headers['x-nf-client-connection-ip']
-
-  const timeLimit = parseInt(serverRuntimeConfig.faucetTimeLimit) * 60 * 1000
-  if (
-    (history.ips.hasOwnProperty(ip) && history.ips[ip] > Date.now() - timeLimit) ||
-    (history.wallets.hasOwnProperty(address) && history.wallets[address] > Date.now() - timeLimit)
-  ) {
-    return `You have reached the daily limit. Try again in ${timeLeft(history.ips[ip])}`
-  }
-}
-
 async function faucetSend(req) {
   const to = req.body['address']
-  const ip = req.headers['x-nf-client-connection-ip']
+  const ip = 'test2'//req.headers['x-nf-client-connection-ip'] TODO
   const value = serverRuntimeConfig.faucetAmountAdd
   const wallet = await web3.eth.accounts.wallet.add(serverRuntimeConfig.faucetWalletPrivateKey)
   const gasPrice = await web3.utils.toWei(serverRuntimeConfig.faucetGas, 'gwei')
@@ -68,6 +48,7 @@ async function faucetSend(req) {
       .then(async () => {
       })
       .catch((ex) => {
+        removeFromBlackList(to)
       })
 
     resolve({
@@ -101,6 +82,7 @@ function timeLeft(timestamp) {
 
 async function isBlacklisted(addr, ip) {
   let ref
+  let result = true
   if (addr) {
     addr = addr.toLowerCase()
   }
@@ -110,14 +92,16 @@ async function isBlacklisted(addr, ip) {
 
   try {
     ref = await client.query(q.Get(q.Match(q.Index('address'), addr)))
-  } catch (ex) {
+  } catch (ex2) {
     try {
       ref = await client.query(q.Get(q.Match(q.Index('ip'), ip)))
-    } catch (ex2) {
+      const timeLimit = parseInt(serverRuntimeConfig.faucetTimeLimit) * 60 * 1000
+      if (ref && ref.data.timestamp < Date.now() - timeLimit) result = false
+    } catch (ex) {
+      result = false
     }
   }
-
-  return ref
+  return result
 }
 
 async function blackList(addr, ip) {
@@ -127,42 +111,85 @@ async function blackList(addr, ip) {
   if (ip) {
     ip = ip.toLowerCase()
   }
-  await client.query(q.Create(q.Collection('wallets'), { data: { address: addr, ip: ip } }))
+  await client.query(
+    q.Let({
+        match: q.Match(q.Index('address'), addr),
+        data: { data: { address: addr, ip: ip, timestamp: Date.now() } }
+      },
+      q.If(
+        q.Exists(q.Var('match')),
+        q.Update(q.Select('ref', q.Get(q.Var('match'))), q.Var('data')),
+        q.Create(q.Collection('wallets'), q.Var('data'))
+      )
+    )
+  )
 }
 
-// async function removeFromBlackList(addr, ip) {
-//   await client.query(q.Create(q.Collection('wallets'), { data: { address: addr, ip } }))
-// }
+async function removeFromBlackList(addr) {
+  if (addr) {
+    addr = addr.toLowerCase()
+  }
+  await client.query(
+    q.Delete(q.Select('ref', q.Get(q.Match(q.Index('address'), addr))))
+  )
+}
+
+async function checkBridgeUsage(address) {
+  const bridges = {
+    'ETH': `https://bridgeapi.anyswap.exchange/v2/swapin/history/${address}/1285/1/allv2?offset=0&limit=1`,
+    'BSC': `https://bridgeapi.anyswap.exchange/v2/swapin/history/${address}/1285/56/allv2?offset=0&limit=1`
+  }
+
+  for (let net in bridges) {
+    try {
+      const res = await axios.get(bridges[net])
+      if (res.data.info.length !== 0) {
+        return true
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  return false
+}
 
 export default async function handler(req, res) {
   const address = req.body['address']
   const ip = req.headers['x-nf-client-connection-ip']
 
-  if (!inOrder) {
-    inOrder = true
-    const verified = await verifyRecaptcha(req)
-    if (verified) {
-      const ref = await isBlacklisted(address, ip)
-      if (ref) {
-        res.status(200).json({
-          status: 400,
-          message: 'Personal limit reached.'
-        })
+  const verified = await verifyRecaptcha(req)
+  if (verified) {
+    const usedBridge = await checkBridgeUsage(address)
+    if (usedBridge) {
+      const movrBalance = parseFloat(web3.utils.fromWei(await web3.eth.getBalance(address)))
+      if (movrBalance < 0.001) {
+        const ref = await isBlacklisted(address, ip)
+        if (ref) {
+          await removeFromBlackList(address)
+          res.status(200).json({
+            status: 400,
+            message: 'Personal limit reached.'
+          })
+        } else {
+          const ret = await faucetSend(req)
+          res.status(200).json(ret)
+        }
       } else {
-        const ret = await faucetSend(req)
-        res.status(200).json(ret)
+        res.status(200).json({
+          status: 403,
+          message: 'You have enough MOVR to make a transaction.'
+        })
       }
     } else {
       res.status(200).json({
-        status: 400,
-        message: 'Invalid captcha.'
+        status: 403,
+        message: 'Bridge not used.'
       })
     }
-    inOrder = false
   } else {
     res.status(200).json({
-      status: 429,
-      message: 'Processing too many orders, please try again in a moment.'
+      status: 400,
+      message: 'Invalid captcha.'
     })
   }
 }

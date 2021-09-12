@@ -68,7 +68,7 @@ msgstr "- 锁定合约地址: {0}"
 msgid "- You will not be able to withdraw your tokens before the unlock time"
 msgstr "- 在锁定时间之前，你将无法提取你的代币"
 
-#: src/features/farm/FarmListItem2.tsx:122
+#: src/features/farm/FarmListItem2.tsx:129
 #: src/features/vault/VaultListItem.tsx:123
 msgid "/ DAY"
 msgstr "/ 天"
@@ -161,7 +161,7 @@ msgstr "添加"
 
 #: src/components/ExchangeHeader.tsx:42
 #: src/components/NavigationTabs/index.tsx:69
-#: src/pages/exchange/add/[[...tokens]].tsx:323
+#: src/pages/exchange/add/[[...tokens]].tsx:345
 msgid "Add Liquidity"
 msgstr "添加流动性"
 
@@ -194,8 +194,10 @@ msgstr "添加流动性"
 msgid "Add {0} to MetaMask"
 msgstr "将{0}加入MetaMask"
 
-#: src/pages/exchange/add/[[...tokens]].tsx:207
-#: src/pages/exchange/add/[[...tokens]].tsx:207
+#: src/pages/exchange/add/[[...tokens]].tsx:196
+#: src/pages/exchange/add/[[...tokens]].tsx:223
+#: src/pages/exchange/add/[[...tokens]].tsx:196
+#: src/pages/exchange/add/[[...tokens]].tsx:223
 msgid "Add {0} {1} and {2} {3}"
 msgstr "添加 {0} {1} 和 {2} {3}"
 
@@ -249,8 +251,8 @@ msgid "Approve Limit Order"
 msgstr "授权限价订单"
 
 #: src/features/limit-order/LimitOrderButton.tsx:160
-#: src/pages/exchange/add/[[...tokens]].tsx:442
-#: src/pages/exchange/add/[[...tokens]].tsx:459
+#: src/pages/exchange/add/[[...tokens]].tsx:464
+#: src/pages/exchange/add/[[...tokens]].tsx:481
 #: src/pages/exchange/swap/[[...tokens]].tsx:535
 msgid "Approve {0}"
 msgstr "批准{0}"
@@ -268,8 +270,8 @@ msgid "Approving Limit Order"
 msgstr "授权限价订单"
 
 #: src/features/limit-order/LimitOrderButton.tsx:158
-#: src/pages/exchange/add/[[...tokens]].tsx:440
-#: src/pages/exchange/add/[[...tokens]].tsx:457
+#: src/pages/exchange/add/[[...tokens]].tsx:462
+#: src/pages/exchange/add/[[...tokens]].tsx:479
 msgid "Approving {0}"
 msgstr "批准{0}"
 
@@ -304,6 +306,7 @@ msgstr "可用网络"
 #~ msgstr "余额"
 
 #: src/components/CurrencyInputPanel/index.tsx:166
+#: src/components/DualChainCurrencyInputPanel/index.tsx:122
 #: src/pages/locker/create/index.tsx:212
 msgid "Balance:"
 msgstr "余额"
@@ -372,11 +375,20 @@ msgstr "余额"
 
 #: src/components/Header/index.tsx:83
 #: src/components/Header/index.tsx:227
+#: src/pages/bridge/index.tsx:65
 msgid "Bridge"
 msgstr "跨链桥"
 
 #~ msgid "Bridge Assets"
 #~ msgstr "桥接资产"
+
+#: src/pages/bridge/index.tsx:117
+msgid "Bridge Token"
+msgstr ""
+
+#: src/pages/bridge/index.tsx:79
+msgid "Bridge tokens to and from the Moonriver Network"
+msgstr ""
 
 #: src/features/ramp/index.tsx:44
 #: src/features/transak/index.tsx:68
@@ -446,7 +458,7 @@ msgstr "改变"
 msgid "Chinese"
 msgstr "中文"
 
-#: src/modals/TokenStatsModal/index.tsx:149
+#: src/modals/TokenStatsModal/index.tsx:151
 msgid "Circulating Supply"
 msgstr "当前供应"
 
@@ -500,7 +512,7 @@ msgstr "清除"
 msgid "Confirm"
 msgstr "确认"
 
-#: src/pages/exchange/add/[[...tokens]].tsx:476
+#: src/pages/exchange/add/[[...tokens]].tsx:498
 msgid "Confirm Adding Liquidity"
 msgstr "确认添加流动性"
 
@@ -717,7 +729,7 @@ msgstr "输入接收人"
 msgid "Enter a valid slippage percentage"
 msgstr "输入有效的滑点百分比"
 
-#: src/pages/exchange/add/[[...tokens]].tsx:418
+#: src/pages/exchange/add/[[...tokens]].tsx:440
 #: src/state/burn/hooks.ts:138
 #: src/state/limit-order/hooks.ts:168
 #: src/state/mint/hooks.ts:202
@@ -748,6 +760,7 @@ msgid "Exchange Rate"
 msgstr "交换比率"
 
 #: src/modals/SearchModal/CurrencyList.tsx:161
+#: src/modals/SelectTokenModal/CurrencyList.tsx:160
 msgid "Expanded results from inactive Token Lists"
 msgstr "从未激活的代币列表中扩展"
 
@@ -855,6 +868,10 @@ msgstr "在推特上关注我们"
 msgid "Github"
 msgstr "Github"
 
+#: src/pages/faucet/index.tsx:122
+msgid "Give me some MOVR"
+msgstr ""
+
 #: src/components/Back.tsx:23
 msgid "Go Back"
 msgstr "返回"
@@ -869,13 +886,13 @@ msgstr "返回"
 
 #: src/features/farm/FarmListItem.tsx:97
 #: src/features/farm/FarmListItemDetails.tsx:235
-#: src/features/vault/VaultListItemDetails.tsx:293
+#: src/features/vault/VaultListItemDetails.tsx:296
 #: src/pages/farm/index.tsx:226
 msgid "Harvest"
 msgstr "收获"
 
 #: src/features/farm/FarmListItemDetails.tsx:247
-#: src/features/vault/VaultListItemDetails.tsx:317
+#: src/features/vault/VaultListItemDetails.tsx:320
 msgid "Harvest {0} SOLAR"
 msgstr "收获 {0} SOLAR"
 
@@ -1193,7 +1210,7 @@ msgstr "管理这个池子"
 #~ msgid "Market"
 #~ msgstr ""
 
-#: src/modals/TokenStatsModal/index.tsx:151
+#: src/modals/TokenStatsModal/index.tsx:199
 msgid "Market Cap"
 msgstr "市值"
 
@@ -1214,6 +1231,7 @@ msgstr "市值"
 #~ msgstr ""
 
 #: src/components/CurrencyInputPanel/index.tsx:149
+#: src/components/DualChainCurrencyInputPanel/index.tsx:108
 #: src/features/limit-order/CurrencyInput.tsx:43
 msgid "Max"
 msgstr "最大数量"
@@ -1270,6 +1288,10 @@ msgstr "最少可获得的数量"
 
 #~ msgid "Missed the Auction?"
 #~ msgstr "错过了拍卖？"
+
+#: src/pages/faucet/index.tsx:82
+msgid "Moonriver Faucet"
+msgstr ""
 
 #: src/pages/exchange/pool/index.tsx:119
 msgid "My Liquidity Positions"
@@ -1338,6 +1360,7 @@ msgid "No pool found"
 msgstr "未找到池"
 
 #: src/modals/SearchModal/CurrencySearch.tsx:238
+#: src/modals/SelectTokenModal/TokenList.tsx:205
 msgid "No results found"
 msgstr "未找到结果"
 
@@ -1388,7 +1411,7 @@ msgstr "订单已失效"
 msgid "Order History"
 msgstr "订单历史"
 
-#: src/pages/exchange/add/[[...tokens]].tsx:254
+#: src/pages/exchange/add/[[...tokens]].tsx:276
 msgid ""
 "Output is estimated. If the price changes by more than {0}% your transaction\n"
 "will revert."
@@ -1470,7 +1493,7 @@ msgstr "找到池！"
 #~ msgstr "流动性池奖励"
 
 #: src/components/PositionCard/index.tsx:77
-#: src/pages/exchange/add/[[...tokens]].tsx:251
+#: src/pages/exchange/add/[[...tokens]].tsx:273
 msgid "Pool Tokens"
 msgstr "流动性池中的总代币"
 
@@ -1489,6 +1512,10 @@ msgstr "汇集{0}"
 
 #~ msgid "Pour a hot bowl of MISO, the new <0>token launchpad</0> from SUSHI"
 #~ msgstr "来一碗热味增汤, Sushi全新的<0>代币Launchpad</0>"
+
+#: src/pages/bridge/index.tsx:126
+msgid "Powered by Anyswap Network"
+msgstr ""
 
 #: src/pages/RemoveLiquidity/index.tsx:375 src/pages/Swap/direct.tsx:360
 #: src/pages/Swap/index.tsx:306
@@ -1677,8 +1704,10 @@ msgstr "选择比率"
 
 #: src/components/CurrencyInputPanel/index.tsx:121
 #: src/components/CurrencySelectPanel/index.tsx:95
+#: src/components/DualChainCurrencyInputPanel/index.tsx:90
 #: src/features/limit-order/CurrencySelect.tsx:74
 #: src/modals/SearchModal/CurrencySearch.tsx:192
+#: src/modals/SelectTokenModal/TokenList.tsx:184
 #: src/state/limit-order/hooks.ts:172
 #: src/state/swap/hooks.ts:196
 msgid "Select a token"
@@ -1721,6 +1750,10 @@ msgstr "可容忍滑点"
 #: src/features/swap/AdvancedSwapDetails.tsx:105
 #~ msgid "Slippage tolerance..."
 #~ msgstr ""
+
+#: src/pages/bridge/index.tsx:76
+msgid "Solar Bridge"
+msgstr ""
 
 #: src/pages/vaults/index.tsx:154
 msgid "Solar Vault"
@@ -1801,7 +1834,7 @@ msgstr "质押"
 #~ msgid "Submit Tool"
 #~ msgstr "提交工具"
 
-#: src/modals/TokenStatsModal/index.tsx:146
+#: src/modals/TokenStatsModal/index.tsx:145
 msgid "Supply & Market Cap"
 msgstr "供应和市值"
 
@@ -1809,7 +1842,7 @@ msgstr "供应和市值"
 #~ msgid "Supply APR"
 #~ msgstr "存款APR"
 
-#: src/pages/exchange/add/[[...tokens]].tsx:277
+#: src/pages/exchange/add/[[...tokens]].tsx:299
 msgid "Supplying {0} {1} and {2} {3}"
 msgstr "提供{0} {1}和{2} {3}"
 
@@ -1977,11 +2010,16 @@ msgstr "切换专家模式"
 msgid "Token"
 msgstr "代币"
 
+#: src/pages/bridge/index.tsx:101
+msgid "Token to bridge:"
+msgstr ""
+
 #: src/modals/SearchModal/Manage.tsx:64
 msgid "Tokens"
 msgstr "代币"
 
 #: src/modals/SearchModal/CurrencyList.tsx:165
+#: src/modals/SelectTokenModal/CurrencyList.tsx:164
 msgid ""
 "Tokens from inactive lists. Import specific tokens below or\n"
 "click Manage to activate more lists."
@@ -2059,7 +2097,7 @@ msgid "Unlock date"
 msgstr "解锁日期"
 
 #: src/features/farm/FarmListItemDetails.tsx:219
-#: src/features/vault/VaultListItemDetails.tsx:276
+#: src/features/vault/VaultListItemDetails.tsx:279
 msgid "Unstake"
 msgstr "解除抵押"
 
@@ -2067,7 +2105,7 @@ msgstr "解除抵押"
 #~ msgid "Unstaked"
 #~ msgstr "解除质押"
 
-#: src/pages/exchange/add/[[...tokens]].tsx:412
+#: src/pages/exchange/add/[[...tokens]].tsx:434
 #: src/pages/exchange/swap/[[...tokens]].tsx:499
 msgid "Unsupported Asset"
 msgstr "不支持的资产"
@@ -2129,11 +2167,11 @@ msgstr ""
 #~ msgid "Vietnamese"
 #~ msgstr ""
 
-#: src/modals/TokenStatsModal/index.tsx:133
+#: src/modals/TokenStatsModal/index.tsx:132
 msgid "View Contract"
 msgstr "查看合约"
 
-#: src/pages/exchange/add/[[...tokens]].tsx:499
+#: src/pages/exchange/add/[[...tokens]].tsx:521
 #: src/pages/exchange/remove/[[...tokens]].tsx:850
 msgid "View Liquidity Positions"
 msgstr "查看流动性仓位"
@@ -2251,7 +2289,7 @@ msgstr "你支付"
 msgid "You Will Receive"
 msgstr "你将收到"
 
-#: src/pages/exchange/add/[[...tokens]].tsx:347
+#: src/pages/exchange/add/[[...tokens]].tsx:369
 msgid "You are creating a pool"
 msgstr "您正在创建一个池"
 
@@ -2279,7 +2317,7 @@ msgstr "你收到<0>（至少）：</0>"
 #~ msgid "You receive:"
 #~ msgstr ""
 
-#: src/pages/exchange/add/[[...tokens]].tsx:347
+#: src/pages/exchange/add/[[...tokens]].tsx:369
 msgid "You will receive"
 msgstr "您将收到"
 
@@ -2389,7 +2427,7 @@ msgstr "你的交易将在这里显示"
 #~ msgid "above"
 #~ msgstr ""
 
-#: src/features/farm/FarmListItem2.tsx:142
+#: src/features/farm/FarmListItem2.tsx:149
 #: src/features/vault/VaultListItem.tsx:141
 msgid "annualized"
 msgstr "年化"
@@ -2459,7 +2497,7 @@ msgstr "否则交易将会被拒绝"
 #~ msgid "{0, plural, one {Token} many {Tokens}}"
 #~ msgstr ""
 
-#: src/modals/TokenStatsModal/index.tsx:106
+#: src/modals/TokenStatsModal/index.tsx:105
 msgid "{0}"
 msgstr "{0}"
 
@@ -2497,6 +2535,10 @@ msgstr "{0} {1} 每 {2}"
 #: src/pages/exchange/remove/[[...tokens]].tsx:638
 msgid "{0}/{1} Burned"
 msgstr "{0}/{1} 销毁"
+
+#: src/components/ChainSelect/index.tsx:54
+msgid "{label}"
+msgstr ""
 
 #: src/features/farm/FarmMenu.tsx:18
 msgid "{title}"
