@@ -27,7 +27,7 @@ async function verifyRecaptcha(req) {
 
 function checkLimit(req) {
   const address = req.body['address'].toLowerCase()
-  const ip = req.headers['X-Nf-Client-Connection-Ip'] || req.connection.remoteAddress
+  const ip = req.headers['client-ip']
 
   const timeLimit = parseInt(serverRuntimeConfig.faucetTimeLimit) * 60 * 1000
   if (
@@ -53,17 +53,17 @@ async function faucetSend(req) {
     }
     const signedTransaction = await web3.eth.accounts.signTransaction(transactionParams, wallet.privateKey)
 
-    history.ips[req.connection.remoteAddress] = Date.now()
+    history.ips[event.headers['client-ip']] = Date.now()
     history.wallets[to] = Date.now()
 
     web3.eth
       .sendSignedTransaction(signedTransaction.rawTransaction)
       .then(() => {
-        history.ips[req.connection.remoteAddress] = Date.now()
+        history.ips[event.headers['client-ip']] = Date.now()
         history.wallets[to] = Date.now()
       })
       .catch((ex) => {
-        delete history.ips[req.connection.remoteAddress]
+        delete history.ips[event.headers['client-ip']]
         delete history.wallets[to]
       })
 
