@@ -11,6 +11,8 @@ let history = {
 
 async function verifyRecaptcha(req) {
   const key = req.body['g-recaptcha-response']
+  console.log(process.env.GOOGLE_CAPTCHA_SECRET)
+  console.log(key)
   try {
     const response = await axios.get(
       `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.GOOGLE_CAPTCHA_SECRET}&response=${key}`
