@@ -957,7 +957,7 @@ msgstr "Go Back"
 #: src/features/farm/FarmListItem.tsx:97
 #: src/features/farm/FarmListItemDetails.tsx:235
 #: src/features/vault/VaultListItemDetails.tsx:293
-#: src/pages/farm/index.tsx:224
+#: src/pages/farm/index.tsx:226
 msgid "Harvest"
 msgstr "Harvest"
 
