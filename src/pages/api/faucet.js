@@ -69,7 +69,7 @@ async function faucetSend(req) {
 
     resolve({
       status: 200,
-      message: `[${req.headers['x-nf-client-connection-ip']}] You will receive MOVR in your wallet soon.`,
+      message: `You will receive MOVR in your wallet soon.`,
     })
   })
 }
