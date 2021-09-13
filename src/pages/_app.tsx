@@ -132,24 +132,12 @@ function MyApp({
         <meta key="og:description" property="og:description" content="Solarbeam - AMM on Moonriver." />
       </Head>
 
-      {/* <GoogleReCaptchaProvider
-        reCaptchaKey="6LeaGV4cAAAAAE2HKmub-Ilnb7raS1JfhdfhfrP1"
-        useRecaptchaNet={true}
-        useEnterprise={false}
-        scriptProps={{
-          async: false,
-          defer: false,
-          appendTo: 'head',
-          nonce: undefined,
-        }}
-      > */}
         <I18nProvider i18n={i18n} forceRenderOnLocaleChange={false}>
           <Web3ReactProvider getLibrary={getLibrary}>
             <Web3ProviderNetwork getLibrary={getLibrary}>
               <Web3ReactManager>
                 <ReduxProvider store={store}>
                   <PriceContext.Provider value={priceData}>
-                    {/* <FarmContext.Provider value={priceData}> */}
                     <>
                       <ListsUpdater />
                       <UserUpdater />
@@ -164,14 +152,12 @@ function MyApp({
                         </Guard>
                       </Layout>
                     </Provider>
-                    {/* </FarmContext.Provider> */}
                   </PriceContext.Provider>
                 </ReduxProvider>
               </Web3ReactManager>
             </Web3ProviderNetwork>
           </Web3ReactProvider>
         </I18nProvider>
-      {/* </GoogleReCaptchaProvider> */}
     </Fragment>
   )
 }

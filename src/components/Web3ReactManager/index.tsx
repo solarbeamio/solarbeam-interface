@@ -37,23 +37,25 @@ export default function Web3ReactManager({ children }: { children: JSX.Element }
     activate: activateNetwork,
     chainId: currentChain,
   } = useWeb3React(NetworkContextName)
+  const { account, chainId, library } = useActiveWeb3React()
+  const [wrongNetwork, setWrongNetwork] = useState(false)
+  
 
-  const { chainId, library, account } = useActiveWeb3React()
+  // useEffect(() => {
+  //   console.debug({
+  //     chainId,
+  //     route: router.route
+  //   })
+
+  //   if (router.route !== '/bridge' && chainId !== ChainId.MOONRIVER) {
+  //     setWrongNetwork(true)
+  //   } else {
+  //     setWrongNetwork(false)
+  //   }
+  // }, [active, chainId, router, router.route])
 
   // try to eagerly connect to an injected provider, if it exists and has granted access already
   const triedEager = useEagerConnect()
-
-  useEffect(() => {
-    if (chainId !== undefined && router.route !== '/bridge' && chainId !== ChainId.MOONRIVER) {
-      router.push('/wrong-network')
-      return
-    }
-
-    if (chainId !== undefined && router.route == '/wrong-network' && chainId == ChainId.MOONRIVER) {
-      router.push('/exchange/swap')
-      return
-    }
-  }, [chainId, router, router.route])
 
   useEffect(() => {
     if (window && window.ethereum && router.route !== '/bridge') {
@@ -121,6 +123,16 @@ export default function Web3ReactManager({ children }: { children: JSX.Element }
         <Loader />
       </MessageWrapper>
     ) : null
+  }
+
+  if (wrongNetwork) {
+    return (
+      <h1 className="text-center">
+        {`Looks like you're using an unsupported network.`}
+        <br />
+        {`Switch to Moonriver Network to use Solarbeam.io.`}
+      </h1>
+    )
   }
 
   return (

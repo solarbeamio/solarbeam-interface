@@ -27,58 +27,46 @@ function AppBar(): JSX.Element {
                 <div className="flex items-center">
                   <div className="hidden sm:block sm:ml-4">
                     <div className="flex space-x-2">
-                      {/* <Buy /> */}
-
-                      {chainId && [ChainId.MOONRIVER].includes(chainId) && (
-                        <NavLink href="/exchange/swap">
-                          <a
-                            id={`swap-nav-link`}
-                            className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
-                          >
-                            {i18n._(t`Swap`)}
-                          </a>
-                        </NavLink>
-                      )}
-                      {chainId && [ChainId.MOONRIVER].includes(chainId) && (
-                        <NavLink href="/exchange/pool">
-                          <a
-                            id={`pool-nav-link`}
-                            className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
-                          >
-                            {i18n._(t`Pool`)}
-                          </a>
-                        </NavLink>
-                      )}
-                      {chainId && [ChainId.MOONRIVER].includes(chainId) && (
-                        <NavLink href={'/farm'}>
-                          <a
-                            id={`farm-nav-link`}
-                            className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
-                          >
-                            {i18n._(t`Farm`)}
-                          </a>
-                        </NavLink>
-                      )}
-                      {chainId && [ChainId.MOONRIVER].includes(chainId) && (
-                        <NavLink href={'/vaults'}>
-                          <a
-                            id={`vaults-nav-link`}
-                            className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
-                          >
-                            {i18n._(t`Vaults`)}
-                          </a>
-                        </NavLink>
-                      )}
-                      {chainId && [ChainId.MOONRIVER].includes(chainId) && (
-                        <NavLink href={'/locker'}>
-                          <a
-                            id={`farm-nav-link`}
-                            className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
-                          >
-                            {i18n._(t`Locker`)}
-                          </a>
-                        </NavLink>
-                      )}
+                      <NavLink href="/exchange/swap">
+                        <a
+                          id={`swap-nav-link`}
+                          className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                        >
+                          {i18n._(t`Swap`)}
+                        </a>
+                      </NavLink>
+                      <NavLink href="/exchange/pool">
+                        <a
+                          id={`pool-nav-link`}
+                          className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                        >
+                          {i18n._(t`Pool`)}
+                        </a>
+                      </NavLink>
+                      <NavLink href={'/farm'}>
+                        <a
+                          id={`farm-nav-link`}
+                          className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                        >
+                          {i18n._(t`Farm`)}
+                        </a>
+                      </NavLink>
+                      <NavLink href={'/vaults'}>
+                        <a
+                          id={`vaults-nav-link`}
+                          className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                        >
+                          {i18n._(t`Vaults`)}
+                        </a>
+                      </NavLink>
+                      <NavLink href={'/locker'}>
+                        <a
+                          id={`farm-nav-link`}
+                          className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                        >
+                          {i18n._(t`Locker`)}
+                        </a>
+                      </NavLink>
                       <NavLink href={'https://movr.anyswap.exchange/#/bridge'}>
                         <a
                           target="_blank"
@@ -87,37 +75,28 @@ function AppBar(): JSX.Element {
                           {i18n._(t`Bridge`)}
                         </a>
                       </NavLink>
-                      {chainId && [ChainId.MOONRIVER].includes(chainId) && (
-                        <NavLink href={'/faucet'}>
-                          <a
-                            id={`nft-nav-link`}
-                            className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
-                          >
-                            {i18n._(t`Faucet`)}
-                          </a>
-                        </NavLink>
-                      )}
-                      {chainId && [ChainId.MOONRIVER].includes(chainId) && (
-                        <NavLink href={'/nft/launchpad'}>
-                          <a
-                            id={`nft-nav-link`}
-                            className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
-                          >
-                            {i18n._(t`NFT Launchpad`)}
-                          </a>
-                        </NavLink>
-                      )}
+                      <NavLink href={'/faucet'}>
+                        <a
+                          id={`nft-nav-link`}
+                          className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                        >
+                          {i18n._(t`Faucet`)}
+                        </a>
+                      </NavLink>
+                      <NavLink href={'/nft/launchpad'}>
+                        <a
+                          id={`nft-nav-link`}
+                          className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                        >
+                          {i18n._(t`NFT Launchpad`)}
+                        </a>
+                      </NavLink>
                     </div>
                   </div>
                 </div>
 
                 <div className="fixed bottom-0 left-0 z-10 flex flex-row items-center justify-center w-full p-4 lg:w-auto bg-dark-1000 lg:relative lg:p-0 lg:bg-transparent">
                   <div className="flex items-center justify-between w-full space-x-2 sm:justify-end">
-                    {/* <div className="w-auto flex items-center rounded mr-1 bg-dark-800 shadow-sm text-primary text-xs hover:bg-dark-700 whitespace-nowrap text-xs font-bold cursor-pointer select-none pointer-events-auto hidden sm:block">
-                      <div className="flex">
-                        <div className="px-3 py-2 text-primary text-bold">Total Value Locked: $51.34 M</div>
-                      </div>
-                    </div> */}
                     {chainId && [ChainId.MOONRIVER].includes(chainId) && (
                       <div className="w-auto flex items-center rounded mr-1 bg-dark-800 shadow-sm text-primary text-xs hover:bg-dark-700 whitespace-nowrap text-xs font-bold cursor-pointer select-none pointer-events-auto hidden sm:block">
                         <TokenStats token="MOVR" />
@@ -178,80 +157,64 @@ function AppBar(): JSX.Element {
 
             <Popover.Panel className="sm:hidden header-border-b">
               <div className="flex flex-col px-4 pt-2 pb-3 space-y-1">
-                {chainId && [ChainId.MOONRIVER].includes(chainId) && (
-                  <Link href={'/exchange/swap'}>
-                    <a
-                      id={`swap-nav-link`}
-                      className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
-                    >
-                      {i18n._(t`Swap`)}
-                    </a>
-                  </Link>
-                )}
-                {chainId && [ChainId.MOONRIVER].includes(chainId) && (
-                  <Link href={'/exchange/pool'}>
-                    <a
-                      id={`pool-nav-link`}
-                      className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
-                    >
-                      {i18n._(t`Pool`)}
-                    </a>
-                  </Link>
-                )}
-                {chainId && [ChainId.MOONRIVER].includes(chainId) && (
-                  <Link href={'/farm'}>
-                    <a
-                      id={`farm-nav-link`}
-                      className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
-                    >
-                      {i18n._(t`Farm`)}
-                    </a>
-                  </Link>
-                )}
-                {chainId && [ChainId.MOONRIVER].includes(chainId) && (
-                  <Link href={'/vaults'}>
-                    <a
-                      id={`vaults-nav-link`}
-                      className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
-                    >
-                      {i18n._(t`Vaults`)}
-                    </a>
-                  </Link>
-                )}
-                {chainId && [ChainId.MOONRIVER].includes(chainId) && (
-                  <Link href={'/locker'}>
-                    <a
-                      id={`farm-nav-link`}
-                      className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
-                    >
-                      {i18n._(t`Locker`)}
-                    </a>
-                  </Link>
-                )}
-                {chainId && [ChainId.MOONRIVER].includes(chainId) && (
-                  <Link href={'https://movr.anyswap.exchange/#/bridge'}>
-                    <a
-                      target="_blank"
-                      className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
-                    >
-                      {i18n._(t`Bridge`)}
-                    </a>
-                  </Link>
-                )}
-                {chainId && [ChainId.MOONRIVER].includes(chainId) && (
-                  <Link href={'/faucet'}>
-                    <a className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap">
-                      {i18n._(t`Faucet`)}
-                    </a>
-                  </Link>
-                )}
-                {chainId && [ChainId.MOONRIVER].includes(chainId) && (
-                  <Link href={'/nft/launchpad'}>
-                    <a className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap">
-                      {i18n._(t`NFT Launchpad`)}
-                    </a>
-                  </Link>
-                )}
+                <Link href={'/exchange/swap'}>
+                  <a
+                    id={`swap-nav-link`}
+                    className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                  >
+                    {i18n._(t`Swap`)}
+                  </a>
+                </Link>
+                <Link href={'/exchange/pool'}>
+                  <a
+                    id={`pool-nav-link`}
+                    className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                  >
+                    {i18n._(t`Pool`)}
+                  </a>
+                </Link>
+                <Link href={'/farm'}>
+                  <a
+                    id={`farm-nav-link`}
+                    className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                  >
+                    {i18n._(t`Farm`)}
+                  </a>
+                </Link>
+                <Link href={'/vaults'}>
+                  <a
+                    id={`vaults-nav-link`}
+                    className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                  >
+                    {i18n._(t`Vaults`)}
+                  </a>
+                </Link>
+                <Link href={'/locker'}>
+                  <a
+                    id={`farm-nav-link`}
+                    className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                  >
+                    {i18n._(t`Locker`)}
+                  </a>
+                </Link>
+                <Link href={'https://movr.anyswap.exchange/#/bridge'}>
+                  <a
+                    target="_blank"
+                    className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                  >
+                    {i18n._(t`Bridge`)}
+                  </a>
+                </Link>
+                <Link href={'/faucet'}>
+                  <a className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap">
+                    {i18n._(t`Faucet`)}
+                  </a>
+                </Link>
+                <Link href={'/nft/launchpad'}>
+                  <a className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap">
+                    {i18n._(t`NFT Launchpad`)}
+                  </a>
+                </Link>
               </div>
             </Popover.Panel>
           </>
