@@ -152,7 +152,7 @@ export default function DualChainCurrencyInputPanel({
                     onMax(selectedCurrencyBalance?.toSignificant(4))
                   }}
                   size="xs"
-                  className="text-xxs font-medium bg-transparent border rounded-full hover:bg-primary border-low-emphesis text-secondary whitespace-nowrap"
+                  className="hidden sm:block text-xxs font-medium bg-transparent border rounded-full hover:bg-primary border-low-emphesis text-secondary whitespace-nowrap"
                 >
                   {i18n._(t`Max`)}
                 </Button>
@@ -189,7 +189,7 @@ export default function DualChainCurrencyInputPanel({
           'flex items-center w-full rounded rounded-t-none border border-dark-800 bg-dark-900 px-0 py-2 !mt-0'
         )}
       >
-        <div className="flex flex-col justify-between space-y-3 sm:space-y-0 sm:flex-row">
+        <div className="flex flex-row justify-between flex-1">
           <div className={classNames('w-full sm:w-96 text-right px-3')}>
             <div className="text-xs font-medium text-secondary whitespace-nowrap">Balance on {chainTo?.name}:</div>
           </div>

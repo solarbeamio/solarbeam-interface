@@ -37,14 +37,14 @@ export default function ChainSelect({ availableChains, label, onChainSelect, cha
 
   return (
     <button
-      className={'flex-1'}
+      className={'flex-1 justify-center'}
       onClick={() => {
         setModalOpen(true)
       }}
     >
       <Card
         className={
-          'hover:bg-dark-800 cursor-pointer h-full outline-none select-none cursor-pointer border-none text-xl font-medium items-center'
+          'hover:bg-dark-700 cursor-pointer h-full outline-none select-none cursor-pointer border-none text-xl font-medium items-center'
         }
       >
         <div className="flex flex-col items-center justify-center">

@@ -16,7 +16,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { AutoRow } from '../../components/Row'
 import Container from '../../components/Container'
 import Head from 'next/head'
-import { ArrowRight } from 'react-feather'
+import { ArrowDown, ArrowRight } from 'react-feather'
 import Typography from '../../components/Typography'
 import Web3Connect from '../../components/Web3Connect'
 import { t } from '@lingui/macro'
@@ -375,7 +375,7 @@ export default function Bridge() {
                 {i18n._(t`Bridge tokens to and from the Moonriver Network`)}
               </Typography>
             </div>
-            <AutoRow justify={'space-between'}>
+            <div className="flex flex-row justify-between items-center text-center">
               <ChainSelect
                 availableChains={Object.keys(anyswapInfo || {}).map((r) => parseInt(r))}
                 label="From"
@@ -383,7 +383,7 @@ export default function Bridge() {
                 otherChain={chainTo}
                 onChainSelect={(chain) => handleChainFrom(chain)}
               />
-              <button className={'m-6'}>
+              <button className={'sm:m-6'}>
                 <ArrowRight size="32" />
               </button>
               <ChainSelect
@@ -393,7 +393,7 @@ export default function Bridge() {
                 otherChain={chainFrom}
                 onChainSelect={(chain) => handleChainTo(chain)}
               />
-            </AutoRow>
+            </div>
 
             <DualChainCurrencyInputPanel
               label={i18n._(t`Token to bridge:`)}
@@ -434,22 +434,22 @@ export default function Bridge() {
             </BottomGrouping>
 
             {currency0 && (
-              <div className={'p-5 rounded bg-dark-800'}>
+              <div className={'p-2 sm:p-5 rounded bg-dark-800'}>
                 <div className="flex flex-col justify-between space-y-3 sm:space-y-0 sm:flex-row">
-                  <div className="text-sm font-medium text-secondary whitespace-nowrap">
+                  <div className="text-sm font-medium text-secondary">
                     Minimum Bridge Amount: {formatNumber(tokenToBridge?.other?.MinimumSwap)}{' '}
                     {tokenToBridge?.other?.Symbol}
                   </div>
                 </div>
                 <div className="flex flex-col justify-between space-y-3 sm:space-y-0 sm:flex-row">
-                  <div className="text-sm font-medium text-secondary whitespace-nowrap">
+                  <div className="text-sm font-medium text-secondary">
                     Maximum Bridge Amount: {formatNumber(tokenToBridge?.other?.MaximumSwap)}{' '}
                     {tokenToBridge?.other?.Symbol}
                   </div>
                 </div>
                 {tokenToBridge?.other?.MinimumSwapFee > 0 && (
                   <div className="flex flex-col justify-between space-y-3 sm:space-y-0 sm:flex-row">
-                    <div className="text-sm font-medium text-secondary whitespace-nowrap">
+                    <div className="text-sm font-medium text-secondary">
                       Minimum Swap Fee: {formatNumber(tokenToBridge?.other?.MinimumSwapFee)}{' '}
                       {tokenToBridge?.other?.Symbol}
                     </div>
@@ -457,19 +457,19 @@ export default function Bridge() {
                 )}
                 {tokenToBridge?.other?.MaximumSwapFee > 0 && (
                   <div className="flex flex-col justify-between space-y-3 sm:space-y-0 sm:flex-row">
-                    <div className="text-sm font-medium text-secondary whitespace-nowrap">
+                    <div className="text-sm font-medium text-secondary">
                       Maximum Swap Fee: {formatNumber(tokenToBridge?.other?.MaximumSwapFee)}{' '}
                       {tokenToBridge?.other?.Symbol}
                     </div>
                   </div>
                 )}
                 <div className="flex flex-col justify-between space-y-3 sm:space-y-0 sm:flex-row">
-                  <div className="text-sm font-medium text-secondary whitespace-nowrap">
+                  <div className="text-sm font-medium text-secondary">
                     Fee: {formatNumber(tokenToBridge?.other?.SwapFeeRate * 100)} %
                   </div>
                 </div>
                 <div className="flex flex-col justify-between space-y-3 sm:space-y-0 sm:flex-row">
-                  <div className="text-sm font-medium text-secondary whitespace-nowrap">
+                  <div className="text-sm font-medium text-secondary">
                     Amounts greater than {formatNumber(tokenToBridge?.other?.BigValueThreshold)}{' '}
                     {tokenToBridge?.other?.Symbol} could take up to 12 hours.
                   </div>

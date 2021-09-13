@@ -175,7 +175,7 @@ export default async function handler(req, res) {
         res.status(200).json({
           status: 403,
           message:
-            'Your current MOVR balance is above the minimum requirement to use the faucet. You have reach your personal limit.',
+            'Your current MOVR balance is above the minimum requirement to use the faucet.',
         })
       }
     } else {

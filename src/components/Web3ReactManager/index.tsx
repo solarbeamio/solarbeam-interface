@@ -44,12 +44,12 @@ export default function Web3ReactManager({ children }: { children: JSX.Element }
   const triedEager = useEagerConnect()
 
   useEffect(() => {
-    if (window && window.ethereum && router.route !== '/bridge') {
-      // if (router.route !== '/bridge' && currentChain !== ChainId.MOONRIVER) {
-      //   router.push('/bridge')
-      //   return
-      // }
+    if (router.route !== '/bridge' && currentChain !== ChainId.MOONRIVER) {
+      router.push('/wrong-network')
+      return
+    }
 
+    if (window && window.ethereum && router.route !== '/bridge') {
       const provider: any = window.ethereum
       const params = SUPPORTED_NETWORKS[ChainId.MOONRIVER]
 
