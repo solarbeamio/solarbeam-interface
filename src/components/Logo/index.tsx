@@ -27,9 +27,12 @@ const Logo: FC<LogoProps> = ({ srcs, width, height, style, alt = '', className, 
         width={width}
         height={height}
         alt={alt}
+        onError={() => {
+          if (src) BAD_SRCS[src] = true
+          refresh((i) => i + 1)
+        }}
         layout="fixed"
         className={classNames('rounded', className)}
-        style={style}
         quality={50}
         {...rest}
       />

@@ -49,8 +49,6 @@ const VaultListItem = ({ farm }) => {
   // TODO: Replace these
   const { amount, nextHarvestUntil, userLockedUntil } = useUserInfo(farm, liquidityToken)
 
-  console.log(`amount staked ${farm.id}: ${amount}`)
-
   const pendingSolar = usePendingSolar(farm)
 
   const typedDepositValue = tryParseAmount(depositValue, liquidityToken)

@@ -113,8 +113,6 @@ const useZapperFarms = () => {
           }
         }
       })
-
-    // console.log('farms:', farms)
     const sorted = orderBy(farms, ['pid'], ['desc'])
 
     const pids = sorted.map((pool) => {
@@ -123,14 +121,11 @@ const useZapperFarms = () => {
 
     if (account) {
       const userFarmDetails = await boringHelperContract?.pollPools(account, pids)
-      // console.log('userFarmDetails:', userFarmDetails)
       const userFarms = userFarmDetails
         .filter((farm: any) => {
           return farm.balance.gt(BigNumber.from(0)) || farm.pending.gt(BigNumber.from(0))
         })
         .map((farm: any) => {
-          // console.log('userFarm:', farm.pid.toNumber(), farm)
-
           const pid = farm.pid.toNumber()
           const farmDetails: any = sorted.find((pair: any) => pair.pid === pid)
 
@@ -163,7 +158,6 @@ const useZapperFarms = () => {
           }
         })
       setFarms({ farms: sorted, userFarms: userFarms })
-      // console.log('userFarms:', userFarms)
     } else {
       setFarms({ farms: sorted, userFarms: [] })
     }

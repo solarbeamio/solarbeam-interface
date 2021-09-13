@@ -28,22 +28,27 @@ function AppBar(): JSX.Element {
                   <div className="hidden sm:block sm:ml-4">
                     <div className="flex space-x-2">
                       {/* <Buy /> */}
-                      <NavLink href="/exchange/swap">
-                        <a
-                          id={`swap-nav-link`}
-                          className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
-                        >
-                          {i18n._(t`Swap`)}
-                        </a>
-                      </NavLink>
-                      <NavLink href="/exchange/pool">
-                        <a
-                          id={`pool-nav-link`}
-                          className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
-                        >
-                          {i18n._(t`Pool`)}
-                        </a>
-                      </NavLink>
+
+                      {chainId && [ChainId.MOONRIVER].includes(chainId) && (
+                        <NavLink href="/exchange/swap">
+                          <a
+                            id={`swap-nav-link`}
+                            className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                          >
+                            {i18n._(t`Swap`)}
+                          </a>
+                        </NavLink>
+                      )}
+                      {chainId && [ChainId.MOONRIVER].includes(chainId) && (
+                        <NavLink href="/exchange/pool">
+                          <a
+                            id={`pool-nav-link`}
+                            className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                          >
+                            {i18n._(t`Pool`)}
+                          </a>
+                        </NavLink>
+                      )}
                       {chainId && [ChainId.MOONRIVER].includes(chainId) && (
                         <NavLink href={'/farm'}>
                           <a
@@ -74,16 +79,14 @@ function AppBar(): JSX.Element {
                           </a>
                         </NavLink>
                       )}
-                      {chainId && [ChainId.MOONRIVER].includes(chainId) && (
-                        <NavLink href={'https://movr.anyswap.exchange/#/bridge'}>
-                          <a
-                            target="_blank"
-                            className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
-                          >
-                            {i18n._(t`Bridge`)}
-                          </a>
-                        </NavLink>
-                      )}
+                      <NavLink href={'https://movr.anyswap.exchange/#/bridge'}>
+                        <a
+                          target="_blank"
+                          className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                        >
+                          {i18n._(t`Bridge`)}
+                        </a>
+                      </NavLink>
                       {chainId && [ChainId.MOONRIVER].includes(chainId) && (
                         <NavLink href={'/faucet'}>
                           <a
@@ -115,12 +118,16 @@ function AppBar(): JSX.Element {
                         <div className="px-3 py-2 text-primary text-bold">Total Value Locked: $51.34 M</div>
                       </div>
                     </div> */}
-                    <div className="w-auto flex items-center rounded mr-1 bg-dark-800 shadow-sm text-primary text-xs hover:bg-dark-700 whitespace-nowrap text-xs font-bold cursor-pointer select-none pointer-events-auto hidden sm:block">
-                      <TokenStats token="MOVR" />
-                    </div>
-                    <div className="w-auto flex items-center rounded mr-1 bg-dark-800 shadow-sm text-primary text-xs hover:bg-dark-700 whitespace-nowrap text-xs font-bold cursor-pointer select-none pointer-events-auto">
-                      <TokenStats token="SOLAR" />
-                    </div>
+                    {chainId && [ChainId.MOONRIVER].includes(chainId) && (
+                      <div className="w-auto flex items-center rounded mr-1 bg-dark-800 shadow-sm text-primary text-xs hover:bg-dark-700 whitespace-nowrap text-xs font-bold cursor-pointer select-none pointer-events-auto hidden sm:block">
+                        <TokenStats token="MOVR" />
+                      </div>
+                    )}
+                    {chainId && [ChainId.MOONRIVER].includes(chainId) && (
+                      <div className="w-auto flex items-center rounded mr-1 bg-dark-800 shadow-sm text-primary text-xs hover:bg-dark-700 whitespace-nowrap text-xs font-bold cursor-pointer select-none pointer-events-auto">
+                        <TokenStats token="SOLAR" />
+                      </div>
+                    )}
                     <div className="w-auto flex items-center rounded bg-transparent shadow-sm text-primary text-xs hover:bg-dark-900 whitespace-nowrap text-xs font-bold cursor-pointer select-none pointer-events-auto">
                       <Web3Status />
                     </div>
@@ -171,23 +178,26 @@ function AppBar(): JSX.Element {
 
             <Popover.Panel className="sm:hidden header-border-b">
               <div className="flex flex-col px-4 pt-2 pb-3 space-y-1">
-                <Link href={'/exchange/swap'}>
-                  <a
-                    id={`swap-nav-link`}
-                    className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
-                  >
-                    {i18n._(t`Swap`)}
-                  </a>
-                </Link>
-                <Link href={'/exchange/pool'}>
-                  <a
-                    id={`pool-nav-link`}
-                    className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
-                  >
-                    {i18n._(t`Pool`)}
-                  </a>
-                </Link>
-
+                {chainId && [ChainId.MOONRIVER].includes(chainId) && (
+                  <Link href={'/exchange/swap'}>
+                    <a
+                      id={`swap-nav-link`}
+                      className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                    >
+                      {i18n._(t`Swap`)}
+                    </a>
+                  </Link>
+                )}
+                {chainId && [ChainId.MOONRIVER].includes(chainId) && (
+                  <Link href={'/exchange/pool'}>
+                    <a
+                      id={`pool-nav-link`}
+                      className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                    >
+                      {i18n._(t`Pool`)}
+                    </a>
+                  </Link>
+                )}
                 {chainId && [ChainId.MOONRIVER].includes(chainId) && (
                   <Link href={'/farm'}>
                     <a
@@ -225,6 +235,13 @@ function AppBar(): JSX.Element {
                       className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
                     >
                       {i18n._(t`Bridge`)}
+                    </a>
+                  </Link>
+                )}
+                {chainId && [ChainId.MOONRIVER].includes(chainId) && (
+                  <Link href={'/faucet'}>
+                    <a className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap">
+                      {i18n._(t`Faucet`)}
                     </a>
                   </Link>
                 )}

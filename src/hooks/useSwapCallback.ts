@@ -141,7 +141,6 @@ export function useSwapCallArguments(
             value: '0x0',
           }
         } else {
-          // console.log({ methodName, args })
           return {
             address: routerContract.address,
             calldata: routerContract.interface.encodeFunctionData(methodName, args),

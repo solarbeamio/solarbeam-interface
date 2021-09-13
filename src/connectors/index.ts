@@ -10,8 +10,8 @@ import { TorusConnector } from '@web3-react/torus-connector'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { WalletLinkConnector } from '@web3-react/walletlink-connector'
 
-const RPC = {
-  [ChainId.MAINNET]: 'https://eth-mainnet.alchemyapi.io/v2/q1gSNoSMEzJms47Qn93f9-9Xg5clkmEC',
+export const RPC = {
+  [ChainId.MAINNET]: 'https://mainnet.infura.io/v3/6120c21d46cb482d9cdabe463da74dd5',
   [ChainId.ROPSTEN]: 'https://eth-ropsten.alchemyapi.io/v2/cidKix2Xr-snU3f6f6Zjq_rYdalKKHmW',
   [ChainId.RINKEBY]: 'https://eth-rinkeby.alchemyapi.io/v2/XVLwDlhGP6ApBXFz_lfv0aZ6VmurWhYD',
   [ChainId.GÖRLI]: 'https://eth-goerli.alchemyapi.io/v2/Dkk5d02QjttYEoGmhZnJG37rKt8Yl3Im',
@@ -33,7 +33,7 @@ const RPC = {
   [ChainId.OKEX]: 'https://exchainrpc.okex.org',
   [ChainId.OKEX_TESTNET]: 'https://exchaintestrpc.okex.org',
   [ChainId.ARBITRUM]: 'https://arb1.arbitrum.io/rpc',
-  [ChainId.MOONRIVER]: 'https://moonriver.api.onfinality.io/public',
+  [ChainId.MOONRIVER]: 'https://moonriver-api.bwarelabs.com/0e63ad82-4f98-46f9-8496-f75657e3a8e4', //'https://moonriver.api.onfinality.io/public',
 }
 
 export const network = new NetworkConnector({
@@ -49,7 +49,7 @@ export function getNetworkLibrary(): Web3Provider {
 
 export const injected = new InjectedConnector({
   supportedChainIds: [
-    // 1, // mainnet
+    1, // mainnet
     // 3, // ropsten
     // 4, // rinkeby
     // 5, // goreli
@@ -59,7 +59,7 @@ export const injected = new InjectedConnector({
     // 137, // matic
     // 80001, // matic testnet
     // 100, // xdai
-    // 56, // binance smart chain
+    56, // binance smart chain
     // 97, // binance smart chain testnet
     // 1287, // moonbase
     1285, // moonriver

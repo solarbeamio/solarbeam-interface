@@ -264,9 +264,7 @@ export function useDefaultsFromURLSearch():
     { poolAddress: string | undefined; currencyId: string | undefined } | undefined
   >()
 
-  // console.log(result)
-  // console.log(parsedQs)
-
+ 
   useEffect(() => {
     if (!chainId) return
 

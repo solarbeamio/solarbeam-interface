@@ -1,4 +1,4 @@
-import { Currency, Token } from '../../sdk'
+import { AbstractCurrency, Currency, Token } from '../../sdk'
 import React, { useCallback } from 'react'
 
 import CurrencyModalView from './CurrencyModalView'
@@ -10,11 +10,7 @@ interface SelectTokenModalProps {
   onDismiss: () => void
   selectedCurrency?: Currency | null
   onCurrencySelect: (currency: Currency) => void
-  otherSelectedCurrency?: Currency | null
-  showCommonBases?: boolean
-  currencyList?: string[]
-  includeNativeCurrency?: boolean
-  allowManageTokenList?: boolean
+  tokenList?: Currency[]
 }
 
 function SelectTokenModal({
@@ -22,11 +18,7 @@ function SelectTokenModal({
   onDismiss,
   onCurrencySelect,
   selectedCurrency,
-  otherSelectedCurrency,
-  currencyList,
-  showCommonBases = false,
-  includeNativeCurrency = true,
-  allowManageTokenList = true,
+  tokenList
 }: SelectTokenModalProps) {
   const handleCurrencySelect = useCallback(
     (currency: Currency) => {
@@ -39,18 +31,10 @@ function SelectTokenModal({
   return (
     <Modal isOpen={isOpen} onDismiss={onDismiss} maxHeight={80} minHeight={80} padding={1}>
       <TokenList
-        isOpen={isOpen}
         onDismiss={onDismiss}
         onCurrencySelect={handleCurrencySelect}
         selectedCurrency={selectedCurrency}
-        otherSelectedCurrency={otherSelectedCurrency}
-        showCommonBases={showCommonBases}
-        showImportView={null}
-        setImportToken={null}
-        showManageView={null}
-        currencyList={currencyList}
-        includeNativeCurrency={includeNativeCurrency}
-        allowManageTokenList={allowManageTokenList}
+        tokenList={tokenList}
       />
     </Modal>
   )

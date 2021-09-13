@@ -5,6 +5,7 @@ import { NativeCurrency } from '../NativeCurrency'
 import invariant from 'tiny-invariant'
 
 export class Moonriver extends NativeCurrency {
+  public readonly address: string
   protected constructor(chainId: number) {
     super(chainId, 18, 'MOVR', 'Moonriver')
   }
@@ -23,5 +24,9 @@ export class Moonriver extends NativeCurrency {
 
   public equals(other: Currency): boolean {
     return other.isNative && other.chainId === this.chainId
+  }
+
+  public sortsBefore(other: Token): boolean {
+    return false
   }
 }

@@ -20,7 +20,7 @@ export const RPC = {
   [ChainId.BSC]: 'https://bsc-dataseed.binance.org/',
   [ChainId.BSC_TESTNET]: 'https://data-seed-prebsc-2-s3.binance.org:8545',
   [ChainId.MOONBEAM_TESTNET]: 'https://rpc.testnet.moonbeam.network',
-  [ChainId.MOONRIVER]: 'https://moonriver.api.onfinality.io/public',
+  [ChainId.MOONRIVER]: 'https://moonriver-api.bwarelabs.com/0e63ad82-4f98-46f9-8496-f75657e3a8e', //'https://moonriver.api.onfinality.io/public',
   [ChainId.AVALANCHE]: 'https://api.avax.network/ext/bc/C/rpc',
   [ChainId.AVALANCHE_TESTNET]: 'https://api.avax-test.network/ext/bc/C/rpc',
   [ChainId.HECO]: 'https://http-mainnet.hecochain.com',
@@ -38,9 +38,9 @@ export const POOL_DENY = ['14', '29', '45', '30']
 export const AVERAGE_BLOCK_TIME_IN_SECS = 13
 
 export const AVERAGE_BLOCK_TIME = {
-  [ChainId.ROPSTEN]: AVERAGE_BLOCK_TIME_IN_SECS,  
-  [ChainId.MOONRIVER]: 12,  
-  [ChainId.BSC]: 3
+  [ChainId.ROPSTEN]: AVERAGE_BLOCK_TIME_IN_SECS,
+  [ChainId.MOONRIVER]: 12,
+  [ChainId.BSC]: 3,
 }
 
 export const ARCHER_RELAY_URI: { [chainId in ChainId]?: string } = {

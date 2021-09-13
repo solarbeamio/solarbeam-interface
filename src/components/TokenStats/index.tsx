@@ -18,8 +18,8 @@ const supportedTokens = {
     symbol: 'SOLAR',
     icon: '/images/tokens/solar.png',
     address: {
-      [ChainId.MOONRIVER]: '0x6bD193Ee6D2104F14F94E2cA6efefae561A4334B'
-    }
+      [ChainId.MOONRIVER]: '0x6bD193Ee6D2104F14F94E2cA6efefae561A4334B',
+    },
   },
 }
 
@@ -28,8 +28,6 @@ interface TokenStatsProps {
 }
 
 function TokenStatusInner({ token }) {
-  const { account } = useWeb3React()
-
   const toggleModal = useTokenStatsModalToggle(token)
 
   const priceData = useContext(PriceContext)

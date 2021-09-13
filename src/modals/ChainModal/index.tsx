@@ -60,6 +60,7 @@ export const SUPPORTED_NETWORKS: {
 }
 
 interface ChainModalProps {
+  availableChains: number[]
   title?: string
   chain?: Chain
   isOpen: boolean
@@ -67,12 +68,21 @@ interface ChainModalProps {
   onSelect: (chain: Chain) => void
 }
 
-export default function ChainModal({ title, chain, isOpen, onDismiss, onSelect }: ChainModalProps): JSX.Element | null {
+export default function ChainModal({
+  availableChains,
+  title,
+  chain,
+  isOpen,
+  onDismiss,
+  onSelect,
+}: ChainModalProps): JSX.Element | null {
+  const { chainId, library, account } = useActiveWeb3React()
+
   return (
     <Modal isOpen={isOpen} onDismiss={onDismiss} maxWidth={400}>
       <ModalHeader onClose={onDismiss} title={title} />
       <div className="grid grid-flow-row-dense grid-cols-1 gap-3 overflow-y-auto mt-4">
-        {[ChainId.MAINNET, ChainId.BSC, ChainId.MOONRIVER].map((key: ChainId, i: number) => {
+        {availableChains.map((key: ChainId, i: number) => {
           if (chain.id === key) {
             return (
               <button key={i} className="w-full col-span-1 p-px rounded bg-gradient-to-r from-yellow to-yellow">
@@ -95,13 +105,13 @@ export default function ChainModal({ title, chain, isOpen, onDismiss, onSelect }
               onClick={() => {
                 onSelect({ id: key, icon: NETWORK_ICON[key], name: NETWORK_LABEL[key] })
                 onDismiss()
-                // const params = SUPPORTED_NETWORKS[key]
-                // cookie.set('chainId', key)
-                // if (key === ChainId.MAINNET) {
-                //   library?.send('wallet_switchEthereumChain', [{ chainId: '0x1' }, account])
-                // } else {
-                //   library?.send('wallet_addEthereumChain', [params, account])
-                // }
+                const params = SUPPORTED_NETWORKS[key]
+                cookie.set('chainId', key)
+                if (key === ChainId.MAINNET) {
+                  library?.send('wallet_switchEthereumChain', [{ chainId: '0x1' }, account])
+                } else {
+                  library?.send('wallet_addEthereumChain', [params, account])
+                }
               }}
               className="flex items-center w-full col-span-1 p-3 space-x-3 rounded cursor-pointer bg-dark-800 hover:bg-dark-900"
             >

@@ -1,5 +1,5 @@
-import { Currency, CurrencyAmount, Token } from '../../sdk'
-import React, { ReactNode, useCallback, useState } from 'react'
+import { AbstractCurrency, Binance, ChainId, Currency, CurrencyAmount, Ether, Token } from '../../sdk'
+import React, { ReactNode, useCallback, useEffect, useState } from 'react'
 import { classNames, formatNumberScale } from '../../functions'
 import Button from '../Button'
 import { ChevronDownIcon } from '@heroicons/react/outline'
@@ -11,21 +11,24 @@ import { Input as NumericalInput } from '../NumericalInput'
 import selectCoinAnimation from '../../animation/select-coin.json'
 import { t } from '@lingui/macro'
 import { useActiveWeb3React } from '../../hooks/useActiveWeb3React'
-import { useCurrencyBalance } from '../../state/wallet/hooks'
+import { useCurrencyBalance, useMultichainCurrencyBalance } from '../../state/wallet/hooks'
 import { useLingui } from '@lingui/react'
 import { Chain, DEFAULT_CHAIN_FROM, DEFAULT_CHAIN_TO } from '../../sdk/entities/Chain'
 import SelectTokenModal from '../../modals/SelectTokenModal/SelectTokenModal'
+import { AnyswapTokensMap } from '../../pages/bridge'
 
 interface CurrencyInputPanelProps {
   value?: string
   onUserInput?: (value: string) => void
-  onMax?: () => void
+  onMax?: (amount: string) => void
   label?: string
   onCurrencySelect?: (currency: Currency) => void
   currency?: Currency | null
   fiatValue?: CurrencyAmount<Token> | null
   chainFrom?: Chain | null
   chainTo?: Chain | null
+  tokenList?: Currency[] | []
+  chainList: AnyswapTokensMap | null
 }
 
 export default function DualChainCurrencyInputPanel({
@@ -38,11 +41,55 @@ export default function DualChainCurrencyInputPanel({
   fiatValue,
   chainFrom,
   chainTo,
+  tokenList,
+  chainList,
 }: CurrencyInputPanelProps) {
   const { i18n } = useLingui()
   const [modalOpen, setModalOpen] = useState(false)
-  const { account } = useActiveWeb3React()
-  const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
+  const [toCurrency, setToCurrency] = useState<Currency | null>(null)
+  const { account, chainId } = useActiveWeb3React()
+
+  const selectedCurrencyBalance = useMultichainCurrencyBalance(
+    chainFrom?.id,
+    account ?? undefined,
+    currency ?? undefined
+  )
+
+  const selectedCurrencyBalanceDest = useMultichainCurrencyBalance(
+    chainTo?.id,
+    account ?? undefined,
+    toCurrency ?? undefined
+  )
+
+  useEffect(() => {
+    setToCurrency(null)
+    if (!currency) return
+    if (!chainFrom) return
+    if (!chainTo) return
+    if (!chainList) return
+
+    let contractAddr
+    if (currency.isNative) {
+      const anyInfo = chainList[chainFrom.id][currency.wrapped.address.toLowerCase()]
+      if (!anyInfo || !anyInfo.token) return
+      contractAddr = chainList[chainFrom.id][currency.wrapped.address.toLowerCase()].token.ContractAddress
+    } else if (currency.isToken) {
+      const anyInfo = chainList[chainFrom.id][currency.address.toLowerCase()]
+      if (!anyInfo || !anyInfo.token) return
+      contractAddr = chainList[chainFrom.id][currency.address.toLowerCase()].token.ContractAddress
+      if (!contractAddr) {
+        if (chainTo.id == ChainId.BSC && currency.symbol == 'BNB') {
+          setToCurrency(Binance.onChain(chainTo.id))
+        } else if (chainTo.id == ChainId.MAINNET && currency.symbol == 'ETH') {
+          setToCurrency(Ether.onChain(chainTo.id))
+        }
+      }
+    }
+    if (!contractAddr) return
+    const info = chainList[chainTo.id][contractAddr.toLowerCase()]
+    if (!info || !info.token) return
+    setToCurrency(new Token(chainTo.id, contractAddr, info.token.Decimals, info.token.Symbol, info.token.Name))
+  }, [chainFrom, chainList, chainTo, currency])
 
   const handleDismissSearch = useCallback(() => {
     setModalOpen(false)
@@ -101,7 +148,9 @@ export default function DualChainCurrencyInputPanel({
             <>
               {selectedCurrencyBalance && (
                 <Button
-                  onClick={onMax}
+                  onClick={() => {
+                    onMax(selectedCurrencyBalance?.toSignificant(4))
+                  }}
                   size="xs"
                   className="text-xxs font-medium bg-transparent border rounded-full hover:bg-primary border-low-emphesis text-secondary whitespace-nowrap"
                 >
@@ -117,7 +166,12 @@ export default function DualChainCurrencyInputPanel({
               />
               {currency && selectedCurrencyBalance ? (
                 <div className="flex flex-col">
-                  <div onClick={onMax} className="text-xxs font-medium text-right cursor-pointer text-low-emphesis">
+                  <div
+                    onClick={() => {
+                      onMax(selectedCurrencyBalance?.toSignificant(4))
+                    }}
+                    className="text-xxs font-medium text-right cursor-pointer text-low-emphesis"
+                  >
                     <>
                       {i18n._(t`Balance:`)} {formatNumberScale(selectedCurrencyBalance.toSignificant(4))}{' '}
                       {currency.symbol}
@@ -140,7 +194,9 @@ export default function DualChainCurrencyInputPanel({
             <div className="text-xs font-medium text-secondary whitespace-nowrap">Balance on {chainTo?.name}:</div>
           </div>
           <div className={classNames('flex items-center w-full px-0')}>
-            <div className="text-xs font-medium text-secondary whitespace-nowrap">0</div>
+            <div className="text-xs font-medium text-secondary whitespace-nowrap">
+              {selectedCurrencyBalanceDest?.toSignificant(4)} {currency?.symbol}
+            </div>
           </div>
         </div>
       </div>
@@ -150,7 +206,7 @@ export default function DualChainCurrencyInputPanel({
           onDismiss={handleDismissSearch}
           onCurrencySelect={onCurrencySelect}
           selectedCurrency={currency}
-          showCommonBases={false}
+          tokenList={tokenList}
         />
       )}
     </>

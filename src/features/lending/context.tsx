@@ -206,7 +206,6 @@ export function KashiProvider({ children }) {
   // console.log({ info })
 
   const updatePairs = useCallback(async () => {
-    console.log('update pairs')
     if (
       !account ||
       !chainId ||

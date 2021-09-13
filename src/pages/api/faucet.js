@@ -4,7 +4,7 @@ const { serverRuntimeConfig } = getConfig()
 
 const Web3 = require('web3')
 const { default: axios } = require('axios')
-const NETWORK_URL = 'https://rpc.moonriver.moonbeam.network'
+const NETWORK_URL = 'https://moonriver-api.bwarelabs.com/0e63ad82-4f98-46f9-8496-f75657e3a8e4'
 const web3 = new Web3(NETWORK_URL)
 
 let inOrder = false

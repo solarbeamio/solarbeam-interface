@@ -119,7 +119,7 @@ export default function TokenStatsModal({ token }: { token: any }) {
                 <div className="text-primary text-2xl">{token['symbol']}</div>
               </div>
               <div className="flex items-center justify-between space-x-3 gap-2">
-                {token.address && (
+                {token?.address && (
                   <ExternalLink
                     href={
                       'https://blockscout.moonriver.moonbeam.network/tokens/0x6bD193Ee6D2104F14F94E2cA6efefae561A4334B'

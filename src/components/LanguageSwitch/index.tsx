@@ -75,7 +75,6 @@ const LANGUAGES: {
 
 export default function LangSwitcher() {
   const { locale, locales, asPath } = useRouter()
-  console.log(locale)
   return (
     <Menu as="div" className="relative flex inline-block text-right justify-center">
       {({ open }) => (

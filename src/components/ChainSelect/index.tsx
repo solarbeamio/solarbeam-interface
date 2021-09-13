@@ -19,13 +19,14 @@ import { useChainModalToggle } from '../../state/application/hooks'
 import ChainModal from '../../modals/ChainModal'
 
 interface ChainSelectProps {
+  availableChains: number[]
   label: string
   onChainSelect?: (chain: Chain) => void
   chain?: Chain | null
   otherChain?: Chain | null
 }
 
-export default function ChainSelect({ label, onChainSelect, chain, otherChain }: ChainSelectProps) {
+export default function ChainSelect({ availableChains, label, onChainSelect, chain, otherChain }: ChainSelectProps) {
   const { i18n } = useLingui()
   const [modalOpen, setModalOpen] = useState(false)
   const { account } = useActiveWeb3React()
@@ -62,21 +63,13 @@ export default function ChainSelect({ label, onChainSelect, chain, otherChain }:
         </div>
       </Card>
       <ChainModal
+        availableChains={availableChains}
         onSelect={onChainSelect}
         title={`Bridge ${label}`}
         chain={chain}
         isOpen={modalOpen}
         onDismiss={handleDismissSearch}
       />
-      {/* {onChainSelect && (
-        <CurrencySearchModal
-          isOpen={modalOpen}
-          onDismiss={handleDismissSearch}
-          onCurrencySelect={null}
-          selectedCurrency={null}
-          showCommonBases={false}
-        />
-      )} */}
     </button>
   )
 }

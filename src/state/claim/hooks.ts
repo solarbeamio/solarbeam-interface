@@ -27,7 +27,6 @@ const CLAIM_PROMISES: { [key: string]: Promise<any | UserClaimData | null> } = {
 function fetchClaim(account: string, chainId: ChainId): Promise<any | UserClaimData | null> {
   if (!isAddress(account)) return Promise.reject(new Error('Invalid address'))
   const key = `${chainId}:${account}`
-  // console.log('CLAIM_PROMISE:', CLAIM_PROMISES[key], key)
   return (CLAIM_PROMISES[key] =
     CLAIM_PROMISES[key] ??
     fetch(MERKLE_ROOT)
@@ -35,8 +34,6 @@ function fetchClaim(account: string, chainId: ChainId): Promise<any | UserClaimD
       .then((data) => {
         const claim: typeof data.claims[0] | undefined = data.claims[getAddress(account)] ?? undefined
         if (!claim) return null
-
-        // console.log('claim:', claim)
         return {
           index: claim.index,
           amount: claim.amount,
@@ -60,7 +57,6 @@ export function useUserClaimData(account: string | null | undefined): UserClaimD
     if (!account || !chainId) return
     fetchClaim(account, chainId).then((accountClaimInfo) =>
       setClaimInfo((claimInfo) => {
-        // console.log('claimInfo:', claimInfo, accountClaimInfo, key)
         return {
           ...claimInfo,
           [key]: accountClaimInfo,
@@ -87,12 +83,6 @@ export function useUserUnclaimedAmount(account: string | null | undefined): Curr
   const canClaim = useUserHasAvailableClaim(account)
 
   const sushi =  undefined
-
-  // console.log('claimStats:', {
-  //   canClaim: canClaim,
-  //   userClaimData: userClaimData,
-  //   sushi: sushi
-  // })
 
   if (!sushi) return undefined
   if (!canClaim || !userClaimData) {

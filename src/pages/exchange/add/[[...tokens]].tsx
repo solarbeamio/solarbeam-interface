@@ -182,13 +182,10 @@ export default function Add() {
     setAttemptingTxn(true)
     await estimate(...args, value ? { value } : {})
       .then((estimatedGasLimit) => {
-        console.log('estimatedGasLimit')
-        console.log(estimatedGasLimit)
         return method(...args, {
           ...(value ? { value } : {}),
           gasLimit: calculateGasMargin(estimatedGasLimit),
         }).then((response) => {
-          console.log('estimate gas try')
           setAttemptingTxn(false)
 
           addTransaction(response, {
@@ -215,7 +212,6 @@ export default function Add() {
           gasLimit: '1000000',
         })
           .then((response) => {
-            console.log('estimate gas try')
             setAttemptingTxn(false)
 
             addTransaction(response, {

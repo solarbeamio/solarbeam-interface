@@ -223,7 +223,6 @@ class Graph {
                 const newGasSpent = (closestVert as Vertice).gasSpent + gas;
                 const price = to.gasPrice/v2.token.gasPrice;
                 const newTotal = newIncome*price - newGasSpent*to.gasPrice;
-                //console.log(newIncome, gas, newTotal);
                 
                 if (!v2.bestSource)
                     nextVertList.push(v2);
@@ -263,7 +262,6 @@ class Graph {
             if (!p) {
                 return;
             } else {
-                //console.log(step, totalOutput, p.gasSpent, p.output);
                 output += p.output;
                 gasSpent += p.gasSpent;
                 totalOutput += p.totalOutput;

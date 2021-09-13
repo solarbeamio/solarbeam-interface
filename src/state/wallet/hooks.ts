@@ -6,8 +6,11 @@ import { Interface } from '@ethersproject/abi'
 import { isAddress } from '../../functions/validate'
 import { useActiveWeb3React } from '../../hooks/useActiveWeb3React'
 import { useAllTokens } from '../../hooks/Tokens'
-import { useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useMulticall2Contract } from '../../hooks/useContract'
+import Web3 from 'web3'
+import { RPC } from '../../connectors'
+import ERC20_INTERFACE from '../../constants/abis/erc20'
 
 /**
  * Returns a map of the given addresses to their eventually consistent ETH balances.
@@ -145,4 +148,51 @@ export function useAllTokenBalances(): {
   const allTokensArray = useMemo(() => Object.values(allTokens ?? {}), [allTokens])
   const balances = useTokenBalances(account ?? undefined, allTokensArray)
   return balances ?? {}
+}
+
+export function useMultichainCurrencyBalance(
+  chainId?: number,
+  account?: string,
+  currency?: Currency
+): CurrencyAmount<Currency> | undefined {
+  const { chainId: moonriverChainId } = useActiveWeb3React()
+  const moonriverBalance = useCurrencyBalance(
+    chainId == moonriverChainId && account,
+    chainId == moonriverChainId && currency
+  )
+  const [value, setValue] = useState(null)
+
+  const getBalance = useCallback(() => {
+    const web3 = new Web3(RPC[chainId])
+    if (currency.isNative) {
+      web3.eth.getBalance(account).then((response) => {
+        const amount = CurrencyAmount.fromRawAmount(currency, response || 0)
+        setValue(amount)
+      })
+    } else if (currency.isToken) {
+      let contract = new web3.eth.Contract(ERC20_ABI as any, currency.address)
+      contract.methods
+        .balanceOf(account)
+        .call()
+        .then((response) => {
+          const amount = CurrencyAmount.fromRawAmount(currency, response || 0)
+          setValue(amount)
+        })
+        .catch((ex) => {
+          console.error(ex)
+        })
+    }
+  }, [account, chainId, currency])
+
+  useEffect(() => {
+    if (account && chainId && currency && chainId != moonriverChainId) {
+      getBalance()
+    } else {
+      setValue(null)
+    }
+  }, [account, chainId, currency, getBalance, moonriverChainId])
+
+  return useMemo(() => {
+    return chainId == moonriverChainId ? moonriverBalance : value
+  }, [chainId, moonriverBalance, moonriverChainId, value])
 }

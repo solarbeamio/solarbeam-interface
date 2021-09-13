@@ -18,10 +18,11 @@ import styled from 'styled-components'
 import { t } from '@lingui/macro'
 import { useActiveWeb3React } from '../../hooks/useActiveWeb3React'
 import { useCombinedActiveList } from '../../state/lists/hooks'
-import { useCurrencyBalance } from '../../state/wallet/hooks'
+import { useCurrencyBalance, useMultichainCurrencyBalance } from '../../state/wallet/hooks'
 import { useIsUserAddedToken } from '../../hooks/Tokens'
 import { useLingui } from '@lingui/react'
 import { formatNumberScale } from '../../functions'
+import { Chain } from '../../sdk/entities/Chain'
 
 function currencyKey(currency: Currency): string {
   return currency.isToken ? currency.address : 'ETHER'
@@ -98,21 +99,16 @@ function CurrencyRow({
   currency,
   onSelect,
   isSelected,
-  otherSelected,
   style,
 }: {
   currency: Currency
   onSelect: () => void
   isSelected: boolean
-  otherSelected: boolean
   style: CSSProperties
 }) {
   const { account, chainId } = useActiveWeb3React()
   const key = currencyKey(currency)
-  const selectedTokenList = useCombinedActiveList()
-  const isOnSelectedList = isTokenOnList(selectedTokenList, currency.isToken ? currency : undefined)
-  const customAdded = useIsUserAddedToken(currency)
-  const balance = useCurrencyBalance(account ?? undefined, currency)
+  const balance = useMultichainCurrencyBalance(currency.chainId, account ?? undefined, currency)
 
   // only show add or remove buttons if not on selected list
   return (
@@ -122,7 +118,6 @@ function CurrencyRow({
       className={`hover:bg-dark-800 rounded`}
       onClick={() => (isSelected ? null : onSelect())}
       disabled={isSelected}
-      selected={otherSelected}
     >
       <div className="flex items-center">
         <CurrencyLogo currency={currency} size={32} />
@@ -130,10 +125,7 @@ function CurrencyRow({
       <Column>
         <div title={currency.name} className="text-sm font-medium">
           {currency.symbol}
-        </div>
-        <div className="text-xs font-thin">
-          {currency.name} {!isOnSelectedList && customAdded && '•'}
-        </div>
+        </div>       
       </Column>
       <TokenTags currency={currency} />
       <div className="flex items-center justify-end">
@@ -172,30 +164,19 @@ function BreakLineComponent({ style }: { style: CSSProperties }) {
 export default function CurrencyList({
   height,
   currencies,
-  otherListTokens,
   selectedCurrency,
   onCurrencySelect,
-  otherCurrency,
   fixedListRef,
-  showImportView,
-  setImportToken,
 }: {
   height: number
   currencies: Currency[]
-  otherListTokens?: WrappedTokenInfo[]
   selectedCurrency?: Currency | null
   onCurrencySelect: (currency: Currency) => void
-  otherCurrency?: Currency | null
   fixedListRef?: MutableRefObject<FixedSizeList | undefined>
-  showImportView: () => void
-  setImportToken: (token: Token) => void
 }) {
   const itemData: (Currency | BreakLine)[] = useMemo(() => {
-    if (otherListTokens && otherListTokens?.length > 0) {
-      return [...currencies, BREAK_LINE, ...otherListTokens]
-    }
     return currencies
-  }, [currencies, otherListTokens])
+  }, [currencies])
 
   const Row = useCallback(
     function TokenRow({ data, index, style }) {
@@ -208,28 +189,15 @@ export default function CurrencyList({
       const currency = row
 
       const isSelected = Boolean(currency && selectedCurrency && selectedCurrency.equals(currency))
-      const otherSelected = Boolean(currency && otherCurrency && otherCurrency.equals(currency))
       const handleSelect = () => currency && onCurrencySelect(currency)
 
-      const token = currency?.wrapped
-
-      const showImport = index > currencies.length
-
       if (currency) {
-        return (
-          <CurrencyRow
-            style={style}
-            currency={currency}
-            isSelected={isSelected}
-            onSelect={handleSelect}
-            otherSelected={otherSelected}
-          />
-        )
+        return <CurrencyRow style={style} currency={currency} isSelected={isSelected} onSelect={handleSelect} />
       } else {
         return null
       }
     },
-    [currencies.length, onCurrencySelect, otherCurrency, selectedCurrency]
+    [onCurrencySelect, selectedCurrency]
   )
 
   const itemKey = useCallback((index: number, data: typeof itemData) => {

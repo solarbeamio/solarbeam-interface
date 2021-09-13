@@ -37,31 +37,26 @@ export const getPairs = async (chainId = ChainId.MAINNET, variables = undefined,
 }
 
 export const getTokenSubset = async (chainId = ChainId.MAINNET, variables) => {
-  // console.log('getTokenSubset')
   const { tokens } = await exchange(chainId, tokenSubsetQuery, variables)
   return tokens
 }
 
 export const getTokens = async (chainId = ChainId.MAINNET, query = tokensQuery, variables) => {
-  // console.log('getTokens')
   const { tokens } = await exchange(chainId, query, variables)
   return tokens
 }
 
 export const getToken = async (chainId = ChainId.MAINNET, query = tokenQuery, variables) => {
-  // console.log('getTokens')
   const { token } = await exchange(chainId, query, variables)
   return token
 }
 
 export const getTokenPrices = async (chainId = ChainId.MAINNET, variables) => {
-  // console.log('getTokenPrice')
   const { tokens } = await exchange(chainId, tokensQuery, variables)
   return tokens.map((token) => token?.derivedETH)
 }
 
 export const getTokenPrice = async (chainId = ChainId.MAINNET, query, variables) => {
-  // console.log('getTokenPrice')
   const ethPrice = await getEthPrice(chainId)
 
   const { token } = await exchange(chainId, query, variables)
@@ -69,7 +64,6 @@ export const getTokenPrice = async (chainId = ChainId.MAINNET, query, variables)
 }
 
 export const getEthPrice = async (chainId = ChainId.MAINNET, variables = undefined) => {
-  // console.log('getEthPrice')
   const data = await getBundle(chainId, undefined, variables)
   return data?.bundles?.[0]?.ethPrice
 }
@@ -81,21 +75,18 @@ export const getCvxPrice = async () => {
 }
 
 export const getMaticPrice = async () => {
-  // console.log('getMaticPrice')
   return getTokenPrice(ChainId.MATIC, tokenPriceQuery, {
     id: '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270',
   })
 }
 
 export const getAlcxPrice = async () => {
-  // console.log('getAlcxPrice')
   return getTokenPrice(ChainId.MAINNET, tokenPriceQuery, {
     id: '0xdbdb4d16eda451d0503b854cf79d55697f90c8df',
   })
 }
 
 export const getSushiPrice = async () => {
-  // console.log('getSushiPrice')
   return getTokenPrice(ChainId.MAINNET, tokenPriceQuery, {
     id: '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2',
   })
