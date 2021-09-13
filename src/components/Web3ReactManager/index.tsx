@@ -45,10 +45,10 @@ export default function Web3ReactManager({ children }: { children: JSX.Element }
 
   useEffect(() => {
     if (window && window.ethereum && router.route !== '/bridge') {
-      if (router.route !== '/bridge' && currentChain !== ChainId.MOONRIVER) {
-        router.push('/bridge')
-        return
-      }
+      // if (router.route !== '/bridge' && currentChain !== ChainId.MOONRIVER) {
+      //   router.push('/bridge')
+      //   return
+      // }
 
       const provider: any = window.ethereum
       const params = SUPPORTED_NETWORKS[ChainId.MOONRIVER]
