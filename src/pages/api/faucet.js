@@ -8,7 +8,7 @@ const NETWORK_URL = 'https://rpc.moonriver.moonbeam.network'
 const web3 = new Web3(NETWORK_URL)
 const q = faunadb.query
 const client = new faunadb.Client({
-  secret: serverRuntimeConfig.faunadbSecret
+  secret: serverRuntimeConfig.faunadbSecret,
 })
 
 async function verifyRecaptcha(req) {
@@ -20,14 +20,13 @@ async function verifyRecaptcha(req) {
     if (response.data.success) {
       return true
     }
-  } catch (ex) {
-  }
+  } catch (ex) {}
   return false
 }
 
 async function faucetSend(req) {
   const to = req.body['address']
-  const ip = 'test2'//req.headers['x-nf-client-connection-ip'] TODO
+  const ip = 'test2' //req.headers['x-nf-client-connection-ip'] TODO
   const value = serverRuntimeConfig.faucetAmountAdd
   const wallet = await web3.eth.accounts.wallet.add(serverRuntimeConfig.faucetWalletPrivateKey)
   const gasPrice = await web3.utils.toWei(serverRuntimeConfig.faucetGas, 'gwei')
@@ -37,7 +36,7 @@ async function faucetSend(req) {
       gasLimit: '0x9C40',
       to: to,
       from: wallet.address,
-      value: web3.utils.toWei(`${value}`, 'ether')
+      value: web3.utils.toWei(`${value}`, 'ether'),
     }
     const signedTransaction = await web3.eth.accounts.signTransaction(transactionParams, wallet.privateKey)
 
@@ -45,15 +44,14 @@ async function faucetSend(req) {
 
     web3.eth
       .sendSignedTransaction(signedTransaction.rawTransaction)
-      .then(async () => {
-      })
+      .then(async () => {})
       .catch((ex) => {
         removeFromBlackList(to)
       })
 
     resolve({
       status: 200,
-      message: `You will receive MOVR in your wallet soon.`
+      message: `You will receive MOVR in your wallet soon.`,
     })
   })
 }
@@ -112,9 +110,10 @@ async function blackList(addr, ip) {
     ip = ip.toLowerCase()
   }
   await client.query(
-    q.Let({
+    q.Let(
+      {
         match: q.Match(q.Index('address'), addr),
-        data: { data: { address: addr, ip: ip, timestamp: Date.now() } }
+        data: { data: { address: addr, ip: ip, timestamp: Date.now() } },
       },
       q.If(
         q.Exists(q.Var('match')),
@@ -129,15 +128,13 @@ async function removeFromBlackList(addr) {
   if (addr) {
     addr = addr.toLowerCase()
   }
-  await client.query(
-    q.Delete(q.Select('ref', q.Get(q.Match(q.Index('address'), addr))))
-  )
+  await client.query(q.Delete(q.Select('ref', q.Get(q.Match(q.Index('address'), addr)))))
 }
 
 async function checkBridgeUsage(address) {
   const bridges = {
-    'ETH': `https://bridgeapi.anyswap.exchange/v2/swapin/history/${address}/1285/1/allv2?offset=0&limit=1`,
-    'BSC': `https://bridgeapi.anyswap.exchange/v2/swapin/history/${address}/1285/56/allv2?offset=0&limit=1`
+    ETH: `https://bridgeapi.anyswap.exchange/v2/swapin/history/${address}/1285/1/allv2?offset=0&limit=1`,
+    BSC: `https://bridgeapi.anyswap.exchange/v2/swapin/history/${address}/1285/56/allv2?offset=0&limit=1`,
   }
 
   for (let net in bridges) {
@@ -165,31 +162,31 @@ export default async function handler(req, res) {
       if (movrBalance < 0.001) {
         const ref = await isBlacklisted(address, ip)
         if (ref) {
-          await removeFromBlackList(address)
           res.status(200).json({
             status: 400,
-            message: 'Personal limit reached.'
+            message: 'You have reach your personal limit.',
           })
         } else {
           const ret = await faucetSend(req)
           res.status(200).json(ret)
         }
       } else {
+        await blackList(address, ip)
         res.status(200).json({
           status: 403,
-          message: 'You have enough MOVR to make a transaction.'
+          message: 'Your current MOVR balance is above the minimum requirement to use the faucet. You have reach your personal limit.',
         })
       }
     } else {
       res.status(200).json({
         status: 403,
-        message: 'Bridge not used.'
+        message: 'This feature is available only for wallets which have used a bridge.',
       })
     }
   } else {
     res.status(200).json({
       status: 400,
-      message: 'Invalid captcha.'
+      message: 'Invalid captcha.',
     })
   }
 }
