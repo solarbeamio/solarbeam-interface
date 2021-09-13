@@ -52,8 +52,10 @@ export default function Web3ReactManager({ children }: { children: JSX.Element }
     if (chainId !== undefined && router.route == '/wrong-network' && chainId == ChainId.MOONRIVER) {
       router.push('/exchange/swap')
       return
-    }    
+    }
+  }, [chainId, router, router.route])
 
+  useEffect(() => {
     if (window && window.ethereum && router.route !== '/bridge') {
       const provider: any = window.ethereum
       const params = SUPPORTED_NETWORKS[ChainId.MOONRIVER]
