@@ -66,7 +66,7 @@ msgstr "- Locker contract address: {0}"
 msgid "- You will not be able to withdraw your tokens before the unlock time"
 msgstr "- You will not be able to withdraw your tokens before the unlock time"
 
-#: src/features/farm/FarmListItem2.tsx:122
+#: src/features/farm/FarmListItem2.tsx:129
 #: src/features/vault/VaultListItem.tsx:123
 msgid "/ DAY"
 msgstr "/ DAY"
@@ -164,7 +164,7 @@ msgstr "Add"
 
 #: src/components/ExchangeHeader.tsx:42
 #: src/components/NavigationTabs/index.tsx:69
-#: src/pages/exchange/add/[[...tokens]].tsx:323
+#: src/pages/exchange/add/[[...tokens]].tsx:345
 msgid "Add Liquidity"
 msgstr "Add Liquidity"
 
@@ -197,8 +197,10 @@ msgstr "Add liquidity"
 msgid "Add {0} to MetaMask"
 msgstr "Add {0} to MetaMask"
 
-#: src/pages/exchange/add/[[...tokens]].tsx:207
-#: src/pages/exchange/add/[[...tokens]].tsx:207
+#: src/pages/exchange/add/[[...tokens]].tsx:196
+#: src/pages/exchange/add/[[...tokens]].tsx:223
+#: src/pages/exchange/add/[[...tokens]].tsx:196
+#: src/pages/exchange/add/[[...tokens]].tsx:223
 msgid "Add {0} {1} and {2} {3}"
 msgstr "Add {0} {1} and {2} {3}"
 
@@ -256,8 +258,8 @@ msgid "Approve Limit Order"
 msgstr "Approve Limit Order"
 
 #: src/features/limit-order/LimitOrderButton.tsx:160
-#: src/pages/exchange/add/[[...tokens]].tsx:442
-#: src/pages/exchange/add/[[...tokens]].tsx:459
+#: src/pages/exchange/add/[[...tokens]].tsx:464
+#: src/pages/exchange/add/[[...tokens]].tsx:481
 #: src/pages/exchange/swap/[[...tokens]].tsx:535
 msgid "Approve {0}"
 msgstr "Approve {0}"
@@ -275,8 +277,8 @@ msgid "Approving Limit Order"
 msgstr "Approving Limit Order"
 
 #: src/features/limit-order/LimitOrderButton.tsx:158
-#: src/pages/exchange/add/[[...tokens]].tsx:440
-#: src/pages/exchange/add/[[...tokens]].tsx:457
+#: src/pages/exchange/add/[[...tokens]].tsx:462
+#: src/pages/exchange/add/[[...tokens]].tsx:479
 msgid "Approving {0}"
 msgstr "Approving {0}"
 
@@ -313,6 +315,7 @@ msgstr "Available Networks"
 #~ msgstr "Balance"
 
 #: src/components/CurrencyInputPanel/index.tsx:166
+#: src/components/DualChainCurrencyInputPanel/index.tsx:122
 #: src/pages/locker/create/index.tsx:212
 msgid "Balance:"
 msgstr "Balance:"
@@ -387,11 +390,20 @@ msgstr "Balance:"
 
 #: src/components/Header/index.tsx:83
 #: src/components/Header/index.tsx:227
+#: src/pages/bridge/index.tsx:65
 msgid "Bridge"
 msgstr "Bridge"
 
 #~ msgid "Bridge Assets"
 #~ msgstr "Bridge Assets"
+
+#: src/pages/bridge/index.tsx:117
+msgid "Bridge Token"
+msgstr "Bridge Token"
+
+#: src/pages/bridge/index.tsx:79
+msgid "Bridge tokens to and from the Moonriver Network"
+msgstr "Bridge tokens to and from the Moonriver Network"
 
 #: src/modals/TokenStatsModal/index.tsx:168
 #~ msgid "Burnt Supply"
@@ -484,7 +496,7 @@ msgstr "Change"
 msgid "Chinese"
 msgstr "Chinese"
 
-#: src/modals/TokenStatsModal/index.tsx:149
+#: src/modals/TokenStatsModal/index.tsx:151
 msgid "Circulating Supply"
 msgstr "Circulating Supply"
 
@@ -545,7 +557,7 @@ msgstr "Clear all"
 msgid "Confirm"
 msgstr "Confirm"
 
-#: src/pages/exchange/add/[[...tokens]].tsx:476
+#: src/pages/exchange/add/[[...tokens]].tsx:498
 msgid "Confirm Adding Liquidity"
 msgstr "Confirm Adding Liquidity"
 
@@ -777,7 +789,7 @@ msgstr "Enter a recipient"
 msgid "Enter a valid slippage percentage"
 msgstr "Enter a valid slippage percentage"
 
-#: src/pages/exchange/add/[[...tokens]].tsx:418
+#: src/pages/exchange/add/[[...tokens]].tsx:440
 #: src/state/burn/hooks.ts:138
 #: src/state/limit-order/hooks.ts:168
 #: src/state/mint/hooks.ts:202
@@ -808,6 +820,7 @@ msgid "Exchange Rate"
 msgstr "Exchange Rate"
 
 #: src/modals/SearchModal/CurrencyList.tsx:161
+#: src/modals/SelectTokenModal/CurrencyList.tsx:160
 msgid "Expanded results from inactive Token Lists"
 msgstr "Expanded results from inactive Token Lists"
 
@@ -942,6 +955,10 @@ msgstr "Follow us on Twitter."
 msgid "Github"
 msgstr "Github"
 
+#: src/pages/faucet/index.tsx:122
+msgid "Give me some MOVR"
+msgstr "Give me some MOVR"
+
 #: src/components/Back.tsx:23
 msgid "Go Back"
 msgstr "Go Back"
@@ -956,13 +973,13 @@ msgstr "Go Back"
 
 #: src/features/farm/FarmListItem.tsx:97
 #: src/features/farm/FarmListItemDetails.tsx:235
-#: src/features/vault/VaultListItemDetails.tsx:293
+#: src/features/vault/VaultListItemDetails.tsx:296
 #: src/pages/farm/index.tsx:226
 msgid "Harvest"
 msgstr "Harvest"
 
 #: src/features/farm/FarmListItemDetails.tsx:247
-#: src/features/vault/VaultListItemDetails.tsx:317
+#: src/features/vault/VaultListItemDetails.tsx:320
 msgid "Harvest {0} SOLAR"
 msgstr "Harvest {0} SOLAR"
 
@@ -1294,7 +1311,7 @@ msgstr "Manage this pool"
 #~ msgid "Market"
 #~ msgstr "Market"
 
-#: src/modals/TokenStatsModal/index.tsx:151
+#: src/modals/TokenStatsModal/index.tsx:199
 msgid "Market Cap"
 msgstr "Market Cap"
 
@@ -1317,6 +1334,7 @@ msgstr "Market Cap"
 #~ msgstr "Matic Bridge"
 
 #: src/components/CurrencyInputPanel/index.tsx:149
+#: src/components/DualChainCurrencyInputPanel/index.tsx:108
 #: src/features/limit-order/CurrencyInput.tsx:43
 msgid "Max"
 msgstr "Max"
@@ -1374,6 +1392,10 @@ msgstr "Minimum received"
 #, fuzzy
 #~ msgid "Missed the Auction?"
 #~ msgstr ""
+
+#: src/pages/faucet/index.tsx:82
+msgid "Moonriver Faucet"
+msgstr "Moonriver Faucet"
 
 #: src/features/farm/FarmMenu.tsx:21
 #~ msgid "My Farms"
@@ -1446,6 +1468,7 @@ msgid "No pool found"
 msgstr "No pool found"
 
 #: src/modals/SearchModal/CurrencySearch.tsx:238
+#: src/modals/SelectTokenModal/TokenList.tsx:205
 msgid "No results found"
 msgstr "No results found"
 
@@ -1505,7 +1528,7 @@ msgstr "Order History"
 #~ msgid "Order by"
 #~ msgstr "Order by"
 
-#: src/pages/exchange/add/[[...tokens]].tsx:254
+#: src/pages/exchange/add/[[...tokens]].tsx:276
 msgid ""
 "Output is estimated. If the price changes by more than {0}% your transaction\n"
 "will revert."
@@ -1589,7 +1612,7 @@ msgstr "Pool Found!"
 #~ msgstr "Pool Rewards"
 
 #: src/components/PositionCard/index.tsx:77
-#: src/pages/exchange/add/[[...tokens]].tsx:251
+#: src/pages/exchange/add/[[...tokens]].tsx:273
 msgid "Pool Tokens"
 msgstr "Pool Tokens"
 
@@ -1614,6 +1637,10 @@ msgstr "Pooled {0}"
 #, fuzzy
 #~ msgid "Pour a hot bowl of MISO, the new <0>token launchpad</0> from SUSHI"
 #~ msgstr ""
+
+#: src/pages/bridge/index.tsx:126
+msgid "Powered by Anyswap Network"
+msgstr "Powered by Anyswap Network"
 
 #: src/pages/RemoveLiquidity/index.tsx:375
 #: src/pages/Swap/direct.tsx:360
@@ -1807,8 +1834,10 @@ msgstr "Select a rate"
 
 #: src/components/CurrencyInputPanel/index.tsx:121
 #: src/components/CurrencySelectPanel/index.tsx:95
+#: src/components/DualChainCurrencyInputPanel/index.tsx:90
 #: src/features/limit-order/CurrencySelect.tsx:74
 #: src/modals/SearchModal/CurrencySearch.tsx:192
+#: src/modals/SelectTokenModal/TokenList.tsx:184
 #: src/state/limit-order/hooks.ts:172
 #: src/state/swap/hooks.ts:196
 msgid "Select a token"
@@ -1856,6 +1885,10 @@ msgstr "Slippage tolerance"
 #: src/features/swap/AdvancedSwapDetails.tsx:105
 #~ msgid "Slippage tolerance..."
 #~ msgstr "Slippage tolerance..."
+
+#: src/pages/bridge/index.tsx:76
+msgid "Solar Bridge"
+msgstr "Solar Bridge"
 
 #: src/pages/vaults/index.tsx:154
 msgid "Solar Vault"
@@ -1945,7 +1978,7 @@ msgstr "Stake"
 #~ msgid "Submit Tool"
 #~ msgstr "Submit Tool"
 
-#: src/modals/TokenStatsModal/index.tsx:146
+#: src/modals/TokenStatsModal/index.tsx:145
 msgid "Supply & Market Cap"
 msgstr "Supply & Market Cap"
 
@@ -1954,7 +1987,7 @@ msgstr "Supply & Market Cap"
 #~ msgid "Supply APR"
 #~ msgstr "Supply APR"
 
-#: src/pages/exchange/add/[[...tokens]].tsx:277
+#: src/pages/exchange/add/[[...tokens]].tsx:299
 msgid "Supplying {0} {1} and {2} {3}"
 msgstr "Supplying {0} {1} and {2} {3}"
 
@@ -2133,11 +2166,16 @@ msgstr "Toggle Expert Mode"
 msgid "Token"
 msgstr "Token"
 
+#: src/pages/bridge/index.tsx:101
+msgid "Token to bridge:"
+msgstr "Token to bridge:"
+
 #: src/modals/SearchModal/Manage.tsx:64
 msgid "Tokens"
 msgstr "Tokens"
 
 #: src/modals/SearchModal/CurrencyList.tsx:165
+#: src/modals/SelectTokenModal/CurrencyList.tsx:164
 msgid ""
 "Tokens from inactive lists. Import specific tokens below or\n"
 "click Manage to activate more lists."
@@ -2218,7 +2256,7 @@ msgid "Unlock date"
 msgstr "Unlock date"
 
 #: src/features/farm/FarmListItemDetails.tsx:219
-#: src/features/vault/VaultListItemDetails.tsx:276
+#: src/features/vault/VaultListItemDetails.tsx:279
 msgid "Unstake"
 msgstr "Unstake"
 
@@ -2226,7 +2264,7 @@ msgstr "Unstake"
 #~ msgid "Unstaked"
 #~ msgstr "Unstaked"
 
-#: src/pages/exchange/add/[[...tokens]].tsx:412
+#: src/pages/exchange/add/[[...tokens]].tsx:434
 #: src/pages/exchange/swap/[[...tokens]].tsx:499
 msgid "Unsupported Asset"
 msgstr "Unsupported Asset"
@@ -2292,11 +2330,11 @@ msgstr "Vaults"
 #~ msgid "Vietnamese"
 #~ msgstr "Vietnamese"
 
-#: src/modals/TokenStatsModal/index.tsx:133
+#: src/modals/TokenStatsModal/index.tsx:132
 msgid "View Contract"
 msgstr "View Contract"
 
-#: src/pages/exchange/add/[[...tokens]].tsx:499
+#: src/pages/exchange/add/[[...tokens]].tsx:521
 #: src/pages/exchange/remove/[[...tokens]].tsx:850
 msgid "View Liquidity Positions"
 msgstr "View Liquidity Positions"
@@ -2421,7 +2459,7 @@ msgstr "You Pay:"
 msgid "You Will Receive"
 msgstr "You Will Receive"
 
-#: src/pages/exchange/add/[[...tokens]].tsx:347
+#: src/pages/exchange/add/[[...tokens]].tsx:369
 msgid "You are creating a pool"
 msgstr "You are creating a pool"
 
@@ -2449,7 +2487,7 @@ msgstr "You receive <0>(at least):</0>"
 #~ msgid "You receive:"
 #~ msgstr "You receive:"
 
-#: src/pages/exchange/add/[[...tokens]].tsx:347
+#: src/pages/exchange/add/[[...tokens]].tsx:369
 msgid "You will receive"
 msgstr "You will receive"
 
@@ -2564,7 +2602,7 @@ msgstr "Your transactions will appear here..."
 #~ msgid "above"
 #~ msgstr "above"
 
-#: src/features/farm/FarmListItem2.tsx:142
+#: src/features/farm/FarmListItem2.tsx:149
 #: src/features/vault/VaultListItem.tsx:141
 msgid "annualized"
 msgstr "annualized"
@@ -2638,7 +2676,7 @@ msgstr "or the transaction will revert."
 #~ msgid "{0, plural, one {Token} many {Tokens}}"
 #~ msgstr "{0, plural, one {Token} many {Tokens}}"
 
-#: src/modals/TokenStatsModal/index.tsx:106
+#: src/modals/TokenStatsModal/index.tsx:105
 msgid "{0}"
 msgstr "{0}"
 
@@ -2677,6 +2715,10 @@ msgstr "{0} {1} per {2}"
 #: src/pages/exchange/remove/[[...tokens]].tsx:638
 msgid "{0}/{1} Burned"
 msgstr "{0}/{1} Burned"
+
+#: src/components/ChainSelect/index.tsx:54
+msgid "{label}"
+msgstr "{label}"
 
 #: src/features/farm/FarmMenu.tsx:18
 msgid "{title}"
