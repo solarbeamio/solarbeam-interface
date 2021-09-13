@@ -10,12 +10,12 @@ const web3 = new Web3(NETWORK_URL)
 let inOrder = false
 let history = {
   ips: {},
-  wallets: {},
+  wallets: {}
 }
 
 const q = faunadb.query
 const client = new faunadb.Client({
-  secret: serverRuntimeConfig.faunadbSecret,
+  secret: serverRuntimeConfig.faunadbSecret
 })
 
 async function verifyRecaptcha(req) {
@@ -27,7 +27,8 @@ async function verifyRecaptcha(req) {
     if (response.data.success) {
       return true
     }
-  } catch (ex) {}
+  } catch (ex) {
+  }
   return false
 }
 
@@ -56,7 +57,7 @@ async function faucetSend(req) {
       gasLimit: '0x9C40',
       to: to,
       from: wallet.address,
-      value: web3.utils.toWei(`${value}`, 'ether'),
+      value: web3.utils.toWei(`${value}`, 'ether')
     }
     const signedTransaction = await web3.eth.accounts.signTransaction(transactionParams, wallet.privateKey)
 
@@ -64,12 +65,14 @@ async function faucetSend(req) {
 
     web3.eth
       .sendSignedTransaction(signedTransaction.rawTransaction)
-      .then(async () => {})
-      .catch((ex) => {})
+      .then(async () => {
+      })
+      .catch((ex) => {
+      })
 
     resolve({
       status: 200,
-      message: `You will receive MOVR in your wallet soon.`,
+      message: `You will receive MOVR in your wallet soon.`
     })
   })
 }
@@ -110,7 +113,8 @@ async function isBlacklisted(addr, ip) {
   } catch (ex) {
     try {
       ref = await client.query(q.Get(q.Match(q.Index('ip'), ip)))
-    } catch (ex2) {}
+    } catch (ex2) {
+    }
   }
 
   return ref
@@ -134,43 +138,31 @@ export default async function handler(req, res) {
   const address = req.body['address']
   const ip = req.headers['x-nf-client-connection-ip']
 
-  const ref = await isBlacklisted(address, ip)
-
-  if (ref) {
-    res.status(200).json({
-      status: 400,
-      message: 'Personal limit reached.',
-    })
-  } else {
-    if (!inOrder) {
-      inOrder = true
-      const verified = await verifyRecaptcha(req)
-      if (verified) {
-        // const limitMessage = checkLimit(req)
-        // if (!limitMessage) {
-        const ret = await faucetSend(req)
-        inOrder = false
-        res.status(200).json(ret)
-        // } else {
-        //   inOrder = false
-        //   res.status(200).json({
-        //     status: 400,
-        //     message: limitMessage,
-        //   })
-        // }
-      } else {
-        inOrder = false
+  if (!inOrder) {
+    inOrder = true
+    const verified = await verifyRecaptcha(req)
+    if (verified) {
+      const ref = await isBlacklisted(address, ip)
+      if (ref) {
         res.status(200).json({
           status: 400,
-          message: 'Invalid captcha.',
+          message: 'Personal limit reached.'
         })
+      } else {
+        const ret = await faucetSend(req)
+        res.status(200).json(ret)
       }
     } else {
-      inOrder = false
       res.status(200).json({
-        status: 429,
-        message: 'Processing too many orders, please try again in a moment.',
+        status: 400,
+        message: 'Invalid captcha.'
       })
     }
+    inOrder = false
+  } else {
+    res.status(200).json({
+      status: 429,
+      message: 'Processing too many orders, please try again in a moment.'
+    })
   }
 }
