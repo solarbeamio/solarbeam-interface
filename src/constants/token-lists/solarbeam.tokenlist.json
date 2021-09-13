@@ -74,7 +74,7 @@
       "symbol": "ETH",
       "decimals": 18,
       "chainId": 1285,
-      "logoURI": "https://solarbeam.io/images/tokens/eth.png"      
+      "logoURI": "https://solarbeam.io/images/tokens/eth.png"
     },
     {
       "name": "Binance Coin",
@@ -82,7 +82,7 @@
       "symbol": "BNB",
       "decimals": 18,
       "chainId": 1285,
-      "logoURI": "https://solarbeam.io/images/tokens/bnb.png"      
+      "logoURI": "https://solarbeam.io/images/tokens/bnb.png"
     },{
       "name": "MoonBeans",
       "address": "0xC2392DD3e3fED2c8Ed9f7f0bDf6026fcd1348453",
@@ -90,6 +90,13 @@
       "decimals": 18,
       "chainId": 1285,
       "logoURI": "https://solarbeam.io/images/tokens/beans.png"
+    },{
+      "name": "Laika Protocol",
+      "address": "0x65e66a61D0a8F1e686C2D6083ad611a10D84D97A",
+      "symbol": "LAIKA",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://solarbeam.io/images/tokens/laika.png"
     }
   ]
 }
