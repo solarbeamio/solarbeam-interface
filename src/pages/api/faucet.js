@@ -181,7 +181,7 @@ export default async function handler(req, res) {
     } else {
       res.status(200).json({
         status: 403,
-        message: 'This feature is available only for wallets which have used a bridge.',
+        message: 'This feature is available only for wallets which have used a bridge. If you used a bridge recently, please try again in some minutes.',
       })
     }
   } else {
