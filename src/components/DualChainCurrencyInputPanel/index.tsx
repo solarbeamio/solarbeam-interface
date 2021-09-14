@@ -1,6 +1,6 @@
 import { AbstractCurrency, Binance, ChainId, Currency, CurrencyAmount, Ether, Token } from '../../sdk'
 import React, { ReactNode, useCallback, useEffect, useState } from 'react'
-import { classNames, formatNumberScale } from '../../functions'
+import { classNames, formatNumber, formatNumberScale } from '../../functions'
 import Button from '../Button'
 import { ChevronDownIcon } from '@heroicons/react/outline'
 import CurrencyLogo from '../CurrencyLogo'
@@ -16,6 +16,8 @@ import { useLingui } from '@lingui/react'
 import { Chain, DEFAULT_CHAIN_FROM, DEFAULT_CHAIN_TO } from '../../sdk/entities/Chain'
 import SelectTokenModal from '../../modals/SelectTokenModal/SelectTokenModal'
 import { AnyswapTokensMap } from '../../pages/bridge'
+import { useWeb3React } from '@web3-react/core'
+import { BridgeContextName } from '../../constants'
 
 interface CurrencyInputPanelProps {
   value?: string
@@ -47,7 +49,7 @@ export default function DualChainCurrencyInputPanel({
   const { i18n } = useLingui()
   const [modalOpen, setModalOpen] = useState(false)
   const [toCurrency, setToCurrency] = useState<Currency | null>(null)
-  const { account, chainId } = useActiveWeb3React()
+  const { account } = useWeb3React(BridgeContextName)
 
   const selectedCurrencyBalance = useMultichainCurrencyBalance(
     chainFrom?.id,
@@ -195,7 +197,7 @@ export default function DualChainCurrencyInputPanel({
           </div>
           <div className={classNames('flex items-center w-full px-0')}>
             <div className="text-xs font-medium text-secondary whitespace-nowrap">
-              {selectedCurrencyBalanceDest?.toSignificant(4)} {currency?.symbol}
+              {formatNumber(selectedCurrencyBalanceDest?.toSignificant(4))} {currency?.symbol}
             </div>
           </div>
         </div>

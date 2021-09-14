@@ -23,6 +23,8 @@ import { useIsUserAddedToken } from '../../hooks/Tokens'
 import { useLingui } from '@lingui/react'
 import { formatNumberScale } from '../../functions'
 import { Chain } from '../../sdk/entities/Chain'
+import { useWeb3React } from '@web3-react/core'
+import { BridgeContextName } from '../../constants'
 
 function currencyKey(currency: Currency): string {
   return currency.isToken ? currency.address : 'ETHER'
@@ -106,7 +108,7 @@ function CurrencyRow({
   isSelected: boolean
   style: CSSProperties
 }) {
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId, library, activate } = useWeb3React(BridgeContextName)
   const key = currencyKey(currency)
   const balance = useMultichainCurrencyBalance(currency.chainId, account ?? undefined, currency)
 

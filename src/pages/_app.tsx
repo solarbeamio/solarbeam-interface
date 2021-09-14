@@ -23,7 +23,7 @@ import { Provider as ReduxProvider } from 'react-redux'
 import TransactionUpdater from '../state/transactions/updater'
 import UserUpdater from '../state/user/updater'
 import Web3ReactManager from '../components/Web3ReactManager'
-import { Web3ReactProvider } from '@web3-react/core'
+import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core'
 import dynamic from 'next/dynamic'
 import getLibrary from '../functions/getLibrary'
 import { i18n } from '@lingui/core'
@@ -36,6 +36,7 @@ import { usePricesApi } from '../features/farm/hooks'
 import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3'
 
 const Web3ProviderNetwork = dynamic(() => import('../components/Web3ProviderNetwork'), { ssr: false })
+const Web3ProviderNetworkBridge = dynamic(() => import('../components/Web3ProviderBridge'), { ssr: false })
 
 if (typeof window !== 'undefined' && !!window.ethereum) {
   window.ethereum.autoRefreshOnNetworkChange = false
@@ -94,6 +95,7 @@ function MyApp({
   // Allows for conditionally setting a guard to be hoisted per page
   const Guard = Component.Guard || Fragment
 
+
   return (
     <Fragment>
       <Head>
@@ -132,9 +134,10 @@ function MyApp({
         <meta key="og:description" property="og:description" content="Solarbeam - AMM on Moonriver." />
       </Head>
 
-        <I18nProvider i18n={i18n} forceRenderOnLocaleChange={false}>
-          <Web3ReactProvider getLibrary={getLibrary}>
-            <Web3ProviderNetwork getLibrary={getLibrary}>
+      <I18nProvider i18n={i18n} forceRenderOnLocaleChange={false}>
+        <Web3ReactProvider getLibrary={getLibrary}>
+          <Web3ProviderNetwork getLibrary={getLibrary}>
+            <Web3ProviderNetworkBridge getLibrary={getLibrary}>
               <Web3ReactManager>
                 <ReduxProvider store={store}>
                   <PriceContext.Provider value={priceData}>
@@ -155,9 +158,10 @@ function MyApp({
                   </PriceContext.Provider>
                 </ReduxProvider>
               </Web3ReactManager>
-            </Web3ProviderNetwork>
-          </Web3ReactProvider>
-        </I18nProvider>
+            </Web3ProviderNetworkBridge>
+          </Web3ProviderNetwork>
+        </Web3ReactProvider>
+      </I18nProvider>
     </Fragment>
   )
 }

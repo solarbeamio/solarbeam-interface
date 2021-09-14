@@ -16,7 +16,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { AutoRow } from '../../components/Row'
 import Container from '../../components/Container'
 import Head from 'next/head'
-import { ArrowDown, ArrowRight } from 'react-feather'
+import { ArrowDown, ArrowRight, Clock, Settings } from 'react-feather'
 import Typography from '../../components/Typography'
 import Web3Connect from '../../components/Web3Connect'
 import { t } from '@lingui/macro'
@@ -39,6 +39,14 @@ import { NETWORK_ICON, NETWORK_LABEL } from '../../constants/networks'
 import { ethers } from 'ethers'
 import { useTokenContract } from '../../hooks'
 import Loader from '../../components/Loader'
+import { getWeb3ReactContext, useWeb3React } from '@web3-react/core'
+import { BridgeContextName } from '../../constants'
+import { bridgeInjected } from '../../connectors'
+import NavLink from '../../components/NavLink'
+import { useTransactionAdder } from '../../state/bridgeTransactions/hooks'
+import { useRouter } from 'next/router'
+import Modal from '../../components/Modal'
+import ModalHeader from '../../components/ModalHeader'
 
 type AnyswapTokenInfo = {
   ID: string
@@ -86,10 +94,25 @@ export type AnyswapTokensMap = { [chainId: number]: { [contract: string]: Availa
 
 export default function Bridge() {
   const { i18n } = useLingui()
-  const { account, chainId, library } = useActiveWeb3React()
+
+  const { account: activeAccount, chainId: activeChainId } = useActiveWeb3React()
+  const { account, chainId, library, activate } = useWeb3React(BridgeContextName)
+  const { push } = useRouter()
+
+  const addTransaction = useTransactionAdder()
 
   const currentChainFrom = chainId &&
     SUPPORTED_NETWORKS[chainId] && { id: chainId, icon: NETWORK_ICON[chainId], name: NETWORK_LABEL[chainId] }
+
+  useEffect(() => {
+    activate(bridgeInjected)
+    if (chainId) {
+      if (chainId == chainTo.id) {
+        setChainTo(chainFrom)
+      }
+      setChainFrom({ id: chainId, icon: NETWORK_ICON[chainId], name: NETWORK_LABEL[chainId] })
+    }
+  }, [activate, chainId, activeAccount, activeChainId])
 
   const [chainFrom, setChainFrom] = useState<Chain | null>(currentChainFrom || DEFAULT_CHAIN_FROM)
 
@@ -103,6 +126,7 @@ export default function Bridge() {
   const [tokenToBridge, setTokenToBridge] = useState<AvailableChainsInfo | null>(null)
   const currencyContract = useTokenContract(currency0?.isToken && currency0?.address, true)
   const [pendingTx, setPendingTx] = useState(false)
+  const [showConfirmation, setShowConfirmation] = useState(false)
 
   const selectedCurrencyBalance = useMultichainCurrencyBalance(
     chainFrom?.id,
@@ -185,6 +209,7 @@ export default function Bridge() {
               }
             }
           })
+
           return result
         })
   )
@@ -327,28 +352,44 @@ export default function Bridge() {
       : `Bridge ${currency0?.symbol}`
 
   const bridgeToken = async () => {
-    const amountToBridge = ethers.utils.parseUnits(currencyAmount, tokenToBridge.other.Decimals)
+    const token = currency0.chainId == ChainId.MOONRIVER ? tokenToBridge.token : tokenToBridge.other
+
+    const amountToBridge = ethers.utils.parseUnits(currencyAmount, token.Decimals)
     setPendingTx(true)
 
     try {
       if (currency0.isNative) {
-        await library.getSigner().sendTransaction({
+        const tx = await library.getSigner().sendTransaction({
           from: account,
-          to: tokenToBridge.other.DepositAddress,
+          to: token.DepositAddress,
           value: amountToBridge,
         })
+        addTransaction(tx, {
+          summary: `${i18n._(t`Bridge `)} ${tokenToBridge.symbol}`,
+          destChainId: chainTo.id.toString(),
+          srcChaindId: chainFrom.id.toString(),
+          pairId: tokenToBridge.id,
+        })
+        push('/bridge/history')
       } else if (currency0.isToken) {
         const fn = currencyContract?.interface?.getFunction('transfer')
         const data = currencyContract.interface.encodeFunctionData(fn, [
-          tokenToBridge.other.DepositAddress,
+          token.DepositAddress,
           amountToBridge.toString(),
         ])
-        await library.getSigner().sendTransaction({
+        const tx = await library.getSigner().sendTransaction({
           value: 0x0,
           from: account,
           to: currency0.address,
           data,
         })
+        addTransaction(tx, {
+          summary: `${i18n._(t`Bridge `)} ${tokenToBridge.symbol}`,
+          destChainId: chainTo.id.toString(),
+          srcChaindId: chainFrom.id.toString(),
+          pairId: tokenToBridge.id,
+        })
+        push('/bridge/history')
       }
     } catch (ex) {
     } finally {
@@ -357,6 +398,21 @@ export default function Bridge() {
   }
   return (
     <>
+      <Modal isOpen={showConfirmation} onDismiss={() => setShowConfirmation(false)}>
+        <div className="space-y-4">
+          <ModalHeader title={i18n._(t`Bridge ${currency0?.symbol}`)} onClose={() => setShowConfirmation(false)} />
+          <Typography variant="sm" className="font-medium">
+            {i18n._(t`You are sending ${currencyAmount} ${currency0?.symbol} from ${chainFrom?.name}`)}
+          </Typography>
+          <Typography variant="sm" className="font-medium">
+            {i18n._(t`You will receive ${currencyAmount} ${currency0?.symbol} on ${chainTo?.name}`)}
+          </Typography>
+          <Button color="gradient" size="lg" onClick={() => bridgeToken()}>
+            <Typography variant="lg">{i18n._(t`Bridge ${currency0?.symbol}`)}</Typography>
+          </Button>
+        </div>
+      </Modal>
+
       <Head>
         <title>{i18n._(t`Bridge`)} | Solarbeam</title>
         <meta key="description" name="description" content="Bridge" />
@@ -367,14 +423,45 @@ export default function Bridge() {
       <Container maxWidth="2xl" className="space-y-6">
         <DoubleGlowShadow>
           <div className="p-4 space-y-4 rounded bg-dark-900" style={{ zIndex: 1 }}>
-            <div className="p-4 mb-3 space-y-3 text-center">
-              <Typography component="h1" variant="h3">
-                {i18n._(t`Solar Bridge`)}
-              </Typography>
-              <Typography component="h3" variant="base">
-                {i18n._(t`Bridge tokens to and from the Moonriver Network`)}
-              </Typography>
+            <div className="flex items-center justify-center mb-4 space-x-3">
+              <div className="grid grid-cols-2 rounded p-3px bg-dark-800 h-[46px]">
+                <NavLink
+                  activeClassName="font-bold border rounded text-high-emphesis border-dark-700 bg-dark-700"
+                  exact
+                  href={{
+                    pathname: '/bridge',
+                  }}
+                >
+                  <a className="flex items-center justify-center px-4 text-base font-medium text-center rounded-md text-secondary hover:text-high-emphesis ">
+                    <Typography component="h1" variant="lg">
+                      {i18n._(t`Bridge`)}
+                    </Typography>
+                  </a>
+                </NavLink>
+                <NavLink
+                  activeClassName="font-bold border rounded text-high-emphesis border-dark-700 bg-dark-700"
+                  exact
+                  href={{
+                    pathname: '/bridge/history',
+                  }}
+                >
+                  <a className="flex items-center justify-center px-4 text-base font-medium text-center rounded-md text-secondary hover:text-high-emphesis">
+                    <Typography component="h1" variant="lg">
+                      {i18n._(t`History`)}
+                    </Typography>
+                  </a>
+                </NavLink>
+              </div>
             </div>
+
+            <div className="p-4 text-center">
+              <div className="justify-between space-x-3 items-center">
+                <Typography component="h3" variant="base">
+                  {i18n._(t`Bridge tokens to and from the Moonriver Network`)}
+                </Typography>
+              </div>
+            </div>
+
             <div className="flex flex-row justify-between items-center text-center">
               <ChainSelect
                 availableChains={Object.keys(anyswapInfo || {}).map((r) => parseInt(r))}
@@ -415,7 +502,7 @@ export default function Bridge() {
                 <Web3Connect size="lg" color="gradient" className="w-full" />
               ) : (
                 <Button
-                  onClick={() => bridgeToken()}
+                  onClick={() => setShowConfirmation(true)}
                   color={buttonDisabled ? 'gray' : 'gradient'}
                   size="lg"
                   disabled={buttonDisabled}

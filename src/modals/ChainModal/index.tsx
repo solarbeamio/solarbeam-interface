@@ -10,6 +10,9 @@ import React from 'react'
 import cookie from 'cookie-cutter'
 import { useActiveWeb3React } from '../../hooks/useActiveWeb3React'
 import { Chain } from '../../sdk/entities/Chain'
+import { BridgeContextName } from '../../constants'
+import { useWeb3React } from '@web3-react/core'
+import { bridgeInjected, injected } from '../../connectors'
 
 export const SUPPORTED_NETWORKS: {
   [chainId in ChainId]?: {
@@ -76,7 +79,7 @@ export default function ChainModal({
   onDismiss,
   onSelect,
 }: ChainModalProps): JSX.Element | null {
-  const { chainId, library, account } = useActiveWeb3React()
+  const { chainId, library, account, activate } = useWeb3React(BridgeContextName)
 
   return (
     <Modal isOpen={isOpen} onDismiss={onDismiss} maxWidth={400}>
@@ -105,6 +108,7 @@ export default function ChainModal({
               onClick={() => {
                 onSelect({ id: key, icon: NETWORK_ICON[key], name: NETWORK_LABEL[key] })
                 onDismiss()
+                activate(bridgeInjected)
                 const params = SUPPORTED_NETWORKS[key]
                 cookie.set('chainId', key)
                 if (key === ChainId.MAINNET) {

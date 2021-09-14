@@ -7,6 +7,7 @@ import styled from 'styled-components'
 import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
 import { useWalletModalToggle } from '../../state/application/hooks'
+import { useRouter } from 'next/router'
 
 const NetworkIcon = styled(Activity)`
   width: 16px;
@@ -17,7 +18,9 @@ export default function Web3Connect({ color = 'gray', size = 'sm', className = '
   const { i18n } = useLingui()
   const toggleWalletModal = useWalletModalToggle()
   const { error } = useWeb3React()
-  return error ? (
+  const { route } = useRouter();
+  
+  return error ?  (
     <div
       className="flex items-center w-full justify-center px-4 py-2 font-semibold text-white border rounded bg-opacity-80 border-red bg-red hover:bg-opacity-100"
       onClick={toggleWalletModal}

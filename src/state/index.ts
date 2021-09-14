@@ -10,16 +10,18 @@ import mint from './mint/reducer'
 import multicall from './multicall/reducer'
 import swap from './swap/reducer'
 import transactions from './transactions/reducer'
+import bridgeTransactions from './bridgeTransactions/reducer'
 import { updateVersion } from './global/actions'
 import user from './user/reducer'
 import zap from './zap/reducer'
 
-const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists']
+const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists', 'bridgeTransactions']
 
 const reducer = combineReducers({
   application,
   user,
   transactions,
+  bridgeTransactions,
   swap,
   mint,
   burn,

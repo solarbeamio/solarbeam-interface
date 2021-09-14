@@ -5,7 +5,7 @@ import { isTransactionRecent, useAllTransactions } from '../../state/transaction
 import { AbstractConnector } from '@web3-react/abstract-connector'
 import Image from 'next/image'
 import Loader from '../Loader'
-import { NetworkContextName } from '../../constants'
+import { BridgeContextName, NetworkContextName } from '../../constants'
 import { TransactionDetails } from '../../state/transactions/reducer'
 import WalletModal from '../../modals/WalletModal'
 import Web3Connect from '../Web3Connect'
@@ -16,6 +16,7 @@ import useENSName from '../../hooks/useENSName'
 import { useLingui } from '@lingui/react'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { useWeb3React } from '@web3-react/core'
+import { useRouter } from 'next/router'
 
 const IconWrapper = styled.div<{ size?: number }>`
   display: flex;
@@ -81,6 +82,8 @@ function StatusIcon({ connector }: { connector: AbstractConnector }) {
 function Web3StatusInner() {
   const { i18n } = useLingui()
   const { account, connector } = useWeb3React()
+  const { account: bridgeAccount } = useWeb3React(BridgeContextName)
+  const { route } = useRouter()
 
   const { ENSName } = useENSName(account ?? undefined)
 
@@ -107,28 +110,39 @@ function Web3StatusInner() {
 
   const toggleWalletModal = useWalletModalToggle()
 
-  if (account) {
+  if (bridgeAccount && (route == '/bridge' || route == '/bridge/history')) {
     return (
       <div
         id="web3-status-connected"
         className="flex items-center px-3 py-2 text-bold rounded-lg bg-transparent text-sm"
-        onClick={toggleWalletModal}
       >
-        {hasPendingTransactions ? (
-          <div className="flex items-center justify-between">
-            <div className="pr-2">
-              {pending?.length} {i18n._(t`Pending`)}
-            </div>{' '}
-            <Loader stroke="white" />
-          </div>
-        ) : (
-          <div className="mr-2">{ENSName || shortenAddress(account)}</div>
-        )}
-        {/* {!hasPendingTransactions && connector && <StatusIcon connector={connector} />} */}
+        <div className="mr-2">{shortenAddress(bridgeAccount)}</div>
       </div>
     )
   } else {
-    return <Web3Connect style={{ paddingTop: '6px', paddingBottom: '6px' }} />
+    if (account) {
+      return (
+        <div
+          id="web3-status-connected"
+          className="flex items-center px-3 py-2 text-bold rounded-lg bg-transparent text-sm"
+          onClick={toggleWalletModal}
+        >
+          {hasPendingTransactions ? (
+            <div className="flex items-center justify-between">
+              <div className="pr-2">
+                {pending?.length} {i18n._(t`Pending`)}
+              </div>{' '}
+              <Loader stroke="white" />
+            </div>
+          ) : (
+            <div className="mr-2">{ENSName || shortenAddress(account)}</div>
+          )}
+          {/* {!hasPendingTransactions && connector && <StatusIcon connector={connector} />} */}
+        </div>
+      )
+    } else {
+      return <Web3Connect style={{ paddingTop: '6px', paddingBottom: '6px' }} />
+    }
   }
 }
 

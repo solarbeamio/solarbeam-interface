@@ -39,7 +39,6 @@ export default function Web3ReactManager({ children }: { children: JSX.Element }
   } = useWeb3React(NetworkContextName)
   const { account, chainId, library } = useActiveWeb3React()
   const [wrongNetwork, setWrongNetwork] = useState(false)
-  
 
   // useEffect(() => {
   //   console.debug({
@@ -58,7 +57,7 @@ export default function Web3ReactManager({ children }: { children: JSX.Element }
   const triedEager = useEagerConnect()
 
   useEffect(() => {
-    if (window && window.ethereum && router.route !== '/bridge') {
+    if (window && window.ethereum && router.route !== '/bridge' && router.route !== '/bridge/history') {
       const provider: any = window.ethereum
       const params = SUPPORTED_NETWORKS[ChainId.MOONRIVER]
 
