@@ -30,7 +30,7 @@ import { i18n } from '@lingui/core'
 import store from '../state'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
-import PriceContext from '../contexts/priceContext'
+import PriceProvider  from '../contexts/priceContext'
 import FarmContext from '../contexts/farmContext'
 import { usePricesApi } from '../features/farm/hooks'
 import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3'
@@ -53,7 +53,6 @@ function MyApp({
   }
 }) {
   const router = useRouter()
-  const priceData = usePricesApi()
 
   const { pathname, query, locale } = router
 
@@ -94,7 +93,6 @@ function MyApp({
 
   // Allows for conditionally setting a guard to be hoisted per page
   const Guard = Component.Guard || Fragment
-
 
   return (
     <Fragment>
@@ -140,7 +138,7 @@ function MyApp({
             <Web3ProviderNetworkBridge getLibrary={getLibrary}>
               <Web3ReactManager>
                 <ReduxProvider store={store}>
-                  <PriceContext.Provider value={priceData}>
+                  <PriceProvider>
                     <>
                       <ListsUpdater />
                       <UserUpdater />
@@ -155,7 +153,7 @@ function MyApp({
                         </Guard>
                       </Layout>
                     </Provider>
-                  </PriceContext.Provider>
+                  </PriceProvider>
                 </ReduxProvider>
               </Web3ReactManager>
             </Web3ProviderNetworkBridge>

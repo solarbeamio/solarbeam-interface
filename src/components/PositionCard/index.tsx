@@ -129,7 +129,6 @@ export default function FullPositionCard({ pair, border, stakedBalance }: Positi
   // if staked balance balance provided, add to standard liquidity amount
   const userPoolBalance = stakedBalance ? userDefaultPoolBalance?.add(stakedBalance) : userDefaultPoolBalance
 
-
   const poolTokenPercentage =
     !!userPoolBalance &&
     !!totalPoolTokens &&
@@ -245,7 +244,7 @@ export default function FullPositionCard({ pair, border, stakedBalance }: Positi
                 color="light-green"
                 variant="link"
                 onClick={() => {
-                  router.push(`/exchange/add/${pair.liquidityToken.address}`)
+                  router.push(`/exchange/add/${currencyId(currency0)}/${currencyId(currency1)}`)
                 }}
               >
                 {i18n._(t`Add`)}

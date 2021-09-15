@@ -16,7 +16,7 @@ import { isMobile } from 'react-device-detect'
 import YieldDetails from '../../components/YieldDetails'
 import IconWrapper from '../../components/IconWrapper'
 import { WNATIVE } from '../../constants'
-import PriceContext from '../../contexts/priceContext'
+import { PriceContext } from '../../contexts/priceContext'
 import { Info } from 'react-feather'
 import moment from 'moment'
 
@@ -28,9 +28,9 @@ const VaultListItem = ({ farm, ...rest }) => {
 
   const priceData = useContext(PriceContext)
 
-  const solarPrice = priceData?.data?.['solar']
-  const movrPrice = priceData?.data?.['movr']
-  const ribPrice = priceData?.data?.['rib']
+  const solarPrice = priceData?.['solar']
+  const movrPrice = priceData?.['movr']
+  const ribPrice = priceData?.['rib']
 
   const [selectedFarm, setSelectedFarm] = useState<string>(null)
 

@@ -3,7 +3,9 @@ import {
   BNB_USD_PAIR,
   LOCKER_ADDRESS,
   MINICHEF_ADDRESS,
+  MOVR_USDC_PAIR,
   MULTICALL2_ADDRESS,
+  RIB_MOVR_PAIR,
   SOLAR_MOVR_PAIR,
   SOLAR_VAULT_ADDRESS,
   WNATIVE,
@@ -205,6 +207,17 @@ export function useLockerContract(withSignerIfPossible?: boolean): Contract | nu
 export function useSolarMovrContract(withSignerIfPossible?: boolean): Contract | null {
   const { chainId } = useActiveWeb3React()
   return useContract(chainId && SOLAR_MOVR_PAIR[chainId], IUniswapV2PairABI, withSignerIfPossible)
+}
+
+export function useMovrUsdcContract(withSignerIfPossible?: boolean): Contract | null {
+  const { chainId } = useActiveWeb3React()
+  return useContract(chainId && MOVR_USDC_PAIR[chainId], IUniswapV2PairABI, withSignerIfPossible)
+}
+
+
+export function useRibMovrContract(withSignerIfPossible?: boolean): Contract | null {
+  const { chainId } = useActiveWeb3React()
+  return useContract(chainId && RIB_MOVR_PAIR[chainId], IUniswapV2PairABI, withSignerIfPossible)
 }
 
 export function useBNBPairContract(withSignerIfPossible?: boolean): Contract | null {

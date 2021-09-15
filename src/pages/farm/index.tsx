@@ -17,7 +17,7 @@ import DoubleGlowShadow from '../../components/DoubleGlowShadow'
 import { SOLAR_ADDRESS, AVERAGE_BLOCK_TIME, WNATIVE } from '../../constants'
 import { POOLS } from '../../constants/farms'
 import SolarbeamLogo from '../../components/SolarbeamLogo'
-import PriceContext from '../../contexts/priceContext'
+import { PriceContext } from '../../contexts/priceContext'
 import useMasterChef from '../../features/farm/useMasterChef'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import { useTVL } from '../../hooks/useV2Pairs'
@@ -42,8 +42,8 @@ export default function Farm(): JSX.Element {
 
   const priceData = useContext(PriceContext)
 
-  const solarPrice = priceData?.data?.['solar']
-  const movrPrice = priceData?.data?.['movr']
+  const solarPrice = priceData?.['solar']
+  const movrPrice = priceData?.['movr']
 
   const tvlInfo = useTVL()
 

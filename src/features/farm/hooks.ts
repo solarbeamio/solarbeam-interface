@@ -8,6 +8,8 @@ import {
   useBNBPairContract,
   useSolarMovrContract,
   useSolarVaultContract,
+  useMovrUsdcContract,
+  useRibMovrContract,
 } from '../../hooks'
 
 import { Contract } from '@ethersproject/contracts'
@@ -286,8 +288,18 @@ export function useFarms() {
 }
 
 export function usePricesApi() {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  return useAsync(usePriceApi, true)
+  const movrPrice = useMovrPrice()
+  const solarPrice = useSolarPrice()
+  const ribPrice = useRibPrice()
+
+  return useMemo(() => {
+    return {
+      movr: movrPrice,
+      solar: solarPrice * movrPrice,
+      rib: ribPrice * movrPrice,
+      usdc: 1,
+    }
+  }, [movrPrice, ribPrice, solarPrice])
 }
 
 export function useFarmsApi() {
@@ -295,9 +307,19 @@ export function useFarmsApi() {
   return useAsync(usePriceApi, true)
 }
 
+export function useMovrPrice() {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  return usePrice(useMovrUsdcContract(), 12)
+}
+
 export function useSolarPrice() {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   return usePrice(useSolarMovrContract())
+}
+
+export function useRibPrice() {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  return usePrice(useRibMovrContract())
 }
 
 export function useBNBPrice() {

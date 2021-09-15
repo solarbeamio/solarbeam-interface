@@ -14,7 +14,7 @@ import DoubleGlowShadow from '../../components/DoubleGlowShadow'
 import { SOLAR_ADDRESS, AVERAGE_BLOCK_TIME, WNATIVE } from '../../constants'
 import { VAULTS } from '../../constants/vaults'
 import SolarbeamLogo from '../../components/SolarbeamLogo'
-import PriceContext from '../../contexts/priceContext'
+import { PriceContext } from '../../contexts/priceContext'
 import useMasterChef from '../../features/farm/useMasterChef'
 import { useTVL } from '../../hooks/useV2Pairs'
 import { getAddress } from '@ethersproject/address'
@@ -33,17 +33,17 @@ export default function Vault(): JSX.Element {
 
   const priceData = useContext(PriceContext)
 
-  const solarPrice = priceData?.data?.['solar']
-  const movrPrice = priceData?.data?.['movr']
+  const solarPrice = priceData?.['solar']
+  const movrPrice = priceData?.['movr']
 
   const tvlInfo = useTVL()
-  
+
   const summTvl = tvlInfo.reduce((previousValue, currentValue) => {
     return previousValue + currentValue.tvl
   }, 0)
 
   const summTvlVaults = vaults.reduce((previousValue, currentValue) => {
-    return previousValue + (currentValue.totalLp / 1e18)  * solarPrice
+    return previousValue + (currentValue.totalLp / 1e18) * solarPrice
   }, 0)
 
   const blocksPerDay = 86400 / Number(AVERAGE_BLOCK_TIME[chainId])

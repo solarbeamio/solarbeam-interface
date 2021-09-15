@@ -5,7 +5,7 @@ import { useTokenStatsModalToggle } from '../../state/application/hooks'
 import { useWeb3React } from '@web3-react/core'
 import TokenStatsModal from '../../modals/TokenStatsModal'
 import { ChainId } from '../../sdk'
-import PriceContext from '../../contexts/priceContext'
+import { PriceContext } from '../../contexts/priceContext'
 
 const supportedTokens = {
   MOVR: {
@@ -45,7 +45,7 @@ function TokenStatusInner({ token }) {
         />
       )}
       <div className="px-3 py-2 text-primary text-bold">
-        {formatNumberScale(priceData?.data?.[token.symbol.toLowerCase()], true, 2)}
+        {formatNumberScale(priceData?.[token.symbol.toLowerCase()], true, 2)}
       </div>
     </div>
   )

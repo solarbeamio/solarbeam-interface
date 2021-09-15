@@ -14,7 +14,7 @@ import Typography from '../../components/Typography'
 import { useTokenInfo } from '../../features/farm/hooks'
 import { formatNumberScale } from '../../functions'
 import { ExternalLink as LinkIcon } from 'react-feather'
-import PriceContext from '../../contexts/priceContext'
+import { PriceContext } from '../../contexts/priceContext'
 import { useSolarContract } from '../../hooks'
 import QuestionHelper from '../../components/QuestionHelper'
 
@@ -79,7 +79,7 @@ export default function TokenStatsModal({ token }: { token: any }) {
 
   if (token.symbol == 'MOVR') tokenInfo = { circulatingSupply: '1500000', burnt: '0', totalSupply: '0', vaults: '0' }
 
-  const price = formatNumberScale(priceData?.data?.[token.symbol.toLowerCase()], true, 2)
+  const price = formatNumberScale(priceData?.[token.symbol.toLowerCase()], true, 2)
 
   const modalOpen = useModalOpen(token.symbol == 'SOLAR' ? ApplicationModal.SOLAR_STATS : ApplicationModal.MOVR_STATS)
 
@@ -199,7 +199,7 @@ export default function TokenStatsModal({ token }: { token: any }) {
                 {i18n._(t`Market Cap`)}
               </Typography>,
               formatNumberScale(
-                Number(tokenInfo.circulatingSupply) * (priceData?.data?.[token.symbol.toLowerCase()] || 0),
+                Number(tokenInfo.circulatingSupply) * (priceData?.[token.symbol.toLowerCase()] || 0),
                 true,
                 2
               )

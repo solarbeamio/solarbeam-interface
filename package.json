@@ -150,6 +150,8 @@
     "cids": "^1.1.7",
     "decimal.js-light": "^2.5.1",
     "faunadb": "^4.4.1",
+    "graphql": "^15.5.3",
+    "graphql-request": "^3.5.0",
     "moment": "^2.29.1",
     "multicodec": "^3.1.0",
     "multihashes": "^4.0.2",

@@ -27,6 +27,18 @@ export const SOLAR_MOVR_PAIR: AddressMap = {
   [ChainId.MOONRIVER]: '0x7eDA899b3522683636746a2f3a7814e6fFca75e1',
 }
 
+export const MOVR_USDC_PAIR: AddressMap = {
+  [ChainId.ROPSTEN]: '',
+  [ChainId.BSC]: '',
+  [ChainId.MOONRIVER]: '0xe537f70a8b62204832B8Ba91940B77d3f79AEb81',
+}
+
+export const RIB_MOVR_PAIR: AddressMap = {
+  [ChainId.ROPSTEN]: '',
+  [ChainId.BSC]: '',
+  [ChainId.MOONRIVER]: '0x0acDB54E610dAbC82b8FA454b21AD425ae460DF9',
+}
+
 export const BNB_USD_PAIR: AddressMap = {
   [ChainId.ROPSTEN]: '',
   [ChainId.BSC]: '',

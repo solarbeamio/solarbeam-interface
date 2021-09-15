@@ -6,7 +6,7 @@ import { useContext, useMemo } from 'react'
 import { useMultipleContractSingleData } from '../state/multicall/hooks'
 import { SOLAR_ADDRESS, FACTORY_ADDRESS, SOLAR_DISTRIBUTOR_ADDRESS, SOLAR_VAULT_ADDRESS } from '../constants'
 import { useActiveWeb3React } from '../hooks/useActiveWeb3React'
-import PriceContext from '../contexts/priceContext'
+import { PriceContext } from '../contexts/priceContext'
 import { POOLS, TokenInfo } from '../constants/farms'
 import { concat } from 'lodash'
 import { VAULTS } from '../constants/vaults'
@@ -78,9 +78,9 @@ export interface TVLInfo {
 export function useVaultTVL(): TVLInfo[] {
   const { chainId } = useActiveWeb3React()
   const priceData = useContext(PriceContext)
-  const solarPrice = priceData?.data?.['solar']
-  const movrPrice = priceData?.data?.['movr']
-  const ribPrice = priceData?.data?.['rib']
+  const solarPrice = priceData?.['solar']
+  const movrPrice = priceData?.['movr']
+  const ribPrice = priceData?.['rib']
 
   const farmingPools = Object.keys(VAULTS[ChainId.MOONRIVER]).map((key) => {
     return { ...VAULTS[ChainId.MOONRIVER][key] }
@@ -107,7 +107,7 @@ export function useVaultTVL(): TVLInfo[] {
         token.symbol == 'WMOVR' ||
         token.symbol == 'MOVR' ||
         token.symbol == 'RIB' ||
-        token.symbol == 'USDC'||
+        token.symbol == 'USDC' ||
         token.symbol == 'BUSD'
       )
     }
@@ -211,9 +211,9 @@ export function useVaultTVL(): TVLInfo[] {
 export function useTVL(): TVLInfo[] {
   const { chainId } = useActiveWeb3React()
   const priceData = useContext(PriceContext)
-  const solarPrice = priceData?.data?.['solar']
-  const movrPrice = priceData?.data?.['movr']
-  const ribPrice = priceData?.data?.['rib']
+  const solarPrice = priceData?.['solar']
+  const movrPrice = priceData?.['movr']
+  const ribPrice = priceData?.['rib']
 
   const farmingPools = Object.keys(POOLS[ChainId.MOONRIVER]).map((key) => {
     return { ...POOLS[ChainId.MOONRIVER][key], lpToken: key }
@@ -371,9 +371,9 @@ export function useV2PairsWithPrice(
   const totalSupply = useMultipleContractSingleData(pairAddresses, PAIR_INTERFACE, 'totalSupply')
 
   const priceData = useContext(PriceContext)
-  const solarPrice = priceData?.data?.['solar']
-  const movrPrice = priceData?.data?.['movr']
-  const ribPrice = priceData?.data?.['rib']
+  const solarPrice = priceData?.['solar']
+  const movrPrice = priceData?.['movr']
+  const ribPrice = priceData?.['rib']
 
   return useMemo(() => {
     function isKnownToken(token: Token) {
