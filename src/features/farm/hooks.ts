@@ -222,13 +222,13 @@ export function usePriceApi() {
   return Promise.all([axios.get('/api/prices')])
 }
 
-export function usePrice(pairContract?: Contract | null, pairDecimals?: number | null) {
+export function usePrice(pairContract?: Contract | null, pairDecimals?: number | null, invert: boolean = false) {
   const { account, chainId } = useActiveWeb3React()
 
   const result = useSingleCallResult(pairContract ? pairContract : null, 'getReserves', undefined, NEVER_RELOAD)?.result
 
-  const _reserve1 = result?.['reserve1']
-  const _reserve0 = result?.['reserve0']
+  const _reserve1 = invert ? result?.['reserve0'] : result?.['reserve1']
+  const _reserve0 = invert ? result?.['reserve1'] : result?.['reserve0']
 
   const price = _reserve1 ? (Number(_reserve1) / Number(_reserve0)) * (pairDecimals ? 10 ** pairDecimals : 1) : 0
 
@@ -319,7 +319,7 @@ export function useSolarPrice() {
 
 export function useRibPrice() {
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  return usePrice(useRibMovrContract())
+  return usePrice(useRibMovrContract(), 0, true)
 }
 
 export function useBNBPrice() {
