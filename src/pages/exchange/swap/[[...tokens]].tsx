@@ -483,6 +483,7 @@ export default function Swap() {
                     showInverted={showInverted}
                     setShowInverted={setShowInverted}
                     className="bg-dark-900"
+                    trade={trade}
                   />
                 </div>
               )}

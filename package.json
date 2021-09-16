@@ -161,6 +161,7 @@
     "tiny-invariant": "^1.1.0",
     "toformat": "^2.0.0",
     "web3": "3.0.0-rc.4",
-    "web3-eth-abi": "^1.5.2"
+    "web3-eth-abi": "^1.5.2",
+    "lightweight-charts": "^3.6.1"
   }
 }

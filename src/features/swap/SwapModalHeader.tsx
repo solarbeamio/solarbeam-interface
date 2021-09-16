@@ -75,6 +75,7 @@ export default function SwapModalHeader({
         showInverted={showInverted}
         setShowInverted={setShowInverted}
         className="px-0"
+        trade={trade}
       />
 
       <AdvancedSwapDetails trade={trade} allowedSlippage={allowedSlippage} minerBribe={minerBribe} />

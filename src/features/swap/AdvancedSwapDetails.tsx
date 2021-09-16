@@ -76,15 +76,15 @@ export function AdvancedSwapDetails({ trade, allowedSlippage, minerBribe }: Adva
           </div>
         </RowFixed>
       </RowBetween>
-      <RowBetween>
-        <RowFixed>
-          <div className="text-sm text-secondary">{i18n._(t`Price Impact`)}</div>
-          <QuestionHelper
-            text={i18n._(t`The difference between the market price and estimated price due to trade size.`)}
-          />
-        </RowFixed>
-        <FormattedPriceImpact priceImpact={priceImpact} />
-      </RowBetween>
+      {/*<RowBetween>*/}
+      {/*  <RowFixed>*/}
+      {/*    <div className="text-sm text-secondary">{i18n._(t`Price Impact`)}</div>*/}
+      {/*    <QuestionHelper*/}
+      {/*      text={i18n._(t`The difference between the market price and estimated price due to trade size.`)}*/}
+      {/*    />*/}
+      {/*  </RowFixed>*/}
+      {/*  <FormattedPriceImpact priceImpact={priceImpact} />*/}
+      {/*</RowBetween>*/}
 
       <RowBetween>
         <RowFixed>

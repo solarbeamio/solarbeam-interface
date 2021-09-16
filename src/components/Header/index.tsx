@@ -77,7 +77,7 @@ function AppBar(): JSX.Element {
                       </NavLink>
                       <NavLink href={'/faucet'}>
                         <a
-                          id={`nft-nav-link`}
+                          id={`faucet-nav-link`}
                           className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
                         >
                           {i18n._(t`Faucet`)}
