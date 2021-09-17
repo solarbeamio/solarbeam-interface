@@ -246,7 +246,7 @@ const VaultListItem = ({ farm }) => {
                   amount.lessThan(typedWithdrawValue) ||
                   (amount && !amount.equalTo(ZERO) &&
                     farm?.lockupDuration > 0 &&
-                    moment.unix(userLockedUntil).isAfter(new Date()))
+                    moment.unix(userLockedUntil / 1000).isAfter(new Date()))
                 }
                 onClick={async () => {
                   setPendingTx(true)
@@ -270,7 +270,7 @@ const VaultListItem = ({ farm }) => {
                 {amount &&
                 !amount.equalTo(ZERO) &&
                 farm?.lockupDuration > 0 &&
-                moment.unix(userLockedUntil).isAfter(new Date())
+                moment.unix(userLockedUntil / 1000).isAfter(new Date())
                   ? `Unlocks ${moment.unix(userLockedUntil / 1000).fromNow()} (${moment
                       .unix(userLockedUntil / 1000)
                       .format()})`
