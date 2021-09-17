@@ -113,7 +113,7 @@ const FarmListItem = ({ farm }) => {
                   }}
                   className="absolute border-0 right-4 focus:ring focus:ring-light-yellow"
                 >
-                  {i18n._(t`MAX`)} {farm?.id}
+                  {i18n._(t`MAX`)}
                 </Button>
               )}
             </div>
