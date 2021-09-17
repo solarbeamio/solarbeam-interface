@@ -118,13 +118,19 @@ const Transaction: FC<{ chainId: string; hash: string }> = ({ chainId, hash }) =
 
   return (
     <div className={'w-full px-2 py-2 text-left rounded select-none bg-dark-700  text-primary text-sm md:text-lg'}>
-      <div className="flex">
-        <div className="flex-none w-40">
+      <div className="flex flex-col px-2 md:px-0 md:flex-row">
+        <div className="flex justify-between flex-row md:flex-none md:w-40">
+          <div className="text-base font-bold text-primary items-center md:hidden">
+            <div className="w-40">{i18n._(t`Date`)}</div>
+          </div>
           <Typography variant="sm" className="flex items-center py-0.5">
             {addedTime}
           </Typography>
         </div>
-        <div className="flex-grow">
+        <div className="flex justify-between flex-row md:flex-grow">
+          <div className="text-base font-bold text-primary items-center md:hidden">
+            <div className="w-40">{i18n._(t`Transaction`)}</div>
+          </div>
           <ExternalLink
             href={getExplorerLink(parseInt(chainId), hash, 'transaction')}
             className="flex items-center justify-between gap-2"
@@ -134,18 +140,27 @@ const Transaction: FC<{ chainId: string; hash: string }> = ({ chainId, hash }) =
             </Typography>
           </ExternalLink>
         </div>
-        <div className="flex-none w-24">
+        <div className="flex justify-between flex-row md:flex-none md:w-24">
+          <div className="text-base font-bold text-primary items-center md:hidden">
+            <div className="w-40">{i18n._(t`From`)}</div>
+          </div>
           <Typography variant="sm" className="flex items-center py-0.5">
             {NETWORK_LABEL[srcChaindId]}
           </Typography>
         </div>
-        <div className="flex-none w-24">
+        <div className="flex justify-between flex-row md:flex-none md:w-24">
+          <div className="text-base font-bold text-primary items-center md:hidden">
+            <div className="w-40">{i18n._(t`To`)}</div>
+          </div>
           <Typography variant="sm" className="flex items-center py-0.5">
             {NETWORK_LABEL[destChainId]}
           </Typography>
         </div>
-        <div className="flex-none w-24 ">
-          <Typography variant="sm" className="flex items-center py-0.5 justify-end">
+        <div className="flex justify-between md:justify-end flex-row md:flex-none md:w-24 ">
+          <div className="text-base font-bold text-primary items-center md:hidden">
+            <div className="w-40">{i18n._(t`Status`)}</div>
+          </div>
+          <Typography variant="sm" className="flex items-center md:py-0.5 justify-end">
             <div className={'text-primary'}>
               {status === null ? (
                 <Loader stroke={'white'} />
@@ -177,7 +192,7 @@ function renderTransactions(
     const chainTxs = transactions[chainId]
     Object.keys(chainTxs).forEach((hash, idx) => {
       const tx = chainTxs[hash]
-      if (tx.from.toString() == address.toString()) {
+      if (tx.from.toString() == address?.toString()) {
         txs.push({ ...tx, chainId, hash })
       }
     })
@@ -272,7 +287,7 @@ export default function Bridge() {
                 <div className="space-y-2 p-4 rounded bg-dark-800 mb-2 h-[480px] overflow-y-auto">
                   {allTransactions && Object.keys(allTransactions).length > 0 ? (
                     <>
-                      <div className="flex px-2 text-base font-bold text-primary items-center">
+                      <div className="flex px-2 hidden md:flex text-base font-bold text-primary items-center">
                         <div className="flex-none w-40">{i18n._(t`Date`)}</div>
                         <div className="flex-grow">{i18n._(t`Transaction`)}</div>
                         <div className="flex-none w-24">{i18n._(t`From`)}</div>
