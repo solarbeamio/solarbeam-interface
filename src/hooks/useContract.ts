@@ -15,13 +15,7 @@ import {
   ARGENT_WALLET_DETECTOR_ABI,
   ARGENT_WALLET_DETECTOR_MAINNET_ADDRESS,
 } from '../constants/abis/argent-wallet-detector'
-import {
-  BAR_ADDRESS,
-  ChainId,
-  MAKER_ADDRESS,
-  MASTERCHEF_ADDRESS,
-  SUSHI_ADDRESS,
-  TIMELOCK_ADDRESS} from '../sdk'
+import { BAR_ADDRESS, ChainId, MAKER_ADDRESS, MASTERCHEF_ADDRESS, SUSHI_ADDRESS, TIMELOCK_ADDRESS } from '../sdk'
 import {
   BENTOBOX_ADDRESS,
   BORING_HELPER_ADDRESS,
@@ -54,6 +48,7 @@ import EIP_2612_ABI from '../constants/abis/eip-2612.json'
 import ENS_ABI from '../constants/abis/ens-registrar.json'
 import ENS_PUBLIC_RESOLVER_ABI from '../constants/abis/ens-public-resolver.json'
 import ERC20_ABI from '../constants/abis/erc20.json'
+import ANYSWAP_ERC20_ABI from '../constants/abis/anyswap_erc20.json'
 import { ERC20_BYTES32_ABI } from '../constants/abis/erc20'
 import FACTORY_ABI from '../constants/abis/factory.json'
 import IUniswapV2PairABI from '../constants/abis/uniswap-v2-pair.json'
@@ -109,6 +104,10 @@ export function useContract(address: string | undefined, ABI: any, withSignerIfP
 
 export function useTokenContract(tokenAddress?: string, withSignerIfPossible?: boolean): Contract | null {
   return useContract(tokenAddress, ERC20_ABI, withSignerIfPossible)
+}
+
+export function useAnyswapTokenContract(tokenAddress?: string, withSignerIfPossible?: boolean): Contract | null {
+  return useContract(tokenAddress, ANYSWAP_ERC20_ABI, withSignerIfPossible)
 }
 
 export function useWETH9Contract(withSignerIfPossible?: boolean): Contract | null {
@@ -197,12 +196,10 @@ export function useSolarVaultContract(withSignerIfPossible?: boolean): Contract 
   return useContract(chainId && SOLAR_VAULT_ADDRESS[chainId], SOLAR_VAULT_ABI, withSignerIfPossible)
 }
 
-
 export function useLockerContract(withSignerIfPossible?: boolean): Contract | null {
   const { chainId } = useActiveWeb3React()
   return useContract(chainId && LOCKER_ADDRESS[chainId], SOLAR_LOCKER_ABI, withSignerIfPossible)
 }
-
 
 export function useSolarMovrContract(withSignerIfPossible?: boolean): Contract | null {
   const { chainId } = useActiveWeb3React()
@@ -213,7 +210,6 @@ export function useMovrUsdcContract(withSignerIfPossible?: boolean): Contract | 
   const { chainId } = useActiveWeb3React()
   return useContract(chainId && MOVR_USDC_PAIR[chainId], IUniswapV2PairABI, withSignerIfPossible)
 }
-
 
 export function useRibMovrContract(withSignerIfPossible?: boolean): Contract | null {
   const { chainId } = useActiveWeb3React()
@@ -229,7 +225,6 @@ export function useSolarContract(withSignerIfPossible?: boolean): Contract | nul
   const { chainId } = useActiveWeb3React()
   return useContract(chainId && SOLAR_ADDRESS[chainId], IUniswapV2PairABI, withSignerIfPossible)
 }
-
 
 export function useMasterChefV2Contract(withSignerIfPossible?: boolean): Contract | null {
   return useContract('0xEF0881eC094552b2e128Cf945EF17a6752B4Ec5d', MASTERCHEF_V2_ABI, withSignerIfPossible)

@@ -44,17 +44,14 @@ export function useTransactionAdder(): (
       } = {}
     ) => {
       const { hash, chainId, from } = response
-      console.log({ hash, chainId, from })
       if (!hash) {
-        console.log('No transaction hash found.')
         throw Error('No transaction hash found.')
       }
-      console.log('dispatch')
       dispatch(
         addTransaction({
           hash,
           from,
-          chainId,
+          chainId: parseInt(srcChaindId),
           summary,
           destChainId,
           pairId,

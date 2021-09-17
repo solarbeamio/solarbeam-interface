@@ -69,6 +69,7 @@ interface ChainModalProps {
   isOpen: boolean
   onDismiss: () => void
   onSelect: (chain: Chain) => void
+  switchOnSelect: boolean
 }
 
 export default function ChainModal({
@@ -78,6 +79,7 @@ export default function ChainModal({
   isOpen,
   onDismiss,
   onSelect,
+  switchOnSelect,
 }: ChainModalProps): JSX.Element | null {
   const { chainId, library, account, activate } = useWeb3React(BridgeContextName)
 
@@ -108,13 +110,15 @@ export default function ChainModal({
               onClick={() => {
                 onSelect({ id: key, icon: NETWORK_ICON[key], name: NETWORK_LABEL[key] })
                 onDismiss()
-                activate(bridgeInjected)
-                const params = SUPPORTED_NETWORKS[key]
-                cookie.set('chainId', key)
-                if (key === ChainId.MAINNET) {
-                  library?.send('wallet_switchEthereumChain', [{ chainId: '0x1' }, account])
-                } else {
-                  library?.send('wallet_addEthereumChain', [params, account])
+                if (switchOnSelect) {
+                  activate(bridgeInjected)
+                  const params = SUPPORTED_NETWORKS[key]
+                  cookie.set('chainId', key)
+                  if (key === ChainId.MAINNET) {
+                    library?.send('wallet_switchEthereumChain', [{ chainId: '0x1' }, account])
+                  } else {
+                    library?.send('wallet_addEthereumChain', [params, account])
+                  }
                 }
               }}
               className="flex items-center w-full col-span-1 p-3 space-x-3 rounded cursor-pointer bg-dark-800 hover:bg-dark-900"

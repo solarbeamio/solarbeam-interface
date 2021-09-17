@@ -24,9 +24,17 @@ interface ChainSelectProps {
   onChainSelect?: (chain: Chain) => void
   chain?: Chain | null
   otherChain?: Chain | null
+  switchOnSelect?: boolean
 }
 
-export default function ChainSelect({ availableChains, label, onChainSelect, chain, otherChain }: ChainSelectProps) {
+export default function ChainSelect({
+  availableChains,
+  label,
+  onChainSelect,
+  chain,
+  otherChain,
+  switchOnSelect,
+}: ChainSelectProps) {
   const { i18n } = useLingui()
   const [modalOpen, setModalOpen] = useState(false)
   const { account } = useActiveWeb3React()
@@ -63,6 +71,7 @@ export default function ChainSelect({ availableChains, label, onChainSelect, cha
         </div>
       </Card>
       <ChainModal
+        switchOnSelect={switchOnSelect}
         availableChains={availableChains}
         onSelect={onChainSelect}
         title={`Bridge ${label}`}

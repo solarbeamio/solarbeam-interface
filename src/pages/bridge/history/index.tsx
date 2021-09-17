@@ -29,7 +29,7 @@ import ExternalLink from '../../../components/ExternalLink'
 import { RefreshCw } from 'react-feather'
 import { NETWORK_ICON, NETWORK_LABEL } from '../../../constants/networks'
 import moment from 'moment'
-
+import { FixedSizeList } from 'react-window'
 type AnyswapTokenInfo = {
   ID: string
   Name: string
@@ -96,17 +96,22 @@ const Transaction: FC<{ chainId: string; hash: string }> = ({ chainId, hash }) =
 
   const addedTime = moment.unix(tzTime).fromNow()
 
-  const { data: anyswapInfo, error }: SWRResponse<any, Error> = useSWR(
-    `https://bridgeapi.anyswap.exchange/v2/getHashStatus/${from}/${hash}/${destChainId}/${pairId}/${srcChaindId}`,
-    (url) =>
-      fetch(url)
-        .then((result) => result.json())
-        .then((data) => {
-          if (data && data.msg == 'Success') {
-            let resultStatus = data?.info?.status || 8
-            setStatus(resultStatus)
-          }
-        })
+  const getUrl = () => {
+    if (srcChaindId == ChainId.MOONRIVER) {
+      return `https://bridgeapi.anyswap.exchange/v2/getWithdrawHashStatus/${from}/${hash}/${srcChaindId}/${pairId}/${destChainId}`
+    } else {
+      return `https://bridgeapi.anyswap.exchange/v2/getHashStatus/${from}/${hash}/${destChainId}/${pairId}/${srcChaindId}`
+    }
+  }
+  const { data: anyswapInfo, error }: SWRResponse<any, Error> = useSWR(`${getUrl()}`, (url) =>
+    fetch(url)
+      .then((result) => result.json())
+      .then((data) => {
+        if (data && data.msg == 'Success') {
+          let resultStatus = data?.info?.status || 8
+          setStatus(resultStatus)
+        }
+      })
   )
 
   if (!chainId) return null
@@ -142,8 +147,10 @@ const Transaction: FC<{ chainId: string; hash: string }> = ({ chainId, hash }) =
         <div className="flex-none w-24 ">
           <Typography variant="sm" className="flex items-center py-0.5 justify-end">
             <div className={'text-primary'}>
-              {!status ? (
+              {status === null ? (
                 <Loader stroke={'white'} />
+              ) : status == 0 ? (
+                'Pending'
               ) : status == 8 ? (
                 'Processing'
               ) : status == 9 ? (
@@ -262,7 +269,7 @@ export default function Bridge() {
               {!account && activeAccount ? (
                 <Web3Connect size="lg" color="gradient" className="w-full" />
               ) : (
-                <div className="space-y-2 p-4 rounded bg-dark-800 mb-2 h-[500px]">
+                <div className="space-y-2 p-4 rounded bg-dark-800 mb-2 h-[480px] overflow-y-auto">
                   {allTransactions && Object.keys(allTransactions).length > 0 ? (
                     <>
                       <div className="flex px-2 text-base font-bold text-primary items-center">

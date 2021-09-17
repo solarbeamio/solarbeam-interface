@@ -37,7 +37,7 @@ import { formatNumber } from '../../functions'
 import { SUPPORTED_NETWORKS } from '../../modals/ChainModal'
 import { NETWORK_ICON, NETWORK_LABEL } from '../../constants/networks'
 import { ethers } from 'ethers'
-import { useTokenContract } from '../../hooks'
+import { useAnyswapTokenContract, useTokenContract } from '../../hooks'
 import Loader from '../../components/Loader'
 import { getWeb3ReactContext, useWeb3React } from '@web3-react/core'
 import { BridgeContextName } from '../../constants'
@@ -125,6 +125,10 @@ export default function Bridge() {
   const [currencyAmount, setCurrencyAmount] = useState<string | null>('')
   const [tokenToBridge, setTokenToBridge] = useState<AvailableChainsInfo | null>(null)
   const currencyContract = useTokenContract(currency0?.isToken && currency0?.address, true)
+  const anyswapCurrencyContract = useAnyswapTokenContract(
+    currency0 && currency0.chainId == ChainId.MOONRIVER && tokenToBridge.other.ContractAddress,
+    true
+  )
   const [pendingTx, setPendingTx] = useState(false)
   const [showConfirmation, setShowConfirmation] = useState(false)
 
@@ -286,7 +290,6 @@ export default function Bridge() {
           anyswapInfo[chainFrom.id][
             currency.isToken ? currency?.address?.toLowerCase() : currency?.wrapped?.address?.toLowerCase()
           ]
-        console.debug(tokenTo)
         setTokenToBridge(tokenTo)
       }
     },
@@ -324,6 +327,19 @@ export default function Bridge() {
     return false
   }
 
+  const getAmountToReceive = () => {
+    if (!tokenToBridge) return 0
+
+    let fee = parseFloat(currencyAmount) * tokenToBridge?.other?.SwapFeeRate
+    if (fee < tokenToBridge?.other?.MinimumSwapFee) {
+      fee = tokenToBridge?.other?.MinimumSwapFee
+    } else if (fee > tokenToBridge?.other?.MaximumSwapFee) {
+      fee = tokenToBridge?.other?.MinimumSwapFee
+    }
+
+    return (parseFloat(currencyAmount) - fee).toFixed(6)
+  }
+
   const buttonDisabled =
     (chainFrom && chainFrom.id !== chainId) ||
     !currency0 ||
@@ -352,44 +368,63 @@ export default function Bridge() {
       : `Bridge ${currency0?.symbol}`
 
   const bridgeToken = async () => {
-    const token = currency0.chainId == ChainId.MOONRIVER ? tokenToBridge.token : tokenToBridge.other
+    const token = tokenToBridge.other
+    const depositAddress = currency0.chainId == ChainId.MOONRIVER ? token.ContractAddress : token.DepositAddress
 
     const amountToBridge = ethers.utils.parseUnits(currencyAmount, token.Decimals)
     setPendingTx(true)
 
     try {
-      if (currency0.isNative) {
-        const tx = await library.getSigner().sendTransaction({
-          from: account,
-          to: token.DepositAddress,
-          value: amountToBridge,
-        })
-        addTransaction(tx, {
-          summary: `${i18n._(t`Bridge `)} ${tokenToBridge.symbol}`,
-          destChainId: chainTo.id.toString(),
-          srcChaindId: chainFrom.id.toString(),
-          pairId: tokenToBridge.id,
-        })
-        push('/bridge/history')
-      } else if (currency0.isToken) {
-        const fn = currencyContract?.interface?.getFunction('transfer')
-        const data = currencyContract.interface.encodeFunctionData(fn, [
-          token.DepositAddress,
-          amountToBridge.toString(),
-        ])
-        const tx = await library.getSigner().sendTransaction({
-          value: 0x0,
-          from: account,
-          to: currency0.address,
-          data,
-        })
-        addTransaction(tx, {
-          summary: `${i18n._(t`Bridge `)} ${tokenToBridge.symbol}`,
-          destChainId: chainTo.id.toString(),
-          srcChaindId: chainFrom.id.toString(),
-          pairId: tokenToBridge.id,
-        })
-        push('/bridge/history')
+      if (currency0.chainId == ChainId.MOONRIVER) {
+        if (currency0.isNative) {
+        } else if (currency0.isToken) {
+          const fn = anyswapCurrencyContract?.interface?.getFunction('Swapout')
+          const data = anyswapCurrencyContract.interface.encodeFunctionData(fn, [amountToBridge.toString(), account])
+          const tx = await library.getSigner().sendTransaction({
+            value: 0x0,
+            from: account,
+            to: currency0.address,
+            data,
+          })
+          addTransaction(tx, {
+            summary: `${i18n._(t`Bridge `)} ${tokenToBridge.symbol}`,
+            destChainId: chainTo.id.toString(),
+            srcChaindId: chainFrom.id.toString(),
+            pairId: tokenToBridge.id,
+          })
+          push('/bridge/history')
+        }
+      } else {
+        if (currency0.isNative) {
+          const tx = await library.getSigner().sendTransaction({
+            from: account,
+            to: depositAddress,
+            value: amountToBridge,
+          })
+          addTransaction(tx, {
+            summary: `${i18n._(t`Bridge `)} ${tokenToBridge.symbol}`,
+            destChainId: chainTo.id.toString(),
+            srcChaindId: chainFrom.id.toString(),
+            pairId: tokenToBridge.id,
+          })
+          push('/bridge/history')
+        } else if (currency0.isToken) {
+          const fn = currencyContract?.interface?.getFunction('transfer')
+          const data = currencyContract.interface.encodeFunctionData(fn, [depositAddress, amountToBridge.toString()])
+          const tx = await library.getSigner().sendTransaction({
+            value: 0x0,
+            from: account,
+            to: currency0.address,
+            data,
+          })
+          addTransaction(tx, {
+            summary: `${i18n._(t`Bridge `)} ${tokenToBridge.symbol}`,
+            destChainId: chainTo.id.toString(),
+            srcChaindId: chainFrom.id.toString(),
+            pairId: tokenToBridge.id,
+          })
+          push('/bridge/history')
+        }
       }
     } catch (ex) {
     } finally {
@@ -402,13 +437,24 @@ export default function Bridge() {
         <div className="space-y-4">
           <ModalHeader title={i18n._(t`Bridge ${currency0?.symbol}`)} onClose={() => setShowConfirmation(false)} />
           <Typography variant="sm" className="font-medium">
-            {i18n._(t`You are sending ${currencyAmount} ${currency0?.symbol} from ${chainFrom?.name}`)}
+            {i18n._(t`You are sending ${formatNumber(currencyAmount)} ${currency0?.symbol} from ${chainFrom?.name}`)}
           </Typography>
           <Typography variant="sm" className="font-medium">
-            {i18n._(t`You will receive ${currencyAmount} ${currency0?.symbol} on ${chainTo?.name}`)}
+            {i18n._(t`You will receive ${formatNumber(getAmountToReceive())} ${currency0?.symbol} on ${chainTo?.name}`)}
           </Typography>
-          <Button color="gradient" size="lg" onClick={() => bridgeToken()}>
-            <Typography variant="lg">{i18n._(t`Bridge ${currency0?.symbol}`)}</Typography>
+
+          <Button color="gradient" size="lg" disabled={pendingTx} onClick={() => bridgeToken()}>
+            <Typography variant="lg">
+              {pendingTx ? (
+                <div className={'p-2'}>
+                  <AutoRow gap="6px" justify="center">
+                    {buttonText} <Loader stroke="white" />
+                  </AutoRow>
+                </div>
+              ) : (
+                i18n._(t`Bridge ${currency0?.symbol}`)
+              )}
+            </Typography>
           </Button>
         </div>
       </Modal>
@@ -469,6 +515,7 @@ export default function Bridge() {
                 chain={chainFrom}
                 otherChain={chainTo}
                 onChainSelect={(chain) => handleChainFrom(chain)}
+                switchOnSelect={true}
               />
               <button className={'sm:m-6'}>
                 <ArrowRight size="32" />
@@ -479,6 +526,7 @@ export default function Bridge() {
                 chain={chainTo}
                 otherChain={chainFrom}
                 onChainSelect={(chain) => handleChainTo(chain)}
+                switchOnSelect={false}
               />
             </div>
 
@@ -522,6 +570,22 @@ export default function Bridge() {
 
             {currency0 && (
               <div className={'p-2 sm:p-5 rounded bg-dark-800'}>
+                {tokenToBridge?.other?.MinimumSwapFee > 0 && (
+                  <div className="flex flex-col justify-between space-y-3 sm:space-y-0 sm:flex-row">
+                    <div className="text-sm font-medium text-secondary">
+                      Minimum Bridge Fee: {formatNumber(tokenToBridge?.other?.MinimumSwapFee)}{' '}
+                      {tokenToBridge?.other?.Symbol}
+                    </div>
+                  </div>
+                )}
+                {tokenToBridge?.other?.MaximumSwapFee > 0 && (
+                  <div className="flex flex-col justify-between space-y-3 sm:space-y-0 sm:flex-row">
+                    <div className="text-sm font-medium text-secondary">
+                      Maximum Bridge Fee: {formatNumber(tokenToBridge?.other?.MaximumSwapFee)}{' '}
+                      {tokenToBridge?.other?.Symbol}
+                    </div>
+                  </div>
+                )}
                 <div className="flex flex-col justify-between space-y-3 sm:space-y-0 sm:flex-row">
                   <div className="text-sm font-medium text-secondary">
                     Minimum Bridge Amount: {formatNumber(tokenToBridge?.other?.MinimumSwap)}{' '}
@@ -534,22 +598,6 @@ export default function Bridge() {
                     {tokenToBridge?.other?.Symbol}
                   </div>
                 </div>
-                {tokenToBridge?.other?.MinimumSwapFee > 0 && (
-                  <div className="flex flex-col justify-between space-y-3 sm:space-y-0 sm:flex-row">
-                    <div className="text-sm font-medium text-secondary">
-                      Minimum Swap Fee: {formatNumber(tokenToBridge?.other?.MinimumSwapFee)}{' '}
-                      {tokenToBridge?.other?.Symbol}
-                    </div>
-                  </div>
-                )}
-                {tokenToBridge?.other?.MaximumSwapFee > 0 && (
-                  <div className="flex flex-col justify-between space-y-3 sm:space-y-0 sm:flex-row">
-                    <div className="text-sm font-medium text-secondary">
-                      Maximum Swap Fee: {formatNumber(tokenToBridge?.other?.MaximumSwapFee)}{' '}
-                      {tokenToBridge?.other?.Symbol}
-                    </div>
-                  </div>
-                )}
                 <div className="flex flex-col justify-between space-y-3 sm:space-y-0 sm:flex-row">
                   <div className="text-sm font-medium text-secondary">
                     Fee: {formatNumber(tokenToBridge?.other?.SwapFeeRate * 100)} %
