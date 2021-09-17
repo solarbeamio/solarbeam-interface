@@ -95,6 +95,7 @@ const FarmListItem = ({ farm }) => {
                   variant="outlined"
                   color="light-green"
                   size="xs"
+                  disabled={farm?.id === '1'}
                   onClick={() => {
                     if (!balance.equalTo(ZERO)) {
                       if (liquidityToken?.symbol == 'SOLAR') {
@@ -112,7 +113,7 @@ const FarmListItem = ({ farm }) => {
                   }}
                   className="absolute border-0 right-4 focus:ring focus:ring-light-yellow"
                 >
-                  {i18n._(t`MAX`)}
+                  {i18n._(t`MAX`)} {farm?.id}
                 </Button>
               )}
             </div>
@@ -133,7 +134,7 @@ const FarmListItem = ({ farm }) => {
                 size="sm"
                 variant="outlined"
                 color="gradient"
-                disabled={pendingTx || !typedDepositValue || balance.lessThan(typedDepositValue)}
+                disabled={pendingTx || !typedDepositValue || balance.lessThan(typedDepositValue) || farm?.id === '1'}
                 onClick={async () => {
                   setPendingTx(true)
                   try {
