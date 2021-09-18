@@ -5,15 +5,17 @@ import { classNames } from '../functions'
 export default function Search({
   term,
   search,
-  className = 'bg-dark-800',
+  placeholder,
+  className = 'bg-dark-700',
   inputProps = {
     className:
-      'text-baseline bg-transparent w-full py-3 pl-4 pr-14 rounded w-full bg-transparent focus:outline-none bg-dark-700 rounded focus:ring focus:ring-yellow',
+      'text-baseline bg-transparent w-full py-3 pl-4 pr-14 rounded w-full bg-transparent focus:outline-none bg-dark-700 rounded',
   },
   ...rest
 }: {
   term: string
   search: (value: string) => void
+  placeholder?: string
   inputProps?: any
   className?: string
 }) {
@@ -25,7 +27,7 @@ export default function Search({
         )}
         onChange={(e) => search(e.target.value)}
         value={term}
-        placeholder="Search locker by token or liquidity pair address"
+        placeholder={placeholder}
         {...inputProps}
       />
       <div className="absolute inset-y-0 right-0 flex items-center pr-6 pointer-events-none">

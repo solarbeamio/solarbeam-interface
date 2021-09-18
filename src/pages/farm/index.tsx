@@ -23,6 +23,7 @@ import { useTransactionAdder } from '../../state/transactions/hooks'
 import { useTVL } from '../../hooks/useV2Pairs'
 import { getAddress } from '@ethersproject/address'
 import { useVaults } from '../../features/vault/hooks'
+import Search from '../../components/Search'
 
 export default function Farm(): JSX.Element {
   const { i18n } = useLingui()
@@ -153,11 +154,11 @@ export default function Farm(): JSX.Element {
   })
 
   const options = {
-    keys: ['pair.id', 'pair.token0.symbol', 'pair.token1.symbol'],
+    keys: ['pair.id', 'pair.token0.symbol', 'pair.token1.symbol', 'pair.token0.name', 'pair.token1.name'],
     threshold: 0.4,
   }
 
-  const { result, term } = useFuse({
+  const { result, term, search } = useFuse({
     data,
     options,
   })
@@ -196,7 +197,13 @@ export default function Farm(): JSX.Element {
                 <div className={`grid grid-cols-12 md:space-x-4 space-y-4 md:space-y-0 `}>
                   <div className={`col-span-12 md:col-span-3 space-y-4`}>
                     <div className={`hidden md:block`}>
-                      <Menu positionsLength={positions.length} />
+                      <Menu
+                        term={term}
+                        onSearch={(value) => {
+                          search(value)
+                        }}
+                        positionsLength={positions.length}
+                      />
                     </div>
                     <div className={`flex flex-col items-center justify-between px-6 py-6 `}>
                       <div className="flex items-center text-center justify-between py-2 text-emphasis">
@@ -237,10 +244,27 @@ export default function Farm(): JSX.Element {
                       )}
                     </div>
                     <div className={`md:hidden`}>
-                      <Menu positionsLength={positions.length} />
+                      <Menu
+                        term={term}
+                        onSearch={(value) => {
+                          search(value)
+                        }}
+                        positionsLength={positions.length}
+                      />
                     </div>
                   </div>
                   <div className={`col-span-12 md:col-span-9 bg-dark-800  py-4 md:px-6 md:py-4 rounded`}>
+                    <div className={'mb-8 px-1 md:px-0'}>
+                      <Search
+                        className={'bg-dark-700'}
+                        placeholder={'Search by name, symbol or address'}
+                        term={term}
+                        search={(value: string): void => {
+                          search(value)
+                        }}
+                      />
+                    </div>
+
                     <FarmList farms={result} term={term} filter={FILTER} />
                   </div>
                 </div>

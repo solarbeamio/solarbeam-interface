@@ -54,50 +54,44 @@ export default function TradePrice({ price, showInverted, setShowInverted, class
         onClick={flipPrice}
         title={text}
         className={classNames(
-          'flex justify-between w-full px-5 py-2 cursor-pointer rounded-b-md text-secondary hover:text-primary',
+          'flex justify-between cursor-pointer w-full px-5 py-2 cursor-pointer text-secondary hover:text-primary',
           className
         )}
       >
-        <Typography variant='sm' className='select-none'>
+        <Typography variant="sm" className="select-none">
           {i18n._(t`Exchange Rate`)}
         </Typography>
-        <div className='flex items-center space-x-4'>
-          <Typography variant='sm' className='select-none'>
+        <div className="flex items-center space-x-4">
+          <Typography variant="sm" className="select-none">
             {text}
           </Typography>
           <svg
-            xmlns='http://www.w3.org/2000/svg'
-            className='w-4 h-4'
-            fill='none'
-            viewBox='0 0 24 24'
-            stroke='currentColor'
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-4 h-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
           >
             <path
-              strokeLinecap='round'
-              strokeLinejoin='round'
-              strokeWidth='2'
-              d='M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4'
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
             />
           </svg>
         </div>
       </div>
 
-
-      <div
-        className={classNames(
-          'flex justify-between w-full px-5 py-2 rounded-b-md text-secondary hover:text-primary',
-          className
-        )}
-      >
-      <Typography variant='sm' className='select-none'>
-        {i18n._(t`Price Impact`)}
-        <QuestionHelper
-          text={i18n._(t`The difference between the market price and estimated price due to trade size.`)}
-        />
-      </Typography>
-      <Typography variant='sm' className='select-none'>
-        <FormattedPriceImpact priceImpact={priceImpact} />
-      </Typography>
+      <div className={classNames('flex justify-between w-full px-5 py-2 rounded-b-md text-secondary', className)}>
+        <Typography variant="sm" className="select-none">
+          {i18n._(t`Price Impact`)}
+          <QuestionHelper
+            text={i18n._(t`The difference between the market price and estimated price due to trade size.`)}
+          />
+        </Typography>
+        <Typography variant="sm" className="select-none">
+          <FormattedPriceImpact priceImpact={priceImpact} />
+        </Typography>
       </div>
     </div>
   )

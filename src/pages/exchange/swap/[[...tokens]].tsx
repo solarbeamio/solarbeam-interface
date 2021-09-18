@@ -477,7 +477,7 @@ export default function Swap() {
                 id="swap-currency-output"
               />
               {Boolean(trade) && (
-                <div className="p-1 -mt-2 cursor-pointer rounded-b-md bg-dark-800">
+                <div className="p-1 -mt-2  rounded-b-md bg-dark-800">
                   <TradePrice
                     price={trade?.executionPrice}
                     showInverted={showInverted}

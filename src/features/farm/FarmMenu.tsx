@@ -5,6 +5,7 @@ import React from 'react'
 import { useActiveWeb3React } from '../../hooks'
 import { useLingui } from '@lingui/react'
 import { t } from '@lingui/macro'
+import Search from '../../components/Search'
 
 const MenuItem = ({ href, title }) => {
   const { i18n } = useLingui()
@@ -20,7 +21,7 @@ const MenuItem = ({ href, title }) => {
     </NavLink>
   )
 }
-const Menu = ({ positionsLength }) => {
+const Menu = ({ positionsLength, onSearch, term }) => {
   const { account, chainId } = useActiveWeb3React()
   const { i18n } = useLingui()
   return (
@@ -28,6 +29,7 @@ const Menu = ({ positionsLength }) => {
       <div className="col-span-12 flex flex-col space-y-4">
         <MenuItem href="/farm" title="All Farms" />
         {account && positionsLength > 0 && <MenuItem href={`/farm?filter=my`} title={`My Farms`} />}
+
         {/* <MenuItem href="/farm?filter=solar" title="SOLAR Farms" />
         <MenuItem href="/farm?filter=moonriver" title="MOVR Farms" />
         <MenuItem href="/farm?filter=stables" title="Stables Farms" />

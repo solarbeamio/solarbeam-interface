@@ -23,7 +23,7 @@ import { getAddress } from '@ethersproject/address'
 export default function Locker(): JSX.Element {
   const { i18n } = useLingui()
   const { account } = useActiveWeb3React()
-  const [tokenAddress, setTokenAddress] = useState('')
+  const [tokenAddress, setTokenAddress] = useState(undefined)
   const token = useToken(isAddress(tokenAddress) ? tokenAddress : undefined)
   const [pendingTx, setPendingTx] = useState(false)
   const addTransaction = useTransactionAdder()
@@ -98,7 +98,13 @@ export default function Locker(): JSX.Element {
             </div>
             <div className={`col-span-12`} style={{ minHeight: '35rem' }}>
               <Card className="h-full bg-dark-900 z-4">
-                <Search term={tokenAddress} search={(e) => setTokenAddress(e)} />
+                <Search
+                  placeholder={'Search by name, symbol or address'}
+                  term={tokenAddress}
+                  search={(value: string): void => {
+                    setTokenAddress(value)
+                  }}
+                />
                 {lockers.length == 0 && isAddress(tokenAddress) && (
                   <div className="flex justify-center items-center col-span-12 lg:justify mt-20">
                     <span>
