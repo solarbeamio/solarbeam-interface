@@ -203,5 +203,39 @@ export const POOLS: AddressMap = {
       name: 'Solarbeam LP',
       symbol: 'SLP',
     },
+    '0x83d7a3fc841038E8c8F46e6192BBcCA8b19Ee4e7': {
+      id: 12,
+      token0: {
+        id: '0x6aB6d61428fde76768D7b45D8BFeec19c6eF91A8',
+        name: 'Wrapped Bitcoin',
+        symbol: 'WBTC',
+        decimals: 8,
+      },
+      token1: {
+        id: '0xE3F5a90F9cb311505cd691a46596599aA1A0AD7D',
+        name: 'USDC Coin',
+        symbol: 'USDC',
+        decimals: 6,
+      },
+      name: 'Solarbeam LP',
+      symbol: 'SLP',
+    },
+    '0x2a44696DDc050f14429bd8a4A05c750C6582bF3b': {
+      id: 13,
+      token0: {
+        id: '0xB44a9B6905aF7c801311e8F4E76932ee959c663C',
+        name: 'Tether USD',
+        symbol: 'USDT',
+        decimals: 6,
+      },
+      token1: {
+        id: '0xE3F5a90F9cb311505cd691a46596599aA1A0AD7D',
+        name: 'USDC Coin',
+        symbol: 'USDC',
+        decimals: 6,
+      },
+      name: 'Solarbeam LP',
+      symbol: 'SLP',
+    },
   },
 }

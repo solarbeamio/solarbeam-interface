@@ -8,10 +8,7 @@
   },
   "tags": {},
   "logoURI": "https://raw.githubusercontent.com/sushiswap/art/master/sushi/logo-256x256.png",
-  "keywords": [
-    "sushiswap",
-    "default"
-  ],
+  "keywords": ["sushiswap", "default"],
   "tokens": [
     {
       "name": "Solarbeam Token",
@@ -60,7 +57,8 @@
       "decimals": 18,
       "chainId": 1285,
       "logoURI": "https://solarbeam.io/images/tokens/busd.png"
-    },{
+    },
+    {
       "name": "KusaMOON",
       "address": "0x480cd4fa911eeeff93cb11135c97237455617862",
       "symbol": "KMOON",
@@ -83,20 +81,38 @@
       "decimals": 18,
       "chainId": 1285,
       "logoURI": "https://solarbeam.io/images/tokens/bnb.png"
-    },{
+    },
+    {
       "name": "MoonBeans",
       "address": "0xC2392DD3e3fED2c8Ed9f7f0bDf6026fcd1348453",
       "symbol": "BEANS",
       "decimals": 18,
       "chainId": 1285,
       "logoURI": "https://solarbeam.io/images/tokens/beans.png"
-    },{
+    },
+    {
       "name": "Laika Protocol",
       "address": "0x65e66a61D0a8F1e686C2D6083ad611a10D84D97A",
       "symbol": "LAIKA",
       "decimals": 18,
       "chainId": 1285,
       "logoURI": "https://solarbeam.io/images/tokens/laika.png"
+    },
+    {
+      "name": "Wrapped BTC",
+      "address": "0x6aB6d61428fde76768D7b45D8BFeec19c6eF91A8",
+      "symbol": "WBTC",
+      "decimals": 8,
+      "chainId": 1285,
+      "logoURI": "https://solarbeam.io/images/tokens/wbtc.png"
+    },
+    {
+      "name": "Tether USD",
+      "address": "0xB44a9B6905aF7c801311e8F4E76932ee959c663C",
+      "symbol": "USDT",
+      "decimals": 6,
+      "chainId": 1285,
+      "logoURI": "https://solarbeam.io/images/tokens/usdt.png"
     }
   ]
 }
