@@ -1,10 +1,12 @@
 import { Currency, TradeType, Trade as V2Trade } from '../../sdk'
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useMemo } from 'react'
 
 import { ButtonError } from '../../components/Button'
 import { SwapCallbackError } from './styleds'
 import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
+import { warningSeverity } from '../../functions'
+import { useExpertModeManager } from '../../state/user/hooks'
 
 export default function SwapModalFooter({
   trade,
@@ -18,6 +20,12 @@ export default function SwapModalFooter({
   disabledConfirm: boolean
 }) {
   const { i18n } = useLingui()
+  const [isExpertMode] = useExpertModeManager()
+  const priceImpactSeverity = useMemo(() => {
+    const executionPriceImpact = trade?.priceImpact
+    return warningSeverity(executionPriceImpact)
+  }, [trade])
+
   return (
     <div className="p-6 mt-0 -m-5 rounded bg-dark-800">
       {/* <div className="grid gap-1 pb-6">
@@ -92,12 +100,20 @@ export default function SwapModalFooter({
       </div> */}
 
       <ButtonError
-        onClick={onConfirm}
-        disabled={disabledConfirm}
-        id="confirm-swap-or-send"
         className="text-lg font-medium"
+        onClick={onConfirm}
+        style={{
+          width: '100%',
+        }}
+        id="confirm-swap-or-send"
+        disabled={disabledConfirm || (priceImpactSeverity > 3 && !isExpertMode)}
+        error={priceImpactSeverity > 2}
       >
-        {i18n._(t`Confirm Swap`)}
+        {priceImpactSeverity > 3 && !isExpertMode
+          ? i18n._(t`Price Impact Too High`)
+          : priceImpactSeverity > 2
+          ? i18n._(t`Swap Anyway`)
+          : i18n._(t`Confirm Swap`)}
       </ButtonError>
 
       {swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}

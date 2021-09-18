@@ -128,7 +128,7 @@ const VaultListItem = ({ farm }) => {
               )}
               <div className="relative flex items-center w-full mb-4">
                 <NumericalInput
-                  className="w-full px-4 py-4 pr-20 rounded bg-dark-700 focus:ring focus:ring-light-yellow"
+                  className="w-full px-4 py-4 pr-20 rounded bg-dark-700 focus:ring focus:ring-dark-purple"
                   value={depositValue}
                   onUserInput={setDepositValue}
                 />
@@ -142,7 +142,7 @@ const VaultListItem = ({ farm }) => {
                         setDepositValue(balance.toFixed(liquidityToken?.decimals))
                       }
                     }}
-                    className="absolute border-0 right-4 focus:ring focus:ring-light-yellow"
+                    className="absolute border-0 right-4 focus:ring focus:ring-light-purple"
                   >
                     {i18n._(t`MAX`)}
                   </Button>
@@ -215,7 +215,7 @@ const VaultListItem = ({ farm }) => {
               )}
               <div className="relative flex items-center w-full mb-4">
                 <NumericalInput
-                  className="w-full px-4 py-4 pr-20 rounded bg-dark-700 focus:ring focus:ring-light-yellow"
+                  className="w-full px-4 py-4 pr-20 rounded bg-dark-700 focus:ring focus:ring-dark-purple"
                   value={withdrawValue}
                   onUserInput={setWithdrawValue}
                 />
@@ -229,7 +229,7 @@ const VaultListItem = ({ farm }) => {
                         setWithdrawValue(amount.toFixed(liquidityToken?.decimals))
                       }
                     }}
-                    className="absolute border-0 right-4 focus:ring focus:ring-light-yellow"
+                    className="absolute border-0 right-4 focus:ring focus:ring-light-purple"
                   >
                     {i18n._(t`MAX`)}
                   </Button>

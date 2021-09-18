@@ -1,13 +1,6 @@
 import { AppDispatch, AppState } from '..'
 import { BASES_TO_TRACK_LIQUIDITY_FOR, FACTORY_ADDRESS } from '../../constants'
-import {
-  ChainId,
-  computePairAddress,
-  JSBI,
-  Pair,
-  Percent,
-  Token
-} from '../../sdk'
+import { ChainId, computePairAddress, JSBI, Pair, Percent, Token } from '../../sdk'
 import {
   SerializedPair,
   SerializedToken,
@@ -90,7 +83,7 @@ export function useExpertModeManager(): [boolean, () => void] {
     dispatch(updateUserExpertMode({ userExpertMode: !expertMode }))
   }, [expertMode, dispatch])
 
-  return [expertMode, toggleSetExpertMode]
+  return [expertMode == true ? true : false, toggleSetExpertMode]
 }
 
 export function useUserSingleHopOnly(): [boolean, (newSingleHopOnly: boolean) => void] {
@@ -245,7 +238,6 @@ export function useTrackedTokenPairs(): [Token, Token][] {
   const { chainId } = useActiveWeb3React()
   const tokens = useAllTokens()
 
-
   // pairs for every token against every base
   const generatedPairs: [Token, Token][] = useMemo(
     () =>
@@ -284,10 +276,7 @@ export function useTrackedTokenPairs(): [Token, Token][] {
     })
   }, [savedSerializedPairs, chainId])
 
-  const combinedList = useMemo(
-    () => userPairs.concat(generatedPairs),
-    [generatedPairs, userPairs]
-  )
+  const combinedList = useMemo(() => userPairs.concat(generatedPairs), [generatedPairs, userPairs])
 
   return useMemo(() => {
     // dedupes pairs of tokens in the combined list

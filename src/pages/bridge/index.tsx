@@ -467,7 +467,7 @@ export default function Bridge() {
       <SolarbeamLogo />
 
       <Container maxWidth="2xl" className="space-y-6">
-        <DoubleGlowShadow>
+        <DoubleGlowShadow opacity="0.6">
           <div className="p-4 space-y-4 rounded bg-dark-900" style={{ zIndex: 1 }}>
             <div className="flex items-center justify-center mb-4 space-x-3">
               <div className="grid grid-cols-2 rounded p-3px bg-dark-800 h-[46px]">

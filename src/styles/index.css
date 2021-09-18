@@ -62,7 +62,7 @@ input:focus {
   box-shadow: none;
   outline: none;
 }
-/* 
+
 *::-webkit-scrollbar {
   width: var(--scrollbar-width);
 }
@@ -79,8 +79,8 @@ input:focus {
   border: 3px solid rgba(0, 0, 0, 0);
   background-clip: padding-box;
   border-radius: 9999px;
-  background-color: #BFBFBF;
-}  */
+  background-color: #bfbfbf8a;
+} 
 
 .rdtPicker {
   background-color: #111 !important;

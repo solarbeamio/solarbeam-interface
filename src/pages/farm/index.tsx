@@ -220,7 +220,7 @@ export default function Farm(): JSX.Element {
                       {positions.length > 0 && (
                         <Button
                           color="gradient"
-                          className="text-emphasis text-yellow"
+                          className="text-emphasis"
                           variant={'flexed'}
                           size={'nobase'}
                           disabled={pendingTx}
@@ -253,10 +253,10 @@ export default function Farm(): JSX.Element {
                       />
                     </div>
                   </div>
-                  <div className={`col-span-12 md:col-span-9 bg-dark-800  py-4 md:px-6 md:py-4 rounded`}>
+                  <div className={`col-span-12 md:col-span-9 py-4 md:px-6 md:py-4 rounded`}>
                     <div className={'mb-8 px-1 md:px-0'}>
                       <Search
-                        className={'bg-dark-700'}
+                        className={'bg-dark-800 rounded border border-dark-800'}
                         placeholder={'Search by name, symbol or address'}
                         term={term}
                         search={(value: string): void => {

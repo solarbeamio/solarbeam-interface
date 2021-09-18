@@ -201,7 +201,7 @@ export function CurrencySearch({
             ref={inputRef as RefObject<HTMLInputElement>}
             onChange={handleInput}
             onKeyDown={handleEnter}
-            className="w-full bg-transparent border border-dark-500 focus:border-transparent focus:border-gradient-r-yellow-dark-900 rounded placeholder-secondary focus:placeholder-primary font-bold text-base px-3 py-3"
+            className="w-full bg-transparent border border-dark-600 focus:border-dark-400 rounded placeholder-secondary focus:placeholder-primary font-bold text-base px-3 py-3"
           />
         </div>
       )}

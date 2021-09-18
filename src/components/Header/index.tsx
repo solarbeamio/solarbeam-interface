@@ -67,11 +67,8 @@ function AppBar(): JSX.Element {
                           {i18n._(t`Locker`)}
                         </a>
                       </NavLink>
-                      <NavLink href={'https://movr.anyswap.exchange/#/bridge'}>
-                        <a
-                          target="_blank"
-                          className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
-                        >
+                      <NavLink href={'/bridge'}>
+                        <a className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap">
                           {i18n._(t`Bridge`)}
                         </a>
                       </NavLink>
@@ -197,11 +194,8 @@ function AppBar(): JSX.Element {
                     {i18n._(t`Locker`)}
                   </a>
                 </Link>
-                <Link href={'https://movr.anyswap.exchange/#/bridge'}>
-                  <a
-                    target="_blank"
-                    className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
-                  >
+                <Link href={'/bridge'}>
+                  <a className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap">
                     {i18n._(t`Bridge`)}
                   </a>
                 </Link>

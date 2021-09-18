@@ -13,7 +13,7 @@ const MenuItem = ({ href, title }) => {
     <NavLink
       exact
       href={href}
-      activeClassName="font-bold bg-transparent border rounded text-high-emphesis border-transparent border-gradient-r-yellow-dark-900"
+      activeClassName="font-bold bg-transparent border rounded text-high-emphesis border-transparent border-gradient-r-purple-dark-900"
     >
       <a className="flex items-center justify-between px-6 py-6  text-base font-bold border border-transparent rounded cursor-pointer bg-dark-800">
         {i18n._(t`${title}`)}

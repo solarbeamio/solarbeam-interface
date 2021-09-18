@@ -75,7 +75,7 @@ export default function Faucet(): JSX.Element {
       />
 
       <Container maxWidth="2xl" className="space-y-6">
-        <DoubleGlowShadow>
+        <DoubleGlowShadow opacity="0.6">
           <div className="p-4 space-y-4 rounded bg-dark-900" style={{ zIndex: 1 }}>
             <div className="p-4 mb-3 space-y-3 text-center">
               <Typography component="h1" variant="h2">

@@ -81,14 +81,14 @@ export default function SwapModalHeader({
       <AdvancedSwapDetails trade={trade} allowedSlippage={allowedSlippage} minerBribe={minerBribe} />
 
       {showAcceptChanges ? (
-        <div className="flex items-center justify-between p-2 px-3 border border-gray-800 rounded">
+        <div className="flex items-center justify-between p-2 px-3 border border-dark-600 rounded">
           <div className="flex items-center justify-start text-sm font-bold uppercase text-high-emphesis">
             <div className="mr-3 min-w-[24px]">
               <AlertTriangle size={24} />
             </div>
             <span>{i18n._(t`Price Updated`)}</span>
           </div>
-          <span className="text-sm cursor-pointer text-yellow" onClick={onAcceptChanges}>
+          <span className="text-sm cursor-pointer text-purple" onClick={onAcceptChanges}>
             {i18n._(t`Accept`)}
           </span>
         </div>
