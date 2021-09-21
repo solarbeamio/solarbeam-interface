@@ -26,7 +26,7 @@ async function verifyRecaptcha(req) {
 
 async function faucetSend(req) {
   const to = req.body['address']
-  const ip = 'test2' //req.headers['x-nf-client-connection-ip'] TODO
+  const ip = req.headers['x-nf-client-connection-ip']
   const value = serverRuntimeConfig.faucetAmountAdd
   const wallet = await web3.eth.accounts.wallet.add(serverRuntimeConfig.faucetWalletPrivateKey)
   const gasPrice = await web3.utils.toWei(serverRuntimeConfig.faucetGas, 'gwei')
