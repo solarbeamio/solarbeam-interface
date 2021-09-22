@@ -1,0 +1,192 @@
+@tailwind base;
+
+@import './variables.css';
+
+@tailwind components;
+
+@tailwind utilities;
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+html {
+  height: 100%;
+  box-sizing: border-box;
+  touch-action: manipulation;
+  font-feature-settings: 'case' 1, 'rlig' 1, 'calt' 0;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* 
+    Transak sets html overflow to scroll when modal is closed, lets 
+    ensure that it always reamins as the defualt which is visible.
+  */
+  overflow: visible !important;
+
+}
+
+html,
+body {
+  font-family: var(--font-sans);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #000;
+  color: var(--text-primary);
+}
+
+body {
+  position: relative;
+  min-height: 100%;
+  margin: 0;
+  overflow-y: scroll;
+  padding-top: constant(safe-area-inset-top); /* iOS 11.0 */
+  padding-top: env(safe-area-inset-top); /* iOS 11.2 */
+  /* For safari and chrome */
+  overflow-y: overlay;
+}
+
+a {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+button:focus {
+  outline: none;
+}
+
+input:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+*::-webkit-scrollbar {
+  width: var(--scrollbar-width);
+}
+
+::-webkit-scrollbar-track-piece:start {
+  background: transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAQAAAAD+Fb1AAAADklEQVR42mNkgAJG3AwAAH4ABWjFc8IAAAAASUVORK5CYII=) repeat-y !important;
+}
+
+::-webkit-scrollbar-track-piece:end {
+  background: transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAQAAAAD+Fb1AAAADklEQVR42mNkgAJG3AwAAH4ABWjFc8IAAAAASUVORK5CYII=) repeat-y !important;
+}
+
+*::-webkit-scrollbar-thumb {
+  border: 3px solid rgba(0, 0, 0, 0);
+  background-clip: padding-box;
+  border-radius: 9999px;
+  background-color: #bfbfbf8a;
+} 
+
+.rdtPicker {
+  background-color: #111 !important;
+  border: 1px solid #222 !important;
+  border-radius: 5px !important;
+  margin-top: 6px !important;
+  min-width: 280px !important;
+}
+
+.rdtPicker td.rdtActive, .rdtPicker td.rdtActive:hover{
+  background-color: transparent !important;
+  color: #ffc000 !important;
+}
+
+.rdtPicker td.rdtDay:hover, .rdtPicker td.rdtHour:hover, .rdtPicker td.rdtMinute:hover, .rdtPicker td.rdtSecond:hover {
+  background-color: transparent !important;
+  color:  #fff !important;
+}
+
+.rdtPicker thead tr:first-of-type th:hover {
+  background-color: transparent !important;
+  color:  #fff !important;
+}
+
+.rdtPicker thead tr th {
+  padding-top: 10px;
+  padding-bottom: 8px;
+}
+.rdtPicker thead tr:first-child th {
+  padding-top: 3px !important;
+}
+
+.rdtPicker td.rdtToday:before{  
+  border-bottom: 7px solid #ffc000 !important;
+}
+
+.rdtCounter .rdtBtn:hover {
+  background-color: transparent !important;
+  color: #fff !important;
+}
+
+.rdtPicker .rdtSwitch{
+  padding-top: 10px;
+}
+
+
+.rdtPicker .rdtSwitch:hover{
+  color: #fff !important;
+  cursor:pointer
+}
+
+
+.rdtPicker tfoot tr td {
+  padding-top:10px ;
+  padding-bottom: 5px;
+}
+
+.rdtPicker .rdtTimeToggle:hover{
+  background-color: transparent !important;
+  border: 0px !important;
+  color: #fff !important;
+  font-weight: bold;
+
+}
+
+.rdtPicker tfoot {
+  border-top: 1px solid #7b6532 !important;
+}
+
+.rdtPicker thead tr:first-child th {
+  border-bottom: 1px solid #7b6532 !important;
+}
+
+td.rdtMonth:hover, td.rdtYear:hover {
+  background-color: transparent !important;
+  color: #fff !important;
+}
+/* 
+main:after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    min-height: 100%;
+    background-image: url(../../public/radial.svg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    opacity: 0.3;
+    z-index: 0;
+} */
+
+.force-gpu{
+-webkit-backface-visibility: hidden;
+-webkit-perspective: 1000;
+-webkit-transform: translate3d(0,0,0);
+-webkit-transform: translateZ(0);
+backface-visibility: hidden;
+perspective: 1000;
+transform: translate3d(0,0,0);
+transform: translateZ(0);
+}
+
+/* Hides the reCAPTCHA on every page */
+/* .grecaptcha-badge {
+  display: none !important;
+} */

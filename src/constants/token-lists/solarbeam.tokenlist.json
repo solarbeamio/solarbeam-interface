@@ -1,0 +1,118 @@
+{
+  "name": "Solarbeam List",
+  "timestamp": "2021-07-15T12:15:29.993Z",
+  "version": {
+    "major": 1,
+    "minor": 0,
+    "patch": 0
+  },
+  "tags": {},
+  "logoURI": "https://raw.githubusercontent.com/sushiswap/art/master/sushi/logo-256x256.png",
+  "keywords": ["sushiswap", "default"],
+  "tokens": [
+    {
+      "name": "Solarbeam Token",
+      "address": "0x6bD193Ee6D2104F14F94E2cA6efefae561A4334B",
+      "symbol": "SOLAR",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "http://solarbeam.io/icon.png"
+    },
+    {
+      "name": "Wrapped MOVR",
+      "address": "0x98878B06940aE243284CA214f92Bb71a2b032B8A",
+      "symbol": "WMOVR",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://solarbeam.io/images/tokens/movr.png"
+    },
+    {
+      "name": "RiverBoat",
+      "address": "0xbD90A6125a84E5C512129D622a75CDDE176aDE5E",
+      "symbol": "RIB",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://solarbeam.io/images/tokens/rib.png"
+    },
+    {
+      "name": "USDC Coin",
+      "address": "0xE3F5a90F9cb311505cd691a46596599aA1A0AD7D",
+      "symbol": "USDC",
+      "decimals": 6,
+      "chainId": 1285,
+      "logoURI": "https://solarbeam.io/images/tokens/usdc.png"
+    },
+    {
+      "name": "Dai Stablecoin",
+      "address": "0x80A16016cC4A2E6a2CACA8a4a498b1699fF0f844",
+      "symbol": "DAI",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://solarbeam.io/images/tokens/dai.png"
+    },
+    {
+      "name": "Binance-Peg BUSD Token",
+      "address": "0x5D9ab5522c64E1F6ef5e3627ECCc093f56167818",
+      "symbol": "BUSD",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://solarbeam.io/images/tokens/busd.png"
+    },
+    {
+      "name": "KusaMOON",
+      "address": "0x480cd4fa911eeeff93cb11135c97237455617862",
+      "symbol": "KMOON",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://solarbeam.io/images/tokens/kmoon.png"
+    },
+    {
+      "name": "Ethereum",
+      "address": "0x639A647fbe20b6c8ac19E48E2de44ea792c62c5C",
+      "symbol": "ETH",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://solarbeam.io/images/tokens/eth.png"
+    },
+    {
+      "name": "Binance Coin",
+      "address": "0x2bF9b864cdc97b08B6D79ad4663e71B8aB65c45c",
+      "symbol": "BNB",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://solarbeam.io/images/tokens/bnb.png"
+    },
+    {
+      "name": "MoonBeans",
+      "address": "0xC2392DD3e3fED2c8Ed9f7f0bDf6026fcd1348453",
+      "symbol": "BEANS",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://solarbeam.io/images/tokens/beans.png"
+    },
+    {
+      "name": "Laika Protocol",
+      "address": "0x65e66a61D0a8F1e686C2D6083ad611a10D84D97A",
+      "symbol": "LAIKA",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://solarbeam.io/images/tokens/laika.png"
+    },
+    {
+      "name": "Wrapped BTC",
+      "address": "0x6aB6d61428fde76768D7b45D8BFeec19c6eF91A8",
+      "symbol": "WBTC",
+      "decimals": 8,
+      "chainId": 1285,
+      "logoURI": "https://solarbeam.io/images/tokens/wbtc.png"
+    },
+    {
+      "name": "Tether USD",
+      "address": "0xB44a9B6905aF7c801311e8F4E76932ee959c663C",
+      "symbol": "USDT",
+      "decimals": 6,
+      "chainId": 1285,
+      "logoURI": "https://solarbeam.io/images/tokens/usdt.png"
+    }
+  ]
+}
