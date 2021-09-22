@@ -15,6 +15,38 @@ import { useLingui } from '@lingui/react'
 import { useActiveWeb3React } from '../../../hooks'
 import { useRouter } from 'next/router'
 import axios from 'axios'
+import { formatNumberScale } from '../../../functions'
+import moment from 'moment'
+import Typography from '../../../components/Typography'
+import Panel from '../../../components/Panel'
+
+const useHover = () => {
+  const ref = useRef()
+  const [ts, setTs] = useState(null)
+  const leave = () => {
+    setTs(new Date().getTime())
+  }
+
+  useEffect(() => {
+    const el = ref.current // cache external ref value for cleanup use
+    if (el) {
+      // @ts-ignore
+      el.addEventListener('mouseleave', leave)
+
+      return () => {
+        if (el) {
+          // @ts-ignore
+          el.removeEventListener('mouseleave', leave)
+        }
+      }
+    }
+  }, [])
+
+  return {
+    ref,
+    ts,
+  }
+}
 
 const apiUrl = process.env.NEXT_PUBLIC_ANALYTICS_URL
 
@@ -49,6 +81,14 @@ export default function AnalyticsHome(): JSX.Element {
   }, [])
 
   // for tracked data on pairs
+  const [lastLiquidityRow, setLastLiquidityRow] = useState(null)
+  const [liquidityValue, setLiquidityValue] = useState(0)
+  const [liquidityDate, setLiquidityDate] = useState({})
+
+  const [lastVolumeRow, setLastVolumeRow] = useState(null)
+  const [volumeValue, setVolumeValue] = useState(0)
+  const [volumeDate, setVolumeDate] = useState({})
+
   const [useTracked, setUseTracked] = useState(true)
 
   const [savedOpen, setSavedOpen] = useState(false)
@@ -57,6 +97,9 @@ export default function AnalyticsHome(): JSX.Element {
   const { i18n } = useLingui()
   const router = useRouter()
   const { chainId } = useActiveWeb3React()
+
+  const { ref: lineChartParent, ts: leaveTimes } = useHover()
+  const { ref: volumeChartParent, ts: volLeaveTimes } = useHover()
 
   const lineChartContainerRef = useRef()
   const lineChart = useRef()
@@ -71,6 +114,21 @@ export default function AnalyticsHome(): JSX.Element {
   // @ts-ignore
   const [width, setWidth] = useState(ref?.current?.container?.clientWidth)
   const [topTokens, setTopTokens] = useState()
+
+  useEffect(() => {
+    if (lastLiquidityRow) {
+      setLiquidityValue(lastLiquidityRow.liquidity)
+      setLiquidityDate(lastLiquidityRow.date)
+    }
+  }, [leaveTimes])
+
+  useEffect(() => {
+    if (lastVolumeRow) {
+      setVolumeValue(lastVolumeRow.volume)
+      setVolumeDate(lastVolumeRow.date)
+    }
+  }, [volLeaveTimes])
+
   // @ts-ignore
   useEffect(() => {
     if (!isClient) {
@@ -85,14 +143,14 @@ export default function AnalyticsHome(): JSX.Element {
     // window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
   }, [isClient, width])
-  const HEIGHT = 300
+  const HEIGHT = 400
 
   useEffect(() => {
     lineChart.current = createChart(lineChartContainerRef.current, {
       width: width,
       height: HEIGHT,
       layout: {
-        backgroundColor: '#000',
+        backgroundColor: 'rgb(8, 8, 8)',
         textColor: 'rgba(255, 255, 255, 1)',
         color: '#000',
       },
@@ -107,16 +165,7 @@ export default function AnalyticsHome(): JSX.Element {
         },
       },
       crosshair: {
-        mode: CrosshairMode.Normal,
-        horzLine: {
-          visible: false,
-          labelVisible: false,
-        },
         vertLine: {
-          visible: true,
-          style: 0,
-          width: 2,
-          color: 'rgba(32, 38, 46, 0.1)',
           labelVisible: false,
         },
       },
@@ -133,18 +182,40 @@ export default function AnalyticsHome(): JSX.Element {
 
     // @ts-ignore
     const areaSeries = lineChart.current.addAreaSeries({
-      topColor: '#741388',
+      topColor: '#ffc000',
       priceFormat: {
         type: 'volume',
       },
-      bottomColor: '#12021b',
+      bottomColor: '#8800ec',
       lineColor: '#E32DEF',
-      lineWidth: 2,
+      lineWidth: 1,
     })
+
+    if (lineChart.current) {
+      // @ts-ignore
+      lineChart.current.subscribeCrosshairMove(function (param) {
+        if (param.point === undefined || !param.time) {
+          if (lastLiquidityRow) {
+            setLiquidityValue(lastLiquidityRow.liquidity)
+            setLiquidityDate(lastLiquidityRow.date)
+          }
+        } else {
+          var price = param.seriesPrices.get(areaSeries)
+          setLiquidityValue(price)
+          setLiquidityDate({ ...param.time, month: param.time.month - 1 })
+        }
+      })
+    }
 
     try {
       axios.get(apiUrl + '/api/analytics/liquidity').then((liquidityResponse) => {
         if (liquidityResponse.data) {
+          if (liquidityResponse.data[liquidityResponse.data.length - 1]) {
+            const row = liquidityResponse.data[liquidityResponse.data.length - 1]
+            setLastLiquidityRow(row)
+            setLiquidityValue(row.liquidity)
+            setLiquidityDate(row.date)
+          }
           const liquidityDataFormated = liquidityResponse.data.map((lq) => {
             return { time: lq.date, value: lq.liquidity }
           })
@@ -166,7 +237,7 @@ export default function AnalyticsHome(): JSX.Element {
       width: width,
       height: HEIGHT,
       layout: {
-        backgroundColor: '#000',
+        backgroundColor: 'rgb(8, 8, 8)',
         textColor: 'rgba(255, 255, 255, 1)',
         color: '#000',
       },
@@ -181,16 +252,7 @@ export default function AnalyticsHome(): JSX.Element {
         },
       },
       crosshair: {
-        mode: CrosshairMode.Normal,
-        horzLine: {
-          visible: false,
-          labelVisible: false,
-        },
         vertLine: {
-          visible: true,
-          style: 0,
-          width: 2,
-          color: 'rgba(32, 38, 46, 0.1)',
           labelVisible: false,
         },
       },
@@ -205,26 +267,42 @@ export default function AnalyticsHome(): JSX.Element {
 
     // @ts-ignore
     const volumeSeries = volumesChart.current.addHistogramSeries({
-      color: '#be8f0f', //'rgba(255, 192, 0, 1)',// 'rgba(89, 55, 9, 1)',
-      lineWidth: 0.001,
+      color: '#E32DEF',
+      base: 0,
       priceFormat: {
         type: 'volume',
       },
-      scaleMargins: {
-        top: 0.32,
-        bottom: 0,
-      },
     })
+
+    if (volumesChart.current) {
+      // @ts-ignore
+      volumesChart.current.subscribeCrosshairMove(function (param) {
+        if (param.point === undefined || !param.time) {
+        } else {
+          var price = param.seriesPrices.get(volumeSeries)
+          setVolumeValue(price)
+          setVolumeDate({ ...param.time, month: param.time.month - 1 })
+        }
+      })
+    }
 
     try {
       axios.get(apiUrl + '/api/analytics/volume').then((volumeResponse) => {
         if (volumeResponse.data) {
+          if (volumeResponse.data[volumeResponse.data.length - 1]) {
+            const row = volumeResponse.data[volumeResponse.data.length - 1]
+            setLastVolumeRow(row)
+            setVolumeValue(row.volume)
+            setVolumeDate(row.date)
+          }
+
           const volumeDataFormated = volumeResponse.data.map((lq) => {
             return { time: lq.date, value: lq.volume }
           })
           volumeSeries.setData(volumeDataFormated)
           // @ts-ignore
           volumesChart.current.applyOptions({
+            base: 0,
             timeScale: {
               fixLeftEdge: true,
               fixRightEdge: true,
@@ -368,21 +446,45 @@ export default function AnalyticsHome(): JSX.Element {
                 {/*@ts-ignore*/}
                 {/*<AnalyticsItem>*/}
                 <GridRow>
-                  <div className="hover:text-high-emphesis text-base font-bold text-primary">Liquidity</div>
-                  <div className="hover:text-high-emphesis text-base font-bold text-primary">Volume</div>
-                  <div className="p-2 rounded bg-dark-700" id="lineChart">
-                    <div ref={lineChartContainerRef} />
+                  <div className="text-base text-primary">
+                    <Typography component="h1" variant="h2">
+                      Liquidity
+                    </Typography>
+                    <h4>{formatNumberScale(liquidityValue, true, 2)}</h4>
+                    <h4>{moment(liquidityDate).format('MMM DD, YYYY')}</h4>
                   </div>
-                  <div className="p-2 rounded bg-dark-700" id="volumeChart">
-                    <div ref={volumesChartContainerRef} />
+                  <div className="text-base text-primary">
+                    <Typography component="h1" variant="h2">
+                      Volume
+                    </Typography>
+                    <h4>{formatNumberScale(volumeValue, true, 2)}</h4>
+                    <h4>{moment(volumeDate).format('MMM DD, YYYY')}</h4>
+                  </div>
+                  <div className="mt-1" id="lineChart">
+                    <div ref={lineChartParent}>
+                      <div ref={lineChartContainerRef} />
+                    </div>
+                  </div>
+                  <div className="mt-1" id="volumeChart">
+                    <div ref={volumeChartParent}>
+                      <div ref={volumesChartContainerRef} />
+                    </div>
                   </div>
                 </GridRow>
-                {/*@ts-ignore*/}
-                <AnalyticsItem title={`${i18n._(t`Top Tokens`)}`}>
-                  {/*<Panel style={{ marginTop: '6px', padding: '1.125rem 0 ' }}>  */}
+                <Panel>
+                  <div className="text-base text-primary mt-4">
+                    <Typography component="h1" variant="h2">
+                      Top Tokens
+                    </Typography>
+                  </div>
                   <TopTokenList tokens={topTokens} />
-                  {/*</Panel>*/}
-                </AnalyticsItem>
+                </Panel>
+                {/*@ts-ignore*/}
+                {/* <AnalyticsItem title={`${i18n._(t`Top Tokens`)}`}> */}
+                {/*<Panel style={{ marginTop: '6px', padding: '1.125rem 0 ' }}>  */}
+                {/* <TopTokenList tokens={topTokens} /> */}
+                {/*</Panel>*/}
+                {/* </AnalyticsItem> */}
                 {/*</AnalyticsItem>*/}
                 {/*</LayoutWrapperAnalytics>*/}
               </Card>

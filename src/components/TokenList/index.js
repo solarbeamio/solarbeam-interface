@@ -44,7 +44,7 @@ const DashGrid = styled.div`
   grid-gap: 1em;
   grid-template-columns: 100px 1fr 1fr;
   grid-template-areas: 'name liq vol';
-  padding: 0 1.125rem;
+  margin-top: 1rem;
 
   > * {
     justify-content: flex-end;
@@ -177,7 +177,7 @@ function TopTokenList({ tokens, itemMax = 10, useTracked = false }) {
 
   const ListItem = ({ item, index }) => {
     return (
-      <DashGrid style={{ height: '48px' }} focus={true}>
+      <DashGrid  style={{ height: '48px' }} focus={true}>
         <DataText area="name" fontWeight="500">
           <Row>
             {!below680 && <div style={{ marginRight: '1rem', width: '10px' }}>{index}</div>}
@@ -211,7 +211,7 @@ function TopTokenList({ tokens, itemMax = 10, useTracked = false }) {
 
   return (
     <ListWrapper>
-      <DashGrid center={true} style={{ height: 'fit-content', padding: '0 1.125rem 1rem 1.125rem' }}>
+      <DashGrid center={true} style={{ height: 'fit-content' }}>
         <Flex alignItems="center" justifyContent="flexStart">
           <ClickableText
             color="text"
@@ -295,10 +295,10 @@ function TopTokenList({ tokens, itemMax = 10, useTracked = false }) {
       <Divider />
       <List p={0}>
         {tokens &&
-        tokens.map((item, index) => {
+          tokens.map((item, index) => {
             return (
               <div key={index}>
-                <ListItem key={index} index={(page - 1) * itemMax + index + 1} item={item} />
+                {/* <ListItem key={index} index={(page - 1) * itemMax + index + 1} item={item} /> */}
                 <Divider />
               </div>
             )
