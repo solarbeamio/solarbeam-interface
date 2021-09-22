@@ -1,4 +1,4 @@
-// import 'rc-slider/assets/index.css'
+import 'rc-slider/assets/index.css'
 
 import React, { ReactNode } from 'react'
 import styled, { css } from 'styled-components'
@@ -35,7 +35,6 @@ export const ArrowWrapper = styled.div<{ clickable: boolean }>`
 export const SectionBreak = styled.div`
   height: 1px;
   width: 100%;
-  // background-color: ${({ theme }) => theme.bg3};
 `
 
 export const BottomGrouping = styled.div`
