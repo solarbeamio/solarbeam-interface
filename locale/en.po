@@ -237,16 +237,10 @@ msgstr "Amount to Remove"
 msgid "An error occurred when trying to execute this swap. You may need to increase your slippage tolerance. If that does not work, there may be an incompatibility with the token you are trading. Note fee on transfer and rebase tokens are incompatible with Uniswap V3."
 msgstr "An error occurred when trying to execute this swap. You may need to increase your slippage tolerance. If that does not work, there may be an incompatibility with the token you are trading. Note fee on transfer and rebase tokens are incompatible with Uniswap V3."
 
-<<<<<<< HEAD
 #: src/components/Header/index.tsx:96
 #: src/components/Header/index.tsx:222
 msgid "Analytics"
 msgstr "Analytics"
-=======
-#: src/components/Header/index.tsx:99
-#~ msgid "Analytics"
-#~ msgstr "Analytics"
->>>>>>> main
 
 #: src/features/farm/FarmListItemDetails.tsx:129
 #: src/features/lending/Button.tsx:64
@@ -396,11 +390,7 @@ msgstr "Balance:"
 #~ msgstr "Borrowing allows you to obtain liquidity without selling. Your borrow limit depends on the amount of deposited collateral. You will be able to borrow up to 75% of your collateral and repay at any time with accrued interest."
 
 #: src/components/Header/index.tsx:72
-<<<<<<< HEAD
 #: src/components/Header/index.tsx:207
-=======
-#: src/components/Header/index.tsx:199
->>>>>>> main
 #: src/pages/bridge/history/index.tsx:227
 #: src/pages/bridge/history/index.tsx:247
 #: src/pages/bridge/index.tsx:390
@@ -883,20 +873,12 @@ msgid "Expired"
 msgstr "Expired"
 
 #: src/components/Header/index.tsx:51
-<<<<<<< HEAD
 #: src/components/Header/index.tsx:186
-=======
-#: src/components/Header/index.tsx:178
->>>>>>> main
 msgid "Farm"
 msgstr "Farm"
 
 #: src/components/Header/index.tsx:80
-<<<<<<< HEAD
 #: src/components/Header/index.tsx:212
-=======
-#: src/components/Header/index.tsx:204
->>>>>>> main
 msgid "Faucet"
 msgstr "Faucet"
 
@@ -1253,11 +1235,7 @@ msgstr "Learn more about wallets"
 #~ msgid "Limit order"
 #~ msgstr "Limit order"
 
-<<<<<<< HEAD
 #: src/pages/analytics/home/index.tsx:108
-=======
-#: src/components/ExchangeHeader.tsx:70
->>>>>>> main
 #~ msgid "Liquidity"
 #~ msgstr "Liquidity"
 
@@ -1327,11 +1305,7 @@ msgid "Lock"
 msgstr "Lock"
 
 #: src/components/Header/index.tsx:67
-<<<<<<< HEAD
 #: src/components/Header/index.tsx:202
-=======
-#: src/components/Header/index.tsx:194
->>>>>>> main
 msgid "Locker"
 msgstr "Locker"
 
@@ -1484,11 +1458,7 @@ msgstr "My Orders"
 #~ msgstr "My SUSHI"
 
 #: src/components/Header/index.tsx:88
-<<<<<<< HEAD
 #: src/components/Header/index.tsx:217
-=======
-#: src/components/Header/index.tsx:209
->>>>>>> main
 msgid "NFT Launchpad"
 msgstr "NFT Launchpad"
 
@@ -1576,11 +1546,7 @@ msgstr "Open Orders"
 #~ msgid "Open Source"
 #~ msgstr "Open Source"
 
-<<<<<<< HEAD
 #: src/components/Header/index.tsx:130
-=======
-#: src/components/Header/index.tsx:122
->>>>>>> main
 msgid "Open main menu"
 msgstr "Open main menu"
 
@@ -1634,7 +1600,6 @@ msgstr "Output will be sent to"
 #~ msgid "Output will be sent to <0>{0}</0>"
 #~ msgstr "Output will be sent to <0>{0}</0>"
 
-<<<<<<< HEAD
 #: src/components/SideNav/index.js:131
 #~ msgid "Overview"
 #~ msgstr "Overview"
@@ -1643,8 +1608,6 @@ msgstr "Output will be sent to"
 #~ msgid "Pairs"
 #~ msgstr "Pairs"
 
-=======
->>>>>>> main
 #: src/features/open-order/CompletedOrders.tsx:35
 #: src/features/open-order/OpenOrders.tsx:63
 msgid "Pay"
@@ -1683,11 +1646,7 @@ msgid "Please type the word \"confirm\" to {0} and lock your tokens for {1}."
 msgstr "Please type the word \"confirm\" to {0} and lock your tokens for {1}."
 
 #: src/components/Header/index.tsx:43
-<<<<<<< HEAD
 #: src/components/Header/index.tsx:178
-=======
-#: src/components/Header/index.tsx:170
->>>>>>> main
 #: src/pages/exchange/pool/index.tsx:95
 msgid "Pool"
 msgstr "Pool"
@@ -2112,11 +2071,7 @@ msgstr "Supplying {0} {1} and {2} {3}"
 
 #: src/components/ExchangeHeader.tsx:42
 #: src/components/Header/index.tsx:35
-<<<<<<< HEAD
 #: src/components/Header/index.tsx:170
-=======
-#: src/components/Header/index.tsx:162
->>>>>>> main
 #: src/pages/exchange/swap/[[...tokens]].tsx:569
 #: src/pages/exchange/swap/[[...tokens]].tsx:598
 msgid "Swap"
@@ -2298,14 +2253,11 @@ msgstr ""
 #~ msgid "Tools to optimize your workflow."
 #~ msgstr "Tools to optimize your workflow."
 
-<<<<<<< HEAD
 #: src/pages/analytics/pairs/index.tsx:46
 #: src/pages/analytics/tokens/index.tsx:41
 msgid "Top Tokens"
 msgstr "Top Tokens"
 
-=======
->>>>>>> main
 #: src/pages/kashi/borrow/[pair].tsx:198
 #: src/pages/kashi/lend/index.tsx:188
 #: src/pages/kashi/lend/[pair].tsx:155
@@ -2345,11 +2297,7 @@ msgstr "Transaction Submitted"
 msgid "Transaction deadline"
 msgstr "Transaction deadline"
 
-<<<<<<< HEAD
 #: src/pages/analytics/home/index.tsx:150
-=======
-#: src/pages/user/transactions.tsx:36
->>>>>>> main
 #~ msgid "Transactions"
 #~ msgstr "Transactions"
 
@@ -2432,11 +2380,7 @@ msgstr "Unwrap"
 #~ msgstr "VFAT FARMING CALCULATOR"
 
 #: src/components/Header/index.tsx:59
-<<<<<<< HEAD
 #: src/components/Header/index.tsx:194
-=======
-#: src/components/Header/index.tsx:186
->>>>>>> main
 msgid "Vaults"
 msgstr "Vaults"
 
@@ -2503,13 +2447,10 @@ msgstr "View transaction on explorer"
 #~ msgid "View your SushiBar Portfolio"
 #~ msgstr "View your SushiBar Portfolio"
 
-<<<<<<< HEAD
 #: src/pages/analytics/home/index.tsx:119
 #~ msgid "Volume"
 #~ msgstr "Volume"
 
-=======
->>>>>>> main
 #: src/modals/TransactionConfirmationModal/index.tsx:42
 msgid "Waiting for Confirmation"
 msgstr "Waiting for Confirmation"
@@ -2879,16 +2820,10 @@ msgstr "{0}/{1} Burned"
 msgid "{label}"
 msgstr "{label}"
 
-<<<<<<< HEAD
 #: src/components/AnalyticsItem/index.js:12
 #: src/components/MenuAnalytics/index.js:69
 msgid "{title}"
 msgstr "{title}"
-=======
-#: src/features/farm/FarmMenu.tsx:18
-#~ msgid "{title}"
-#~ msgstr "{title}"
->>>>>>> main
 
 #: src/features/farm/FarmList.tsx:27
 #~ msgid "{v}"
