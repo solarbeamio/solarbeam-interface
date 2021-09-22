@@ -15,9 +15,6 @@ const Inline = styled.div`
 const Image = styled.img`
   width: ${({ size }) => size};
   height: ${({ size }) => size};
-  background-color: white;
-  border-radius: 50%;
-  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.075);
 `
 
 const StyledEthereumLogo = styled.div`
@@ -31,7 +28,7 @@ const StyledEthereumLogo = styled.div`
   }
 `
 
-export default function TokenLogo({ address, header = false, size = '24px', ...rest }) {
+export default function TokenLogo({ address, header = false, size = '32px', ...rest }) {
   const [error, setError] = useState(false)
 
   useEffect(() => {
@@ -72,7 +69,7 @@ export default function TokenLogo({ address, header = false, size = '24px', ...r
     )
   }
 
-  const path = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${isAddress(
+  const path = `https://raw.githubusercontent.com/solarbeamio/assets/master/blockchains/moonriver/assets/${isAddress(
     address
   )}/logo.png`
 

@@ -143,7 +143,7 @@ export default function AnalyticsHome(): JSX.Element {
     // window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
   }, [isClient, width])
-  const HEIGHT = 400
+  const HEIGHT = 300
 
   useEffect(() => {
     lineChart.current = createChart(lineChartContainerRef.current, {
@@ -175,7 +175,6 @@ export default function AnalyticsHome(): JSX.Element {
       timeScale: {
         borderColor: 'rgb(86,64,54)',
         color: '#253248',
-        fixLeftEdge: true,
         fixRightEdge: true,
       },
     })
@@ -187,7 +186,7 @@ export default function AnalyticsHome(): JSX.Element {
         type: 'volume',
       },
       bottomColor: '#8800ec',
-      lineColor: '#E32DEF',
+      lineColor: '#0F182A',
       lineWidth: 1,
     })
 
@@ -267,7 +266,7 @@ export default function AnalyticsHome(): JSX.Element {
 
     // @ts-ignore
     const volumeSeries = volumesChart.current.addHistogramSeries({
-      color: '#E32DEF',
+      color: '#8901ec',
       base: 0,
       priceFormat: {
         type: 'volume',
@@ -302,9 +301,9 @@ export default function AnalyticsHome(): JSX.Element {
           volumeSeries.setData(volumeDataFormated)
           // @ts-ignore
           volumesChart.current.applyOptions({
-            base: 0,
+            base: 10,
             timeScale: {
-              fixLeftEdge: true,
+              // fixLeftEdge: true,
               fixRightEdge: true,
             },
           })
@@ -472,12 +471,12 @@ export default function AnalyticsHome(): JSX.Element {
                   </div>
                 </GridRow>
                 <Panel>
-                  <div className="text-base text-primary mt-4">
+                  <div className="text-base text-primary mt-10">
                     <Typography component="h1" variant="h2">
                       Top Tokens
                     </Typography>
                   </div>
-                  <TopTokenList tokens={topTokens} />
+                  <TopTokenList tokens={topTokens} itemMax={5} />
                 </Panel>
                 {/*@ts-ignore*/}
                 {/* <AnalyticsItem title={`${i18n._(t`Top Tokens`)}`}> */}

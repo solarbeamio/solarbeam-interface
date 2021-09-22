@@ -14,6 +14,8 @@ import { useMedia } from 'react-use'
 import { TOKEN_BLACKLIST } from '../../constants'
 import FormattedName from '../FormattedName'
 import { TYPE } from '../Theme'
+import NavLink from '../NavLink'
+import Typography from '../Typography'
 
 dayjs.extend(utc)
 
@@ -37,6 +39,7 @@ const Arrow = styled.div`
 
 const List = styled(Box)`
   -webkit-overflow-scrolling: touch;
+  height: 320px;
 `
 
 const DashGrid = styled.div`
@@ -52,7 +55,6 @@ const DashGrid = styled.div`
     &:first-child {
       justify-content: flex-start;
       text-align: left;
-      width: 100px;
     }
   }
 
@@ -82,6 +84,13 @@ const DashGrid = styled.div`
 
 const ListWrapper = styled.div``
 
+const MyText = styled(Text)`
+  color: ${({ theme }) => theme.text1} !important;
+  @media screen and (max-width: 640px) {
+    font-size: 0.85rem;
+  }
+`
+
 const ClickableText = styled(Text)`
   text-align: end;
   &:hover {
@@ -98,11 +107,6 @@ const ClickableText = styled(Text)`
 const DataText = styled(Flex)`
   align-items: center;
   text-align: center;
-  color: ${({ theme }) => theme.text1} !important;
-
-  & > * {
-    font-size: 14px;
-  }
 
   @media screen and (max-width: 600px) {
     font-size: 12px;
@@ -110,12 +114,12 @@ const DataText = styled(Flex)`
 `
 
 const SORT_FIELD = {
-  LIQ: 'totalLiquidityUSD',
-  VOL: 'oneDayVolumeUSD',
-  VOL_UT: 'oneDayVolumeUT',
+  LIQ: 'liquidity',
+  VOL: 'volume',
+  VOL_UT: 'volume24',
   SYMBOL: 'symbol',
   NAME: 'name',
-  PRICE: 'priceUSD',
+  PRICE: 'price',
   CHANGE: 'priceChangeUSD',
 }
 
@@ -127,7 +131,7 @@ function TopTokenList({ tokens, itemMax = 10, useTracked = false }) {
 
   // sorting
   const [sortDirection, setSortDirection] = useState(true)
-  const [sortedColumn, setSortedColumn] = useState(SORT_FIELD.VOL)
+  const [sortedColumn, setSortedColumn] = useState(SORT_FIELD.LIQ)
 
   const below1080 = useMedia('(max-width: 1080px)')
   const below680 = useMedia('(max-width: 680px)')
@@ -177,34 +181,25 @@ function TopTokenList({ tokens, itemMax = 10, useTracked = false }) {
 
   const ListItem = ({ item, index }) => {
     return (
-      <DashGrid  style={{ height: '48px' }} focus={true}>
-        <DataText area="name" fontWeight="500">
-          <Row>
-            {!below680 && <div style={{ marginRight: '1rem', width: '10px' }}>{index}</div>}
-            <TokenLogo address={item.id} />
-            <CustomLink style={{ marginLeft: '16px', whiteSpace: 'nowrap' }} to={'/token/' + item.id}>
-              <FormattedName
-                text={below680 ? item.symbol : item.name}
-                maxCharacters={below600 ? 8 : 16}
-                adjustSize={true}
-                link={true}
-              />
-            </CustomLink>
-          </Row>
+      <DashGrid style={{ height: '48px' }} focus={true}>
+        <DataText area="name" color="text" fontWeight="500">
+          {!below680 && <div style={{ marginRight: '1rem', width: '10px' }}>{index}</div>}
+          <TokenLogo address={item.address} />
+          <div className="ml-3 text-md">{item.name}</div>
         </DataText>
         {!below680 && (
           <DataText area="symbol" color="text" fontWeight="500">
-            <FormattedName text={item.symbol} maxCharacters={5} />
+            {item.symbol}
           </DataText>
         )}
-        <DataText area="liq">{formattedNum(item.totalLiquidityUSD, true)}</DataText>
-        <DataText area="vol">{formattedNum(item.oneDayVolumeUSD, true)}</DataText>
+        <DataText area="liq">{formattedNum(item.liquidity, true)}</DataText>
+        <DataText area="vol">{formattedNum(item.volume24, true)}</DataText>
         {!below1080 && (
           <DataText area="price" color="text" fontWeight="500">
-            {formattedNum(item.priceUSD, true)}
+            {formattedNum(item.price, true)}
           </DataText>
         )}
-        {!below1080 && <DataText area="change">{formattedPercent(item.priceChangeUSD)}</DataText>}
+        {!below1080 && <DataText area="change">{formattedPercent((1 - item.price / item.price24) * -100)}</DataText>}
       </DashGrid>
     )
   }
@@ -294,11 +289,11 @@ function TopTokenList({ tokens, itemMax = 10, useTracked = false }) {
       </DashGrid>
       <Divider />
       <List p={0}>
-        {tokens &&
-          tokens.map((item, index) => {
+        {filteredList &&
+          filteredList.map((item, index) => {
             return (
               <div key={index}>
-                {/* <ListItem key={index} index={(page - 1) * itemMax + index + 1} item={item} /> */}
+                <ListItem key={index} index={(page - 1) * itemMax + index + 1} item={item} />
                 <Divider />
               </div>
             )
