@@ -82,7 +82,7 @@ export default function Faucet(): JSX.Element {
                 {i18n._(t`Moonriver Faucet`)}
               </Typography>
               <Typography component="h1" variant="base">
-                A Faucet is a tool that provides a small amount of MOVR to start using Solarbeam.io without having to
+                A Faucet is a tool that provides a small amount of MOVR for users that used the bridge to start using Solarbeam.io without having to
                 buy MOVR somewhere else.
               </Typography>
             </div>

@@ -71,15 +71,7 @@ function AppBar(): JSX.Element {
                         <a className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap">
                           {i18n._(t`Bridge`)}
                         </a>
-                      </NavLink>
-                      <NavLink href={'/faucet'}>
-                        <a
-                          id={`faucet-nav-link`}
-                          className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
-                        >
-                          {i18n._(t`Faucet`)}
-                        </a>
-                      </NavLink>
+                      </NavLink>                     
                       <NavLink href={'/nft/launchpad'}>
                         <a
                           id={`nft-nav-link`}
@@ -198,12 +190,7 @@ function AppBar(): JSX.Element {
                   <a className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap">
                     {i18n._(t`Bridge`)}
                   </a>
-                </Link>
-                <Link href={'/faucet'}>
-                  <a className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap">
-                    {i18n._(t`Faucet`)}
-                  </a>
-                </Link>
+                </Link>                
                 <Link href={'/nft/launchpad'}>
                   <a className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap">
                     {i18n._(t`NFT Launchpad`)}
