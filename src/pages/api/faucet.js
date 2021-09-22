@@ -71,13 +71,6 @@ function secondsToString(uptime) {
   }
 }
 
-function timeLeft(timestamp) {
-  const timeNeeded = serverRuntimeConfig.faucetTimeLimit * 60 * 1000
-  const timePassed = Date.now() - timestamp
-  const timeLeft = timeNeeded - timePassed
-  return secondsToString(timeLeft / 1000)
-}
-
 async function isBlacklisted(addr, ip) {
   let ref
   let result = true
@@ -90,14 +83,14 @@ async function isBlacklisted(addr, ip) {
 
   try {
     ref = await client.query(q.Get(q.Match(q.Index('address'), addr)))
-  } catch (ex2) {
-    try {
-      ref = await client.query(q.Get(q.Match(q.Index('ip'), ip)))
-      const timeLimit = parseInt(serverRuntimeConfig.faucetTimeLimit) * 60 * 1000
-      if (ref && ref.data.timestamp < Date.now() - timeLimit) result = false
-    } catch (ex) {
-      result = false
-    }
+  } catch (ex) {
+    // try {
+    //   ref = await client.query(q.Get(q.Match(q.Index('ip'), ip)))
+    //   const timeLimit = parseInt(serverRuntimeConfig.faucetTimeLimit) * 60 * 1000
+    //   if (ref && ref.data.timestamp < Date.now() - timeLimit) result = false
+    // } catch (ex) {
+    result = false
+    // }
   }
   return result
 }
@@ -174,14 +167,14 @@ export default async function handler(req, res) {
         await blackList(address, ip)
         res.status(200).json({
           status: 403,
-          message:
-            'Your current MOVR balance is above the minimum requirement to use the faucet.',
+          message: 'Your current MOVR balance is above the minimum requirement to use the faucet.',
         })
       }
     } else {
       res.status(200).json({
         status: 403,
-        message: 'This feature is available only for wallets which have used a bridge. If you used a bridge recently, please try again in some minutes.',
+        message:
+          'This feature is available only for wallets which have used a bridge. If you used a bridge recently, please try again in some minutes.',
       })
     }
   } else {

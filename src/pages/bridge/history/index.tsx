@@ -234,7 +234,7 @@ export default function Bridge() {
         <DoubleGlowShadow opacity="0.6">
           <div className="p-4 space-y-4 rounded bg-dark-900" style={{ zIndex: 1 }}>
             <div className="flex items-center justify-center mb-4 space-x-3">
-              <div className="grid grid-cols-2 rounded p-3px bg-dark-800 h-[46px]">
+              <div className="grid grid-cols-3 rounded p-3px bg-dark-800 h-[46px]">
                 <NavLink
                   activeClassName="font-bold border rounded text-high-emphesis border-dark-700 bg-dark-700"
                   exact
@@ -258,6 +258,19 @@ export default function Bridge() {
                   <a className="flex items-center justify-center px-4 text-base font-medium text-center rounded-md text-secondary hover:text-high-emphesis">
                     <Typography component="h1" variant="lg">
                       {i18n._(t`History`)}
+                    </Typography>
+                  </a>
+                </NavLink>
+                <NavLink
+                  activeClassName="font-bold border rounded text-high-emphesis border-dark-700 bg-dark-700"
+                  exact
+                  href={{
+                    pathname: '/faucet',
+                  }}
+                >
+                  <a className="flex items-center justify-center px-4 text-base font-medium text-center rounded-md text-secondary hover:text-high-emphesis">
+                    <Typography component="h1" variant="lg">
+                      {i18n._(t`Faucet`)}
                     </Typography>
                   </a>
                 </NavLink>
