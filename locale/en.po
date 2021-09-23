@@ -389,7 +389,7 @@ msgstr "Balance:"
 #~ msgstr "Borrowing allows you to obtain liquidity without selling. Your borrow limit depends on the amount of deposited collateral. You will be able to borrow up to 75% of your collateral and repay at any time with accrued interest."
 
 #: src/components/Header/index.tsx:72
-#: src/components/Header/index.tsx:199
+#: src/components/Header/index.tsx:191
 #: src/pages/bridge/history/index.tsx:227
 #: src/pages/bridge/history/index.tsx:247
 #: src/pages/bridge/index.tsx:390
@@ -407,7 +407,7 @@ msgstr "Bridge"
 #~ msgid "Bridge Token"
 #~ msgstr "Bridge Token"
 
-#: src/pages/bridge/index.tsx:506
+#: src/pages/bridge/index.tsx:519
 msgid "Bridge tokens to and from the Moonriver Network"
 msgstr "Bridge tokens to and from the Moonriver Network"
 
@@ -687,7 +687,7 @@ msgid "Current"
 msgstr "Current"
 
 #: src/pages/bridge/history/index.tsx:124
-#: src/pages/bridge/history/index.tsx:291
+#: src/pages/bridge/history/index.tsx:304
 msgid "Date"
 msgstr "Date"
 
@@ -872,12 +872,12 @@ msgid "Expired"
 msgstr "Expired"
 
 #: src/components/Header/index.tsx:51
-#: src/components/Header/index.tsx:178
+#: src/components/Header/index.tsx:170
 msgid "Farm"
 msgstr "Farm"
 
-#: src/components/Header/index.tsx:80
-#: src/components/Header/index.tsx:204
+#: src/pages/bridge/history/index.tsx:273
+#: src/pages/bridge/index.tsx:509
 msgid "Faucet"
 msgstr "Faucet"
 
@@ -899,6 +899,10 @@ msgstr "Filled"
 #: src/pages/exchange/find/index.tsx:83
 msgid "Find Pool"
 msgstr "Find Pool"
+
+#: src/components/Header/More.tsx:45
+msgid "Follow us on Medium"
+msgstr "Follow us on Medium"
 
 #: src/components/Header/More.tsx:39
 #: src/components/Menu.tsx:38
@@ -945,7 +949,7 @@ msgstr "Follow us on Twitter"
 #~ msgstr "French"
 
 #: src/pages/bridge/history/index.tsx:145
-#: src/pages/bridge/history/index.tsx:293
+#: src/pages/bridge/history/index.tsx:306
 msgid "From"
 msgstr "From"
 
@@ -1304,7 +1308,7 @@ msgid "Lock"
 msgstr "Lock"
 
 #: src/components/Header/index.tsx:67
-#: src/components/Header/index.tsx:194
+#: src/components/Header/index.tsx:186
 msgid "Locker"
 msgstr "Locker"
 
@@ -1399,6 +1403,10 @@ msgstr "Maximum sent"
 msgid "Me"
 msgstr "Me"
 
+#: src/components/Header/More.tsx:44
+msgid "Medium"
+msgstr "Medium"
+
 #: src/pages/exchange/pool/index.tsx:167
 msgid "Migrate"
 msgstr "Migrate"
@@ -1456,8 +1464,8 @@ msgstr "My Orders"
 #~ msgid "My SUSHI"
 #~ msgstr "My SUSHI"
 
-#: src/components/Header/index.tsx:88
-#: src/components/Header/index.tsx:209
+#: src/components/Header/index.tsx:80
+#: src/components/Header/index.tsx:196
 msgid "NFT Launchpad"
 msgstr "NFT Launchpad"
 
@@ -1545,7 +1553,7 @@ msgstr "Open Orders"
 #~ msgid "Open Source"
 #~ msgstr "Open Source"
 
-#: src/components/Header/index.tsx:122
+#: src/components/Header/index.tsx:114
 msgid "Open main menu"
 msgstr "Open main menu"
 
@@ -1637,7 +1645,7 @@ msgid "Please type the word \"confirm\" to {0} and lock your tokens for {1}."
 msgstr "Please type the word \"confirm\" to {0} and lock your tokens for {1}."
 
 #: src/components/Header/index.tsx:43
-#: src/components/Header/index.tsx:170
+#: src/components/Header/index.tsx:162
 #: src/pages/exchange/pool/index.tsx:95
 msgid "Pool"
 msgstr "Pool"
@@ -1681,7 +1689,7 @@ msgstr "Pooled {0}"
 #~ msgid "Pour a hot bowl of MISO, the new <0>token launchpad</0> from SUSHI"
 #~ msgstr ""
 
-#: src/pages/bridge/index.tsx:620
+#: src/pages/bridge/index.tsx:633
 msgid "Powered by Anyswap Network"
 msgstr "Powered by Anyswap Network"
 
@@ -2019,7 +2027,7 @@ msgstr "Stake"
 #~ msgstr "Staking APR"
 
 #: src/pages/bridge/history/index.tsx:161
-#: src/pages/bridge/history/index.tsx:295
+#: src/pages/bridge/history/index.tsx:308
 msgid "Status"
 msgstr "Status"
 
@@ -2062,7 +2070,7 @@ msgstr "Supplying {0} {1} and {2} {3}"
 
 #: src/components/ExchangeHeader.tsx:42
 #: src/components/Header/index.tsx:35
-#: src/components/Header/index.tsx:162
+#: src/components/Header/index.tsx:154
 #: src/pages/exchange/swap/[[...tokens]].tsx:569
 #: src/pages/exchange/swap/[[...tokens]].tsx:598
 msgid "Swap"
@@ -2197,7 +2205,7 @@ msgid "Tip: Custom tokens are stored locally in your browser"
 msgstr "Tip: Custom tokens are stored locally in your browser"
 
 #: src/pages/bridge/history/index.tsx:153
-#: src/pages/bridge/history/index.tsx:294
+#: src/pages/bridge/history/index.tsx:307
 msgid "To"
 msgstr "To"
 
@@ -2217,7 +2225,7 @@ msgstr "Toggle Expert Mode"
 msgid "Token"
 msgstr "Token"
 
-#: src/pages/bridge/index.tsx:534
+#: src/pages/bridge/index.tsx:547
 msgid "Token to bridge:"
 msgstr "Token to bridge:"
 
@@ -2259,7 +2267,7 @@ msgid "Trading Fee"
 msgstr "Trading Fee"
 
 #: src/pages/bridge/history/index.tsx:132
-#: src/pages/bridge/history/index.tsx:292
+#: src/pages/bridge/history/index.tsx:305
 msgid "Transaction"
 msgstr "Transaction"
 
@@ -2366,7 +2374,7 @@ msgstr "Unwrap"
 #~ msgstr "VFAT FARMING CALCULATOR"
 
 #: src/components/Header/index.tsx:59
-#: src/components/Header/index.tsx:186
+#: src/components/Header/index.tsx:178
 msgid "Vaults"
 msgstr "Vaults"
 
@@ -2421,7 +2429,7 @@ msgstr "View on explorer"
 #~ msgid "View pair analytics"
 #~ msgstr "View pair analytics"
 
-#: src/pages/bridge/history/index.tsx:269
+#: src/pages/bridge/history/index.tsx:282
 msgid "View the history of all your bridge interactions"
 msgstr "View the history of all your bridge interactions"
 
@@ -2668,7 +2676,7 @@ msgid "Your transaction will revert if there is a large, unfavorable price movem
 msgstr "Your transaction will revert if there is a large, unfavorable price movement before it is confirmed."
 
 #: src/components/AccountDetails/index.tsx:183
-#: src/pages/bridge/history/index.tsx:303
+#: src/pages/bridge/history/index.tsx:316
 msgid "Your transactions will appear here..."
 msgstr "Your transactions will appear here..."
 
