@@ -31,7 +31,7 @@ const items = (i18n: I18n) => [
   {
     name: i18n._(t`Discord`),
     description: i18n._(t`Join the community on Discord`),
-    href: 'https://discord.gg/rK4AjZXuwf',
+    href: 'https://discord.gg/solarbeam',
     external: true,
   },
   {

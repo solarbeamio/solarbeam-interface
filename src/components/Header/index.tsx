@@ -30,7 +30,7 @@ function AppBar(): JSX.Element {
                       <NavLink href="/exchange/swap">
                         <a
                           id={`swap-nav-link`}
-                          className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                          className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis whitespace-nowrap"
                         >
                           {i18n._(t`Swap`)}
                         </a>
@@ -38,7 +38,7 @@ function AppBar(): JSX.Element {
                       <NavLink href="/exchange/pool">
                         <a
                           id={`pool-nav-link`}
-                          className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                          className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis whitespace-nowrap"
                         >
                           {i18n._(t`Pool`)}
                         </a>
@@ -46,7 +46,7 @@ function AppBar(): JSX.Element {
                       <NavLink href={'/farm'}>
                         <a
                           id={`farm-nav-link`}
-                          className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                          className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis whitespace-nowrap"
                         >
                           {i18n._(t`Farm`)}
                         </a>
@@ -54,7 +54,7 @@ function AppBar(): JSX.Element {
                       <NavLink href={'/vaults'}>
                         <a
                           id={`vaults-nav-link`}
-                          className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                          className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis whitespace-nowrap"
                         >
                           {i18n._(t`Vaults`)}
                         </a>
@@ -62,22 +62,28 @@ function AppBar(): JSX.Element {
                       <NavLink href={'/locker'}>
                         <a
                           id={`farm-nav-link`}
-                          className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                          className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis whitespace-nowrap"
                         >
                           {i18n._(t`Locker`)}
                         </a>
                       </NavLink>
                       <NavLink href={'/bridge'}>
-                        <a className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap">
+                        <a className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis whitespace-nowrap">
                           {i18n._(t`Bridge`)}
                         </a>
-                      </NavLink>                     
-                      <NavLink href={'/nft/launchpad'}>
+                      </NavLink>
+                      <NavLink href={'/eclipse'}>
+                        <a className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis whitespace-nowrap">
+                          {i18n._(t`Eclipse`)}
+                        </a>
+                      </NavLink>
+                      <NavLink href="https://analytics.solarbeam.io">
                         <a
-                          id={`nft-nav-link`}
-                          className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                          target="_blank"
+                          id={`swap-nav-link`}
+                          className="p-2 text-base text-primary hover:text-high-emphesis focus:text-high-emphesis whitespace-nowrap"
                         >
-                          {i18n._(t`NFT Launchpad`)}
+                          {i18n._(t`Analytics`)}
                         </a>
                       </NavLink>
                     </div>
@@ -190,10 +196,18 @@ function AppBar(): JSX.Element {
                   <a className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap">
                     {i18n._(t`Bridge`)}
                   </a>
-                </Link>                
-                <Link href={'/nft/launchpad'}>
+                </Link>
+                <Link href={'/eclipse'}>
                   <a className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap">
-                    {i18n._(t`NFT Launchpad`)}
+                    {i18n._(t`Eclipse`)}
+                  </a>
+                </Link>
+                <Link href="https://analytics.solarbeam.io">
+                  <a
+                    target="_blank"
+                    className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                  >
+                    {i18n._(t`Analytics`)}
                   </a>
                 </Link>
               </div>
