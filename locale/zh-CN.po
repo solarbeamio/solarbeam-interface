@@ -378,7 +378,7 @@ msgstr "余额"
 #~ msgstr "借款让您在不出售资产的情况下获得流动性。您的借款上限取决于您抵押物的价值。您可以借出您抵押品价值的75%，随时可以还款，并附上利息。"
 
 #: src/components/Header/index.tsx:72
-#: src/components/Header/index.tsx:199
+#: src/components/Header/index.tsx:191
 #: src/pages/bridge/history/index.tsx:227
 #: src/pages/bridge/history/index.tsx:247
 #: src/pages/bridge/index.tsx:390
@@ -396,7 +396,7 @@ msgstr "跨链桥"
 #~ msgid "Bridge Token"
 #~ msgstr ""
 
-#: src/pages/bridge/index.tsx:506
+#: src/pages/bridge/index.tsx:519
 msgid "Bridge tokens to and from the Moonriver Network"
 msgstr ""
 
@@ -645,7 +645,7 @@ msgid "Current"
 msgstr "目前"
 
 #: src/pages/bridge/history/index.tsx:124
-#: src/pages/bridge/history/index.tsx:291
+#: src/pages/bridge/history/index.tsx:304
 msgid "Date"
 msgstr ""
 
@@ -814,12 +814,12 @@ msgid "Expired"
 msgstr "过期"
 
 #: src/components/Header/index.tsx:51
-#: src/components/Header/index.tsx:178
+#: src/components/Header/index.tsx:170
 msgid "Farm"
 msgstr "农耕"
 
-#: src/components/Header/index.tsx:80
-#: src/components/Header/index.tsx:204
+#: src/pages/bridge/history/index.tsx:273
+#: src/pages/bridge/index.tsx:509
 msgid "Faucet"
 msgstr ""
 
@@ -841,6 +841,10 @@ msgstr "已填充"
 #: src/pages/exchange/find/index.tsx:83
 msgid "Find Pool"
 msgstr "查找池"
+
+#: src/components/Header/More.tsx:45
+msgid "Follow us on Medium"
+msgstr ""
 
 #: src/components/Header/More.tsx:39
 #: src/components/Menu.tsx:38
@@ -872,7 +876,7 @@ msgstr ""
 #~ msgstr ""
 
 #: src/pages/bridge/history/index.tsx:145
-#: src/pages/bridge/history/index.tsx:293
+#: src/pages/bridge/history/index.tsx:306
 msgid "From"
 msgstr "从"
 
@@ -1212,7 +1216,7 @@ msgid "Lock"
 msgstr "锁定"
 
 #: src/components/Header/index.tsx:67
-#: src/components/Header/index.tsx:194
+#: src/components/Header/index.tsx:186
 msgid "Locker"
 msgstr "锁"
 
@@ -1302,6 +1306,10 @@ msgstr "最大可发送"
 msgid "Me"
 msgstr "我"
 
+#: src/components/Header/More.tsx:44
+msgid "Medium"
+msgstr ""
+
 #: src/pages/exchange/pool/index.tsx:167
 msgid "Migrate"
 msgstr "迁移"
@@ -1358,8 +1366,8 @@ msgstr "我的订单"
 #~ msgid "My SUSHI"
 #~ msgstr ""
 
-#: src/components/Header/index.tsx:88
-#: src/components/Header/index.tsx:209
+#: src/components/Header/index.tsx:80
+#: src/components/Header/index.tsx:196
 msgid "NFT Launchpad"
 msgstr "NFT Launchpad"
 
@@ -1445,7 +1453,7 @@ msgstr "打开订单"
 #~ msgid "Open Source"
 #~ msgstr "开源"
 
-#: src/components/Header/index.tsx:122
+#: src/components/Header/index.tsx:114
 msgid "Open main menu"
 msgstr "打开主菜单"
 
@@ -1528,7 +1536,7 @@ msgid "Please type the word \"confirm\" to {0} and lock your tokens for {1}."
 msgstr ""
 
 #: src/components/Header/index.tsx:43
-#: src/components/Header/index.tsx:170
+#: src/components/Header/index.tsx:162
 #: src/pages/exchange/pool/index.tsx:95
 msgid "Pool"
 msgstr "资金池"
@@ -1566,7 +1574,7 @@ msgstr "汇集{0}"
 #~ msgid "Pour a hot bowl of MISO, the new <0>token launchpad</0> from SUSHI"
 #~ msgstr "来一碗热味增汤, Sushi全新的<0>代币Launchpad</0>"
 
-#: src/pages/bridge/index.tsx:620
+#: src/pages/bridge/index.tsx:633
 msgid "Powered by Anyswap Network"
 msgstr ""
 
@@ -1885,7 +1893,7 @@ msgstr "质押"
 #~ msgstr "质押APR"
 
 #: src/pages/bridge/history/index.tsx:161
-#: src/pages/bridge/history/index.tsx:295
+#: src/pages/bridge/history/index.tsx:308
 msgid "Status"
 msgstr ""
 
@@ -1926,7 +1934,7 @@ msgstr "提供{0} {1}和{2} {3}"
 
 #: src/components/ExchangeHeader.tsx:42
 #: src/components/Header/index.tsx:35
-#: src/components/Header/index.tsx:162
+#: src/components/Header/index.tsx:154
 #: src/pages/exchange/swap/[[...tokens]].tsx:569
 #: src/pages/exchange/swap/[[...tokens]].tsx:598
 msgid "Swap"
@@ -2051,7 +2059,7 @@ msgid "Tip: Custom tokens are stored locally in your browser"
 msgstr "提示：自定义令牌存储在你的浏览器中"
 
 #: src/pages/bridge/history/index.tsx:153
-#: src/pages/bridge/history/index.tsx:294
+#: src/pages/bridge/history/index.tsx:307
 msgid "To"
 msgstr "到"
 
@@ -2071,7 +2079,7 @@ msgstr "切换专家模式"
 msgid "Token"
 msgstr "代币"
 
-#: src/pages/bridge/index.tsx:534
+#: src/pages/bridge/index.tsx:547
 msgid "Token to bridge:"
 msgstr ""
 
@@ -2110,7 +2118,7 @@ msgid "Trading Fee"
 msgstr "交易费用"
 
 #: src/pages/bridge/history/index.tsx:132
-#: src/pages/bridge/history/index.tsx:292
+#: src/pages/bridge/history/index.tsx:305
 msgid "Transaction"
 msgstr ""
 
@@ -2213,7 +2221,7 @@ msgstr "解开"
 #~ msgstr "V2奖励器"
 
 #: src/components/Header/index.tsx:59
-#: src/components/Header/index.tsx:186
+#: src/components/Header/index.tsx:178
 msgid "Vaults"
 msgstr ""
 
@@ -2268,7 +2276,7 @@ msgstr "在浏览器查看"
 #~ msgid "View pair analytics"
 #~ msgstr "查看交易对分析"
 
-#: src/pages/bridge/history/index.tsx:269
+#: src/pages/bridge/history/index.tsx:282
 msgid "View the history of all your bridge interactions"
 msgstr ""
 
@@ -2503,7 +2511,7 @@ msgid "Your transaction will revert if there is a large, unfavorable price movem
 msgstr "如果交易在确认之前出现大的不利价格变动，则交易将恢复。"
 
 #: src/components/AccountDetails/index.tsx:183
-#: src/pages/bridge/history/index.tsx:303
+#: src/pages/bridge/history/index.tsx:316
 msgid "Your transactions will appear here..."
 msgstr "你的交易将在这里显示"
 

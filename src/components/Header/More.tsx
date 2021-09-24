@@ -40,6 +40,12 @@ const items = (i18n: I18n) => [
     href: 'https://twitter.com/solarbeamio',
     external: true,
   },
+  {
+    name: i18n._(t`Medium`),
+    description: i18n._(t`Follow us on Medium`),
+    href: 'https://solarbeam.medium.com',
+    external: true,
+  },
 ]
 
 export default function Menu() {
