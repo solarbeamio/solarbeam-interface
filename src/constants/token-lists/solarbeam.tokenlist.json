@@ -121,6 +121,30 @@
       "decimals": 18,
       "chainId": 1285,
       "logoURI": "https://solarbeam.io/images/tokens/kafe.png"
+    },
+    {
+      "name": "Relay Token",
+      "address": "0xAd7F1844696652ddA7959a49063BfFccafafEfe7",
+      "symbol": "RELAY",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://solarbeam.io/images/tokens/relay.png"
+    },
+    {
+      "name": "Avalanche Token",
+      "address": "0x14a0243C333A5b238143068dC3A7323Ba4C30ECB",
+      "symbol": "AVAX",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://solarbeam.io/images/tokens/avax.png"
+    },
+    {
+      "name": "Matic Token",
+      "address": "0x682F81e57EAa716504090C3ECBa8595fB54561D8",
+      "symbol": "MATIC",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://solarbeam.io/images/tokens/matic.png"
     }
   ]
 }
