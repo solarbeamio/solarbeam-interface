@@ -237,5 +237,56 @@ export const POOLS: AddressMap = {
       name: 'Solarbeam LP',
       symbol: 'SLP',
     },
+    '0x29633cc367AbD9b16d327Adaf6c3538b6e97f6C0': {
+      id: 14,
+      token0: {
+        id: '0x682F81e57EAa716504090C3ECBa8595fB54561D8',
+        name: 'Matic',
+        symbol: 'MATIC',
+        decimals: 18,
+      },
+      token1: {
+        id: '0x98878B06940aE243284CA214f92Bb71a2b032B8A',
+        name: 'Moonriver',
+        symbol: 'MOVR',
+        decimals: 18,
+      },
+      name: 'Solarbeam LP',
+      symbol: 'SLP',
+    },
+    '0xb9a61ac826196AbC69A3C66ad77c563D6C5bdD7b': {
+      id: 15,
+      token0: {
+        id: '0x14a0243C333A5b238143068dC3A7323Ba4C30ECB',
+        name: 'Avalanche',
+        symbol: 'AVAX',
+        decimals: 18,
+      },
+      token1: {
+        id: '0x98878B06940aE243284CA214f92Bb71a2b032B8A',
+        name: 'Moonriver',
+        symbol: 'MOVR',
+        decimals: 18,
+      },
+      name: 'Solarbeam LP',
+      symbol: 'SLP',
+    },
+    '0x9e0d90ebB44c22303Ee3d331c0e4a19667012433': {
+      id: 16,
+      token0: {
+        id: '0xAd7F1844696652ddA7959a49063BfFccafafEfe7',
+        name: 'Relay Token',
+        symbol: 'RELAY',
+        decimals: 18,
+      },
+      token1: {
+        id: '0x98878B06940aE243284CA214f92Bb71a2b032B8A',
+        name: 'Moonriver',
+        symbol: 'MOVR',
+        decimals: 18,
+      },
+      name: 'Solarbeam LP',
+      symbol: 'SLP',
+    },
   },
 }
