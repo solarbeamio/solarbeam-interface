@@ -17,7 +17,7 @@ export default function NFTLaunchpad(): JSX.Element {
       <div className="container px-0 mx-auto pb-6">
         <div className={`mb-2 grid grid-cols-12 gap-4`}>
           <div className="flex justify-center items-center col-span-12 lg:justify">
-            <Link href="/eclipse">Coming sooo0n</Link>
+            <Link href="/eclipse">Coming sooon</Link>
           </div>
         </div>
       </div>
