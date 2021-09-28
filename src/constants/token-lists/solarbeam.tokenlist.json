@@ -145,6 +145,14 @@
       "decimals": 18,
       "chainId": 1285,
       "logoURI": "https://solarbeam.io/images/tokens/matic.png"
+    },
+    {
+      "name": "1SWAP",
+      "address": "0x3516a7588C2E6FFA66C9507eF51853eb85d76e5B",
+      "symbol": "1SWAP",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://solarbeam.io/images/tokens/1swap.png"
     }
   ]
 }
