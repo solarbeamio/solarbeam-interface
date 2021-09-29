@@ -85,7 +85,7 @@ export default function ChainModal({
   const { chainId, library, account, activate } = useWeb3React(BridgeContextName)
 
   const goToRelay = () => {
-    window.open('https://app.relaychain.com/transfer', '_blank').focus();
+    window.open('https://app.relaychain.com/transfer', '_blank').focus()
   }
 
   return (
@@ -136,7 +136,7 @@ export default function ChainModal({
 
         {/* Redirect to relay bridge while implementing UI integration */}
         <button className="w-full col-span-1 p-px rounded bg-dark-800 hover:bg-dark-900" onClick={() => goToRelay()}>
-          <div className="flex items-center w-full h-full p-3 space-x-3 rounded bg-dark-1000">
+          <div className="flex items-center w-full h-full p-3 space-x-3 rounded">
             <Image
               src={NETWORK_ICON[ChainId.AVALANCHE]}
               alt={`Select ${NETWORK_LABEL[ChainId.AVALANCHE]} Network`}
@@ -150,7 +150,7 @@ export default function ChainModal({
         </button>
 
         <button className="w-full col-span-1 p-px rounded bg-dark-800 hover:bg-dark-900" onClick={() => goToRelay()}>
-          <div className="flex items-center w-full h-full p-3 space-x-3 rounded bg-dark-1000">
+          <div className="flex items-center w-full h-full p-3 space-x-3 rounded">
             <Image
               src={NETWORK_ICON[ChainId.MATIC]}
               alt={`Select ${NETWORK_LABEL[ChainId.MATIC]} Network`}
@@ -162,7 +162,6 @@ export default function ChainModal({
             <ExternalLinkIcon style={{ width: '26px', height: '26px', marginLeft: 'auto' }} />
           </div>
         </button>
-
       </div>
     </Modal>
   )

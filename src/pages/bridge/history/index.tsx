@@ -265,7 +265,7 @@ export default function Bridge() {
                   activeClassName="font-bold border rounded text-high-emphesis border-dark-700 bg-dark-700"
                   exact
                   href={{
-                    pathname: '/faucet',
+                    pathname: '/bridge/faucet',
                   }}
                 >
                   <a className="flex items-center justify-center px-4 text-base font-medium text-center rounded-md text-secondary hover:text-high-emphesis">
@@ -297,7 +297,7 @@ export default function Bridge() {
               {!account && activeAccount ? (
                 <Web3Connect size="lg" color="gradient" className="w-full" />
               ) : (
-                <div className="space-y-2 p-4 rounded bg-dark-800 mb-2 h-[480px] overflow-y-auto">
+                <div className="space-y-2 p-4 rounded bg-dark-800 mb-2 h-[455px] overflow-y-auto">
                   {allTransactions && Object.keys(allTransactions).length > 0 ? (
                     <>
                       <div className="flex px-2 hidden md:flex text-base font-bold text-primary items-center">
