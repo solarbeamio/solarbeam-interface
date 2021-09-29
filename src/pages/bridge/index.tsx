@@ -501,7 +501,7 @@ export default function Bridge() {
                   activeClassName="font-bold border rounded text-high-emphesis border-dark-700 bg-dark-700"
                   exact
                   href={{
-                    pathname: '/faucet',
+                    pathname: '/bridge/faucet',
                   }}
                 >
                   <a className="flex items-center justify-center px-4 text-base font-medium text-center rounded-md text-secondary hover:text-high-emphesis">
