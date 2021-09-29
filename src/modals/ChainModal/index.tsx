@@ -1,18 +1,19 @@
 import { NETWORK_ICON, NETWORK_LABEL } from '../../constants/networks'
+import { bridgeInjected, injected } from '../../connectors'
 import { useChainModalToggle, useModalOpen, useNetworkModalToggle } from '../../state/application/hooks'
 
 import { ApplicationModal } from '../../state/application/actions'
+import { BridgeContextName } from '../../constants'
+import { Chain } from '../../sdk/entities/Chain'
 import { ChainId } from '../../sdk'
+import { ExternalLinkIcon } from '@heroicons/react/solid'
 import Image from 'next/image'
 import Modal from '../../components/Modal'
 import ModalHeader from '../../components/ModalHeader'
 import React from 'react'
 import cookie from 'cookie-cutter'
 import { useActiveWeb3React } from '../../hooks/useActiveWeb3React'
-import { Chain } from '../../sdk/entities/Chain'
-import { BridgeContextName } from '../../constants'
 import { useWeb3React } from '@web3-react/core'
-import { bridgeInjected, injected } from '../../connectors'
 
 export const SUPPORTED_NETWORKS: {
   [chainId in ChainId]?: {
@@ -83,6 +84,10 @@ export default function ChainModal({
 }: ChainModalProps): JSX.Element | null {
   const { chainId, library, account, activate } = useWeb3React(BridgeContextName)
 
+  const goToRelay = () => {
+    window.open('https://app.relaychain.com/transfer', '_blank').focus();
+  }
+
   return (
     <Modal isOpen={isOpen} onDismiss={onDismiss} maxWidth={400}>
       <ModalHeader onClose={onDismiss} title={title} />
@@ -128,6 +133,36 @@ export default function ChainModal({
             </button>
           )
         })}
+
+        {/* Redirect to relay bridge while implementing UI integration */}
+        <button className="w-full col-span-1 p-px rounded bg-dark-800 hover:bg-dark-900" onClick={() => goToRelay()}>
+          <div className="flex items-center w-full h-full p-3 space-x-3 rounded bg-dark-1000">
+            <Image
+              src={NETWORK_ICON[ChainId.AVALANCHE]}
+              alt={`Select ${NETWORK_LABEL[ChainId.AVALANCHE]} Network`}
+              className="rounded-md"
+              width="32px"
+              height="32px"
+            />
+            <div className="font-bold text-primary">{NETWORK_LABEL[ChainId.AVALANCHE]}</div>
+            <ExternalLinkIcon style={{ width: '26px', height: '26px', marginLeft: 'auto' }} />
+          </div>
+        </button>
+
+        <button className="w-full col-span-1 p-px rounded bg-dark-800 hover:bg-dark-900" onClick={() => goToRelay()}>
+          <div className="flex items-center w-full h-full p-3 space-x-3 rounded bg-dark-1000">
+            <Image
+              src={NETWORK_ICON[ChainId.MATIC]}
+              alt={`Select ${NETWORK_LABEL[ChainId.MATIC]} Network`}
+              className="rounded-md"
+              width="32px"
+              height="32px"
+            />
+            <div className="font-bold text-primary">{NETWORK_LABEL[ChainId.MATIC]}</div>
+            <ExternalLinkIcon style={{ width: '26px', height: '26px', marginLeft: 'auto' }} />
+          </div>
+        </button>
+
       </div>
     </Modal>
   )
