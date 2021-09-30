@@ -144,6 +144,7 @@
     ]
   },
   "dependencies": {
+    "@apollo/client": "^3.4.15",
     "@types/big.js": "^6.1.1",
     "axios": "^0.21.1",
     "big.js": "^6.1.1",
@@ -152,6 +153,8 @@
     "faunadb": "^4.4.1",
     "graphql": "^15.5.3",
     "graphql-request": "^3.5.0",
+    "kaktana-react-lightweight-charts": "^2.0.0",
+    "lightweight-charts": "^3.6.1",
     "moment": "^2.29.1",
     "multicodec": "^3.1.0",
     "multihashes": "^4.0.2",
@@ -161,7 +164,6 @@
     "tiny-invariant": "^1.1.0",
     "toformat": "^2.0.0",
     "web3": "3.0.0-rc.4",
-    "web3-eth-abi": "^1.5.2",
-    "lightweight-charts": "^3.6.1"
+    "web3-eth-abi": "^1.5.2"
   }
 }

@@ -1,14 +1,5 @@
 import { AppDispatch, AppState } from '../index'
-import {
-  ChainId,
-  Currency,
-  CurrencyAmount,
-  JSBI,
-  Percent,
-  TradeType,
-  Trade as V2Trade,
-  WNATIVE,
-} from '../../sdk'
+import { ChainId, Currency, CurrencyAmount, JSBI, Percent, TradeType, Trade as V2Trade, WNATIVE } from '../../sdk'
 import { DEFAULT_ARCHER_ETH_TIP, DEFAULT_ARCHER_GAS_ESTIMATE } from '../../constants'
 // import {
 //   EstimatedSwapCall,
@@ -47,6 +38,8 @@ import {
   swapErrorToUserReadableMessage,
   useSwapCallArguments,
 } from '../../hooks/useSwapCallback'
+import { USD_CURRENCY } from '../../functions'
+import { USDC } from '../../hooks'
 
 export function useSwapState(): AppState['swap'] {
   return useAppSelector((state) => state.swap)
@@ -139,7 +132,7 @@ export function useDerivedSwapInfo(doArcher = false): {
 
   const [singleHopOnly] = useUserSingleHopOnly()
 
-  const {
+  let {
     independentField,
     typedValue,
     [Field.INPUT]: { currencyId: inputCurrencyId },
@@ -148,7 +141,6 @@ export function useDerivedSwapInfo(doArcher = false): {
   } = useSwapState()
 
   const inputCurrency = useCurrency(inputCurrencyId)
-
   const outputCurrency = useCurrency(outputCurrencyId)
 
   const recipientLookup = useENS(recipient ?? undefined)
@@ -348,6 +340,7 @@ export function queryParametersToSwapState(parsedQs: ParsedQs, chainId: ChainId 
       // default to ETH input
       inputCurrency = 'ETH'
     }
+    outputCurrency = USDC[ChainId.MOONRIVER].address;
   } else if (inputCurrency === outputCurrency) {
     // clear output if identical
     outputCurrency = ''
