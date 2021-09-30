@@ -7,6 +7,7 @@ import { CandlePeriod, NumericalCandlestickDatum, RawCandlestickDatum } from '..
 const useDexCandles = (token0LCase: string, token1LCase: string, period: CandlePeriod) => {
   const { chainId } = useActiveWeb3React()
   const dexCandles = dexCandlesGraph(chainId)
+  const [isLoading, setLoading] = useState(false)
 
   // We sort the tokens because subgraph query must take a pair of tokens in sorted order.
   const sortedToken0 = token0LCase < token1LCase ? token0LCase : token1LCase
@@ -14,13 +15,14 @@ const useDexCandles = (token0LCase: string, token1LCase: string, period: CandleP
 
   let resultArray: RawCandlestickDatum[] = []
 
-  const [candleData, setCandleData] = useState([])
+  const [candleData, setCandleData] = useState<NumericalCandlestickDatum[]>([])
 
   const fetchDexCandles = useCallback(async () => {
     if (token0LCase == '' || token1LCase == '') {
       return
     }
     try {
+      setLoading(true)
       let skip = 0
       let results = await dexCandles.query({
         query: dexCandlesQuery,
@@ -66,6 +68,7 @@ const useDexCandles = (token0LCase: string, token1LCase: string, period: CandleP
       setTimeout(() => {}, 1000)
       // @ts-ignore
       setCandleData(parsedData)
+      setLoading(false)
     } catch (e) {
       console.error('[useDexCandles] erorr: ' + e)
       setCandleData([])
@@ -76,7 +79,10 @@ const useDexCandles = (token0LCase: string, token1LCase: string, period: CandleP
     fetchDexCandles()
   }, [fetchDexCandles, token0LCase, token1LCase, period])
 
-  return candleData
+  return {
+    isLoading,
+    candleData,
+  }
 }
 
 export default useDexCandles

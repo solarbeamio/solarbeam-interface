@@ -1,11 +1,57 @@
 import dynamic from 'next/dynamic'
-import { Currency, Token } from '../../sdk'
+import { ChainId, Currency, FACTORY_ADDRESS, Token } from '../../sdk'
 import useDexCandles from '../../hooks/useDexCandles'
 import { CandlePeriod, NumericalCandlestickDatum } from '../../types/Candle'
 import { MOONRIVER, WETH9, WETH9_EXTENDED } from '../../constants'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { RowFixed } from '../Row'
+import CurrencyLogo from '../CurrencyLogo'
+import NavLink from '../NavLink'
+import { classNames } from '../../functions'
+import Lottie from 'lottie-react'
+import solarbeamLoading from '../../animation/solarbeam-loading.json'
+import { computePairAddress } from '../../functions/computePairAddress'
 const KChart = dynamic(() => import('kaktana-react-lightweight-charts'), { ssr: false })
 
+interface PeriodChooserProps {
+  period: CandlePeriod | undefined
+  onChoose: any
+}
+
+const PeriodChooser = ({ period, onChoose }: PeriodChooserProps) => {
+  const availablePeriods = {
+    [CandlePeriod.FiveMinutes]: '5m',
+    [CandlePeriod.FifteenMinutes]: '15m',
+    [CandlePeriod.OneHour]: '1H',
+    [CandlePeriod.FourHours]: '4H',
+    [CandlePeriod.OneDay]: '1D',
+  }
+
+  return (
+    <div className={`flex flex-row md:space-x-1`}>
+      {Object.values(availablePeriods).map((item, index) => {
+        const isActive = availablePeriods[period] == item
+        const classes = [
+          'flex items-center justify-between px-3 py-1 text-base font-bold border hover:text-high-emphesis border-transparent rounded cursor-pointer',
+        ]
+        const activeClass =
+          'font-bold bg-transparent border rounded text-high-emphesis border-transparent border-gradient-r-purple-dark-900'
+        if (isActive) {
+          classes.push(activeClass)
+        }
+        return (
+          <div
+            key={index}
+            className={classNames(...classes)}
+            onClick={() => onChoose(parseInt(Object.keys(availablePeriods)[index]))}
+          >
+            {item}
+          </div>
+        )
+      })}
+    </div>
+  )
+}
 const fillCandlestickGaps = (candleData: NumericalCandlestickDatum[], candlePeriod: CandlePeriod) => {
   const formattedCandleData: NumericalCandlestickDatum[] = candleData.length > 0 ? [candleData[0]] : []
   if (formattedCandleData.length == 0) return formattedCandleData
@@ -89,22 +135,7 @@ export default function Chart({ inputCurrency, outputCurrency }: ChartProps) {
   const token0LCase = token0Index < token1Index ? inputAddress.toLowerCase() : outputAddress.toLowerCase()
   const token1LCase = token0Index < token1Index ? outputAddress.toLowerCase() : inputAddress.toLowerCase()
 
-  let candleData: NumericalCandlestickDatum[] = useDexCandles(token0LCase, token1LCase, candlePeriod)
-  if (candleData && candleData.length) {
-    let differentBases = inputCurrency?.decimals != outputCurrency?.decimals
-    if (differentBases) {
-      let decimals = (inputCurrency?.decimals + outputCurrency?.decimals) / 2
-      candleData = candleData.map((r) => {
-        return {
-          close: r.close * 10 ** decimals,
-          high: r.high * 10 ** decimals,
-          low: r.low * 10 ** decimals,
-          open: r.open * 10 ** decimals,
-          time: r.time,
-        }
-      })
-    }
-  }
+  let { isLoading, candleData } = useDexCandles(token0LCase, token1LCase, candlePeriod)
 
   const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
 
@@ -212,7 +243,24 @@ export default function Chart({ inputCurrency, outputCurrency }: ChartProps) {
   }
 
   useEffect(() => {
-    const formattedCandleData: NumericalCandlestickDatum[] = fillCandlestickGaps(candleData, CandlePeriod.OneHour)
+    let formattedCandleData: NumericalCandlestickDatum[] = fillCandlestickGaps(candleData, candlePeriod)
+
+    if (formattedCandleData && formattedCandleData.length) {
+      let differentBases = inputCurrency?.decimals != outputCurrency?.decimals
+      if (differentBases) {
+        let decimals = (inputCurrency?.decimals + outputCurrency?.decimals) / 2
+        formattedCandleData = formattedCandleData.map((r) => {
+          return {
+            close: r.close * 10 ** decimals,
+            high: r.high * 10 ** decimals,
+            low: r.low * 10 ** decimals,
+            open: r.open * 10 ** decimals,
+            time: r.time,
+          }
+        })
+      }
+    }
+
     setCandlestickSeries([{ data: formattedCandleData }])
   }, [candlePeriod, candleData])
 
@@ -220,5 +268,53 @@ export default function Chart({ inputCurrency, outputCurrency }: ChartProps) {
   const lastClose = hasData ? candlestickSeries[0].data[candlestickSeries[0].data.length - 1].close : undefined
   // const fmtLastClose = lastClose ? formattedNum(lastClose) : 'N/A'
 
-  return <KChart options={options} width={500} height={400} candlestickSeries={candlestickSeries} />
+  const pairAddress =
+    inputCurrency &&
+    outputCurrency &&
+    computePairAddress({
+      factoryAddress: FACTORY_ADDRESS[ChainId.MOONRIVER],
+      tokenA: inputCurrency?.isToken ? inputCurrency : inputCurrency?.wrapped,
+      tokenB: outputCurrency?.isToken ? outputCurrency : outputCurrency?.wrapped,
+    })
+
+  return (
+    <>
+      <a
+        href={`https://analytics.solarbeam.io/pairs/${pairAddress}`}
+        target="_blank"
+        rel="noreferrer"
+        className="flex items-center justify-center space-x-4 lg:mt-2 hover:text-gray-200 cursor-pointer rounded p-2 -ml-2 lg:w-min"
+      >
+        <div className="flex items-center space-x-2">
+          <CurrencyLogo currency={inputCurrency} size={'30px'} className={'shadow'} />
+          <div className="text-xl font-medium">{inputCurrency?.symbol}</div>
+        </div>
+        <div className="text-lg font-medium text-h">/</div>
+        <div className="flex items-center space-x-2">
+          <CurrencyLogo currency={outputCurrency} size={'30px'} className={'shadow'} />
+          <div className="text-xl font-medium">{outputCurrency?.symbol}</div>
+        </div>
+      </a>
+      <div className="flex items-center justify-between flex-col lg:flex-row space-x-4 min-h-[40px] lg:mt-4 mb-4">
+        <div className="text-4xl font-black text-gray-200">{(lastClose || 0).toFixed(2)}</div>
+        <PeriodChooser period={candlePeriod} onChoose={(period) => setCandlePeriod(period)} />
+      </div>
+      <div className={'flex flex-1 h-[300px]'}>
+        {isLoading ? (
+          <div className="w-24 h-[300px] pb-4 flex m-auto flex-col items-center justify-center">
+            <Lottie animationData={solarbeamLoading} autoplay loop />
+            <div className="text-xl font-black text-gray-200">Loading...</div>
+          </div>
+        ) : hasData ? (
+          <KChart options={options} autoWidth height={300} candlestickSeries={candlestickSeries} />
+        ) : (
+          <div className="h-[300px] pb-4 flex m-auto flex-col items-center justify-center">
+            <div className="text-sm font-black text-gray-200">
+              {`Unfortunately, this pair doesn't have enough data.`}
+            </div>
+          </div>
+        )}
+      </div>
+    </>
+  )
 }

@@ -89,7 +89,7 @@ export default function CurrencyInputPanel({
           </div>
         ) : null}
       </div>
-      <div className="flex flex-col justify-between space-y-3 sm:space-y-0 sm:flex-row  rounded bg-dark-800">
+      <div className="flex justify-between space-y-0 flex-row  rounded bg-dark-800">
         {!hideInput && (
           <div
             className={classNames(

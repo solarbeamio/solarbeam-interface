@@ -40,16 +40,11 @@ import { useActiveWeb3React } from '../../../hooks/useActiveWeb3React'
 import useENSAddress from '../../../hooks/useENSAddress'
 import useIsArgentWallet from '../../../hooks/useIsArgentWallet'
 import { useIsSwapUnsupported } from '../../../hooks/useIsSwapUnsupported'
-import { useRouter } from 'next/router'
 import { useSwapCallback } from '../../../hooks/useSwapCallback'
 import { useUSDCValue } from '../../../hooks/useUSDCPrice'
 import { warningSeverity } from '../../../functions/prices'
 import DoubleGlowShadow from '../../../components/DoubleGlowShadow'
-import Image from 'next/image'
 import SolarbeamLogo from '../../../components/SolarbeamLogo'
-import Alert from '../../../components/Alert'
-import Card from '../../../components/Card'
-import Typography from '../../../components/Typography'
 import Chart from '../../../components/Chart'
 
 export default function Swap() {
@@ -382,15 +377,12 @@ export default function Swap() {
         tokens={importTokensNotInDefault}
         onConfirm={handleConfirmTokenWarning}
       />
-      {/* <SolarbeamLogo /> */}
-      <div className="container px-0 mx-auto pb-6 max-w-screen-lg mt-28">
+      <SolarbeamLogo />
+      <div className="container px-0 mx-auto pb-6 max-w-screen-lg mt-10">
         <DoubleGlowShadow opacity="0.6" maxWidth={false}>
-          <div id="swap-page" className={`grid grid-cols-1 gap-2 rounded z-4`}>
-            <div className={`grid grid-cols-2 space-x-4`}>
-              <div className={`col-span-1`}>
-                <Typography component="h1" variant="base">
-                  MOVR / USDT
-                </Typography>
+          <div id="swap-page" className={`grid grid-cols-1 gap-2 rounded z-4 sm:m-6`}>
+            <div className={`grid grid-cols-1 lg:grid-cols-2 space-y-4 lg:space-x-4 lg:space-y-0`}>
+              <div className={`col-span-1 flex flex-col order-last lg:order-first mt-6 lg:mt-0 p-6 bg-dark-900 rounded rounded-lg lg:bg-transparent`}>
                 <Chart inputCurrency={currencies[Field.INPUT]} outputCurrency={currencies[Field.OUTPUT]} />
               </div>
               <div className={`col-span-1 bg-dark-900 rounded p-6 rounded-lg`}>
