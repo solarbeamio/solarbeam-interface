@@ -138,6 +138,7 @@ export default function Bridge() {
     currency0 ?? undefined
   )
 
+
   const { data: anyswapInfo, error }: SWRResponse<AnyswapTokensMap, Error> = useSWR(
     'https://bridgeapi.anyswap.exchange/v2/serverInfo/1285',
     (url) =>
@@ -431,6 +432,12 @@ export default function Bridge() {
       setPendingTx(false)
     }
   }
+
+  const anyswapChains = [ChainId.MOONRIVER, ChainId.BSC, ChainId.MAINNET]
+  const availableChains = Object.keys(anyswapInfo || {})
+    .map((r) => parseInt(r))
+    .filter((r) => anyswapChains.includes(r))
+
   return (
     <>
       <Modal isOpen={showConfirmation} onDismiss={() => setShowConfirmation(false)}>
@@ -523,7 +530,7 @@ export default function Bridge() {
 
             <div className="flex flex-row justify-between items-center text-center">
               <ChainSelect
-                availableChains={Object.keys(anyswapInfo || {}).map((r) => parseInt(r))}
+                availableChains={availableChains}
                 label="From"
                 chain={chainFrom}
                 otherChain={chainTo}
@@ -534,7 +541,7 @@ export default function Bridge() {
                 <ArrowRight size="32" />
               </button>
               <ChainSelect
-                availableChains={Object.keys(anyswapInfo || {}).map((r) => parseInt(r))}
+                availableChains={availableChains}
                 label="To"
                 chain={chainTo}
                 otherChain={chainFrom}
