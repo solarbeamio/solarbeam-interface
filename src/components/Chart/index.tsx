@@ -105,12 +105,7 @@ export default function Chart({ inputCurrency, outputCurrency }: ChartProps) {
 
   const MAJOR_HIERARCHY = [
     '0x98878B06940aE243284CA214f92Bb71a2b032B8A'.toLowerCase(), // WMOVR
-    '0x639A647fbe20b6c8ac19E48E2de44ea792c62c5C'.toLowerCase(), // WETH
-    '0x6aB6d61428fde76768D7b45D8BFeec19c6eF91A8'.toLowerCase(), // WBTC
-    '0x80A16016cC4A2E6a2CACA8a4a498b1699fF0f844'.toLowerCase(), // DAI
     '0xE3F5a90F9cb311505cd691a46596599aA1A0AD7D'.toLowerCase(), // USDC
-    '0xB44a9B6905aF7c801311e8F4E76932ee959c663C'.toLowerCase(), // USDT
-    '0x5D9ab5522c64E1F6ef5e3627ECCc093f56167818'.toLowerCase(), // BUSD
   ]
 
   const inputAddress = inputCurrency?.isToken
@@ -248,13 +243,13 @@ export default function Chart({ inputCurrency, outputCurrency }: ChartProps) {
     if (formattedCandleData && formattedCandleData.length) {
       let differentBases = inputCurrency?.decimals != outputCurrency?.decimals
       if (differentBases) {
-        let decimals = (inputCurrency?.decimals + outputCurrency?.decimals) / 2
+        let decimals = Math.abs(inputCurrency?.decimals - outputCurrency?.decimals)
         formattedCandleData = formattedCandleData.map((r) => {
           return {
-            close: r.close * 10 ** decimals,
-            high: r.high * 10 ** decimals,
-            low: r.low * 10 ** decimals,
-            open: r.open * 10 ** decimals,
+            close: r.close * (10 ** decimals),
+            high: r.high * (10 ** decimals),
+            low: r.low * (10 ** decimals),
+            open: r.open * (10 ** decimals),
             time: r.time,
           }
         })
