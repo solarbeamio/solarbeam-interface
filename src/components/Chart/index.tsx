@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic'
-import { ChainId, Currency, FACTORY_ADDRESS, Token } from '../../sdk'
+import { ChainId, Currency, FACTORY_ADDRESS, Token, WNATIVE } from '../../sdk'
 import useDexCandles from '../../hooks/useDexCandles'
 import { CandlePeriod, NumericalCandlestickDatum } from '../../types/Candle'
 import { MOONRIVER, WETH9, WETH9_EXTENDED } from '../../constants'
@@ -268,9 +268,13 @@ export default function Chart({ inputCurrency, outputCurrency }: ChartProps) {
   const lastClose = hasData ? candlestickSeries[0].data[candlestickSeries[0].data.length - 1].close : undefined
   // const fmtLastClose = lastClose ? formattedNum(lastClose) : 'N/A'
 
+  const weth = WNATIVE[ChainId.MOONRIVER]
+  const isWrapped = inputCurrency?.isNative && weth.equals(outputCurrency)
+
   const pairAddress =
     inputCurrency &&
     outputCurrency &&
+    !isWrapped &&
     computePairAddress({
       factoryAddress: FACTORY_ADDRESS[ChainId.MOONRIVER],
       tokenA: inputCurrency?.isToken ? inputCurrency : inputCurrency?.wrapped,
