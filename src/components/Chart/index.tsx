@@ -269,7 +269,7 @@ export default function Chart({ inputCurrency, outputCurrency }: ChartProps) {
   // const fmtLastClose = lastClose ? formattedNum(lastClose) : 'N/A'
 
   const weth = WNATIVE[ChainId.MOONRIVER]
-  const isWrapped = inputCurrency?.isNative && weth.equals(outputCurrency)
+  const isWrapped = (inputCurrency?.isNative && weth.equals(outputCurrency)) || (outputCurrency?.isNative && weth.equals(inputCurrency))
 
   const pairAddress =
     inputCurrency &&
