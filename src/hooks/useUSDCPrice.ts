@@ -24,6 +24,7 @@ export const USDC = {
   [ChainId.HECO]: new Token(ChainId.HECO, '0x9362Bbef4B8313A8Aa9f0c9808B80577Aa26B73B', 6, 'USDC', 'USD Coin'),
   [ChainId.OKEX]: new Token(ChainId.OKEX, '0xc946DAf81b08146B1C7A8Da2A851Ddf2B3EAaf85', 18, 'USDC', 'USD Coin'),
   [ChainId.XDAI]: new Token(ChainId.XDAI, '0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83', 6, 'USDC', 'USD Coin'),
+  [ChainId.MOONRIVER]: new Token(ChainId.MOONRIVER, '0xE3F5a90F9cb311505cd691a46596599aA1A0AD7D', 6, 'USDC', 'USD Coin'),
 }
 
 // Stablecoin amounts used when calculating spot price for a given currency.
@@ -40,6 +41,7 @@ const STABLECOIN_AMOUNT_OUT: { [chainId: number]: CurrencyAmount<Token> } = {
   [ChainId.HECO]: CurrencyAmount.fromRawAmount(USDC[ChainId.HECO], 100_000e6),
   [ChainId.OKEX]: CurrencyAmount.fromRawAmount(USDC[ChainId.OKEX], 100_000e18),
   [ChainId.XDAI]: CurrencyAmount.fromRawAmount(USDC[ChainId.XDAI], 100_000e6),
+  [ChainId.MOONRIVER]: CurrencyAmount.fromRawAmount(USDC[ChainId.MOONRIVER], 100_000e6),
   [ChainId.CELO]: undefined,
 }
 

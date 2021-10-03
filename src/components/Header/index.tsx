@@ -19,7 +19,7 @@ function AppBar(): JSX.Element {
 
   return (
     <header className="flex-shrink-0 z-10  w-full">
-      <Popover as="nav" className="z-10 w-full bg-dark-1000">
+      <Popover as="nav" className="z-10 w-full">
         {({ open }) => (
           <>
             <div className="px-4 py-4">

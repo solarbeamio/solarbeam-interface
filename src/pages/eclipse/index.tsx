@@ -27,48 +27,41 @@ export default function NFTLaunchpad(): JSX.Element {
         <meta key="description" name="description" content="Eclipse" />
       </Head>
 
-      <div className="flex container px-0 z-0 mx-auto -mt-64 justify-end">
+      <div className="flex container px-0 z-0 mx-auto -mt-96 justify-end">
         <div className="flex w-full  justify-end space-x-4">
           <div className="flex flex-1 justify-end ">
-            <div className={`force-gpu relative w-96`}>
+            <div className={`force-gpu relative w-[600px]`}>
               <div
                 style={{
-                  filter: `blur(140px) opacity(1)`,
+                  filter: `blur(120px) opacity(0.3)`,
                 }}
                 className="absolute top-1/4 -left-1 bg-light-purple bottom-4 w-full rounded-full z-0 hidden sm:block"
               />
               <div
                 style={{
-                  filter: `blur(140px) opacity(1)`,
+                  filter: `blur(120px) opacity(0.3)`,
                 }}
                 className="absolute bottom-1/4 -right-1 bg-purple top-4 w-full rounded-full z-0 hidden sm:block"
               />
               <div className="relative filter drop-shadow">
-                <div className="rounded-full h-96 w-96 flex items-center justify-center bg-dark-1000"></div>
+                <div className="rounded-full h-[600px] w-[600px] flex items-center justify-center bg-dark-1000"></div>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="container px-0 mx-auto pb-6 -mt-24">
-        <div className={`mb-2 pb-4 grid grid-cols-12 gap-4`}>
-          <div className="flex justify-center items-center col-span-12 lg:justify">
-            <Link href="/farm">
-              <SolarbeamLogo />
-            </Link>
-          </div>
-        </div>
+      <div className="container px-0 mx-auto pb-6 -mt-48">
         <div className="relative w-full">
           <div className={`grid grid-cols-12 gap-2 min-h-1/2`}>
             <div className={`col-span-12`}>
-              <div className={'justify-center flex flex-col items-center'}>
-                <Typography variant="h2" className={'text-center mb-1 text-purple-700 text-opacity-25'}>
+              <div className={'justify-center flex flex-col'}>
+                <Typography variant="hero" className={'font-bold	 text-white'}>
                   Eclipse
                 </Typography>
-                <Typography variant="lg" className={'text-center max-w-2xl'}>
-                  Eclipse aims to drive new capital and trade to the exchange by increasing the attractiveness of
-                  Solarbeam as a place for token creators and communities to launch new project tokens
+                <Typography variant="lg" className={'max-w-xl text-gray-400'}>
+                  Be the first to join Eclipse, a launchpad built for cross-chain token pools and auctions, enabling
+                  projects to raise capital on a decentralized and interoperable environment based on Moonriver.
                 </Typography>
               </div>
               <div className={`mt-10 col-span-12 flex justify-center flex-col md:flex-row md:space-x-2`}>
