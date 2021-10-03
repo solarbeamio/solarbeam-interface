@@ -1,14 +1,4 @@
-import {
-  Currency,
-  CurrencyAmount,
-  Fraction,
-  JSBI,
-  Percent,
-  Token,
-  Trade,
-  TradeType,
-  currencyEquals,
-} from '../sdk'
+import { Currency, CurrencyAmount, Fraction, JSBI, Percent, Token, Trade, TradeType, currencyEquals } from '../sdk'
 import { ONE_HUNDRED_PERCENT, ZERO_PERCENT } from '../constants'
 
 import { BigNumber } from 'ethers'
@@ -40,9 +30,9 @@ export function isTradeBetter(
   }
 }
 
-// add 20%
 export function calculateGasMargin(value: BigNumber): BigNumber {
-  return value.mul(BigNumber.from(10000 + 2000)).div(BigNumber.from(10000))
+  const addMargin = 100 //100% margin
+  return value.mul(BigNumber.from(10000 + 100 * addMargin)).div(BigNumber.from(10000))
 }
 
 const ONE = new Fraction(1, 1)
