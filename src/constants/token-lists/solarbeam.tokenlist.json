@@ -153,6 +153,14 @@
       "decimals": 18,
       "chainId": 1285,
       "logoURI": "https://solarbeam.io/images/tokens/1swap.png"
+    },
+    {
+      "name": "Neku Finance",
+      "address": "0x3Bf0880fd26E49c46d1A1e69ADb268889B4be840",
+      "symbol": "NEKU",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://solarbeam.io/images/tokens/1swap.png"
     }
   ]
 }
