@@ -153,6 +153,14 @@
       "decimals": 18,
       "chainId": 1285,
       "logoURI": "https://solarbeam.io/images/tokens/1swap.png"
+    },
+    {
+      "name": "miMatic",
+      "address": "0x7f5a79576620C046a293F54FFCdbd8f2468174F1",
+      "symbol": "MAI",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://solarbeam.io/images/tokens/mimatic.png"
     }
   ]
 }
