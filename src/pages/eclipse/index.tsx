@@ -55,55 +55,58 @@ export default function NFTLaunchpad(): JSX.Element {
         <div className="relative w-full">
           <div className={`grid grid-cols-12 gap-2 min-h-1/2`}>
             <div className={`col-span-12`}>
-              <div className={'justify-center flex flex-col'}>
-                <Typography variant="hero" className={'font-bold	 text-white'}>
+              <div className={'container justify-center flex flex-col mb-20'}>
+                <Typography variant="hero" className={'font-bold mt-5 text-white'}>
                   Eclipse
                 </Typography>
-                <Typography variant="lg" className={'max-w-xl text-gray-400'}>
+                <Typography variant="base" className={'max-w-xl text-gray-400'}>
                   Be the first to join Eclipse, a launchpad built for cross-chain token pools and auctions, enabling
                   projects to raise capital on a decentralized and interoperable environment based on Moonriver.
                 </Typography>
               </div>
-              <div className={`mt-10 col-span-12 flex justify-center flex-col md:flex-row md:space-x-2`}>
-                <NavLink
-                  exact
-                  href={'/eclipse'}
-                  activeClassName="font-bold bg-transparent border rounded text-high-emphesis border-transparent border-gradient-r-purple-dark-900"
-                >
-                  <a className="flex items-center justify-between px-6 py-2 text-base font-bold border border-transparent rounded cursor-pointer">
-                    Live
-                  </a>
-                </NavLink>
-                <NavLink
-                  exact
-                  href={'/locker/create'}
-                  activeClassName="font-bold bg-transparent border rounded text-high-emphesis border-transparent border-gradient-r-yellow-dark-900"
-                >
-                  <a className="flex items-center justify-between px-6 py-2 text-base font-bold border border-transparent rounded cursor-pointer">
-                    Upcoming
-                  </a>
-                </NavLink>
-                <NavLink
-                  exact
-                  href={'/locker/create'}
-                  activeClassName="font-bold bg-transparent border rounded text-high-emphesis border-transparent border-gradient-r-yellow-dark-900"
-                >
-                  <a className="flex items-center justify-between px-6 py-2 text-base font-bold border border-transparent rounded cursor-pointer">
-                    Closed
-                  </a>
-                </NavLink>
-                <NavLink
-                  exact
-                  href={'/locker/create'}
-                  activeClassName="font-bold bg-transparent border rounded text-high-emphesis border-transparent border-gradient-r-yellow-dark-900"
-                >
-                  <a className="flex items-center justify-between px-6 py-2 text-base font-bold border border-transparent rounded cursor-pointer">
-                    Participated
-                  </a>
-                </NavLink>
-              </div>
 
               <Card className="bg-dark-1000 z-4 rounded">
+                <div className={`col-span-12`}>
+                  <div className={'col-span-5 p-2 rounded flex bg-dark-900 flex-col md:flex-row md:space-x-2'}>
+                    <NavLink
+                      exact
+                      href={'/eclipse'}
+                      activeClassName="font-bold bg-transparent border rounded text-high-emphesis border-transparent border-gradient-r-purple-dark-900"
+                    >
+                      <a className="flex items-center justify-between px-6 py-2 text-base font-bold border border-transparent rounded cursor-pointer">
+                        Live
+                      </a>
+                    </NavLink>
+                    <NavLink
+                      exact
+                      href={'/locker/create'}
+                      activeClassName="font-bold bg-transparent border rounded text-high-emphesis border-transparent border-gradient-r-yellow-dark-900"
+                    >
+                      <a className="flex items-center justify-between px-6 py-2 text-base font-bold border border-transparent rounded cursor-pointer">
+                        Upcoming
+                      </a>
+                    </NavLink>
+                    <NavLink
+                      exact
+                      href={'/locker/create'}
+                      activeClassName="font-bold bg-transparent border rounded text-high-emphesis border-transparent border-gradient-r-yellow-dark-900"
+                    >
+                      <a className="flex items-center justify-between px-6 py-2 text-base font-bold border border-transparent rounded cursor-pointer">
+                        Closed
+                      </a>
+                    </NavLink>
+                    <NavLink
+                      exact
+                      href={'/locker/create'}
+                      activeClassName="font-bold bg-transparent border rounded text-high-emphesis border-transparent border-gradient-r-yellow-dark-900"
+                    >
+                      <a className="flex items-center justify-between px-6 py-2 text-base font-bold border border-transparent rounded cursor-pointer">
+                        Participated
+                      </a>
+                    </NavLink>
+                  </div>
+                  <div className={'col-span-7 p-2 rounded flex bg-dark-800 flex-col md:flex-row md:space-x-2'}></div>
+                </div>
                 <div className="mt-10">
                   <div className="grid grid-cols-7 text-base font-bold text-primary mb-2 px-2">
                     <div className="flex items-center col-span-2">Pool name</div>
