@@ -190,3 +190,8 @@ transform: translateZ(0);
 /* .grecaptcha-badge {
   display: none !important;
 } */
+
+.text-gradient {
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
