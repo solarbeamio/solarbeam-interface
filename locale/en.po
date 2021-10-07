@@ -1690,7 +1690,11 @@ msgstr "Pooled {0}"
 #~ msgid "Pour a hot bowl of MISO, the new <0>token launchpad</0> from SUSHI"
 #~ msgstr ""
 
-#: src/pages/bridge/index.tsx:620
+#: src/pages/bridge/index.tsx:657
+msgid "Powered by Relay"
+msgstr "Powered by Relay"
+
+#: src/pages/bridge/index.tsx:658
 msgid "Powered by Anyswap Network"
 msgstr "Powered by Anyswap Network"
 

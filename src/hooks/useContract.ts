@@ -75,6 +75,7 @@ import WETH9_ABI from '../constants/abis/weth.json'
 import ZAPPER_ABI from '../constants/abis/zapper.json'
 import LIMIT_ORDER_ABI from '../constants/abis/limit-order.json'
 import LIMIT_ORDER_HELPER_ABI from '../constants/abis/limit-order-helper.json'
+import RELAY_BRIDGE_ABI from '../constants/abis/relay-bridge.json'
 import { getContract } from '../functions/contract'
 import { useActiveWeb3React } from './useActiveWeb3React'
 import { useMemo } from 'react'
@@ -108,6 +109,10 @@ export function useTokenContract(tokenAddress?: string, withSignerIfPossible?: b
 
 export function useAnyswapTokenContract(tokenAddress?: string, withSignerIfPossible?: boolean): Contract | null {
   return useContract(tokenAddress, ANYSWAP_ERC20_ABI, withSignerIfPossible)
+}
+
+export function useRelayBridgeContract(tokenAddress?: string, withSignerIfPossible?: boolean): Contract | null {
+  return useContract(tokenAddress, RELAY_BRIDGE_ABI.abi, withSignerIfPossible)
 }
 
 export function useWETH9Contract(withSignerIfPossible?: boolean): Contract | null {

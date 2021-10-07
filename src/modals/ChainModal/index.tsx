@@ -60,6 +60,28 @@ export const SUPPORTED_NETWORKS: {
     rpcUrls: ['https://rpc.moonriver.moonbeam.network', 'https://moonriver.api.onfinality.io/public'],
     blockExplorerUrls: ['https://blockscout.moonriver.moonbeam.network/'],
   },
+  [ChainId.MATIC]: {
+    chainId: '0x89',
+    chainName: 'Matic',
+    nativeCurrency: {
+      name: 'Matic',
+      symbol: 'MATIC',
+      decimals: 18,
+    },
+    rpcUrls: ['https://rpc-mainnet.maticvigil.com/'],
+    blockExplorerUrls: ['https://polygonscan.com/'],
+  },
+  [ChainId.AVALANCHE]: {
+    chainId: '0xa86a',
+    chainName: 'Avalanche',
+    nativeCurrency: {
+      name: 'Avalanche',
+      symbol: 'AVAX',
+      decimals: 18,
+    },
+    rpcUrls: ['https://api.avax.network/ext/bc/C/rpc'],
+    blockExplorerUrls: ['https://avascan.info/'],
+  },
 }
 
 interface ChainModalProps {

@@ -17,6 +17,7 @@ const BLOCKCHAIN = {
   [ChainId.MATIC]: 'polygon',
   [ChainId.XDAI]: 'xdai',
   [ChainId.MOONRIVER]: 'moonriver',
+  [ChainId.AVALANCHE]: 'avalanche',
   // [ChainId.OKEX]: 'okex',
 }
 
@@ -37,6 +38,17 @@ function getCurrencyLogoUrls(currency) {
       `https://raw.githubusercontent.com/solarbeamio/assets/master/blockchains/${BLOCKCHAIN[currency.chainId]}/assets/${
         currency.address
       }/logo.png`
+    )
+  }
+
+  return urls
+}
+
+function getCurrencyLogoUrlsFromRelay(currency) {
+  const urls = []
+  if (currency.chainId in BLOCKCHAIN) {
+    urls.push(
+      `https://raw.githubusercontent.com/zeroexchange/bridge-tokens/main/${BLOCKCHAIN[currency.chainId]}-tokens/${currency.address}/logo.png`
     )
   }
 
@@ -115,7 +127,7 @@ const CurrencyLogo: FunctionComponent<CurrencyLogoProps> = ({
     }
 
     if (currency.isToken) {
-      const defaultUrls = [...getCurrencyLogoUrls(currency)]
+      const defaultUrls = [...getCurrencyLogoUrls(currency), ...getCurrencyLogoUrlsFromRelay(currency)]
       if (currency instanceof WrappedTokenInfo) {
         return [...uriLocations, ...defaultUrls, unknown]
       }

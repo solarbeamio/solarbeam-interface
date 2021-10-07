@@ -7,11 +7,14 @@ import {
   Ether,
   JSBI,
   Moonriver,
+  Matic,
+  Avalanche,
   NATIVE,
   Token,
   WNATIVE,
 } from '../../sdk'
 import React, { useCallback, useEffect, useState } from 'react'
+import cookie from 'cookie-cutter'
 
 import { AutoRow } from '../../components/Row'
 import Container from '../../components/Container'
@@ -32,12 +35,13 @@ import ChainSelect from '../../components/ChainSelect'
 import { Chain, DEFAULT_CHAIN_FROM, DEFAULT_CHAIN_TO } from '../../sdk/entities/Chain'
 import { useBridgeInfo } from '../../features/bridge/hooks'
 import useSWR, { SWRResponse } from 'swr'
+import { BigNumber, utils } from 'ethers';
 import { getAddress } from 'ethers/lib/utils'
 import { formatNumber } from '../../functions'
 import { SUPPORTED_NETWORKS } from '../../modals/ChainModal'
 import { NETWORK_ICON, NETWORK_LABEL } from '../../constants/networks'
 import { ethers } from 'ethers'
-import { useAnyswapTokenContract, useTokenContract } from '../../hooks'
+import { useAnyswapTokenContract, useRelayBridgeContract, useTokenContract } from '../../hooks'
 import Loader from '../../components/Loader'
 import { getWeb3ReactContext, useWeb3React } from '@web3-react/core'
 import { BridgeContextName } from '../../constants'
@@ -47,6 +51,7 @@ import { useTransactionAdder } from '../../state/bridgeTransactions/hooks'
 import { useRouter } from 'next/router'
 import Modal from '../../components/Modal'
 import ModalHeader from '../../components/ModalHeader'
+import { getRalayBridgeData, getRalayBridgeFee } from '../../services/covalent'
 
 type AnyswapTokenInfo = {
   ID: string
@@ -67,6 +72,9 @@ type AnyswapTokenInfo = {
   MinimumSwapFee: number
   PlusGasPricePercentage: number
   SwapFeeRate: number
+  ResourceId?: string
+  BridgeFee?: string
+  DestChainIdInRelay?: number
 }
 
 type AnyswapResultPairInfo = {
@@ -94,15 +102,23 @@ export type AnyswapTokensMap = { [chainId: number]: { [contract: string]: Availa
 
 export default function Bridge() {
   const { i18n } = useLingui()
-
+  const initData: any[] = []
+  const initFeeData: any[] = []
+  const [relayData, setRelayData] = useState(initData)
+  const [relayFees, setRelayFees] = useState(initFeeData)
+  const [hasRelayData, setHasRelayData] = useState(false)
+  const [hasRelayFees, setHasRelayFees] = useState(false)
   const { account: activeAccount, chainId: activeChainId } = useActiveWeb3React()
   const { account, chainId, library, activate } = useWeb3React(BridgeContextName)
   const { push } = useRouter()
+  let allChains: number[] = []
+  const rbd = getRalayBridgeData(hasRelayData)
+  const relayFeesData = getRalayBridgeFee(hasRelayFees)
 
   const addTransaction = useTransactionAdder()
 
   const currentChainFrom = chainId &&
-    SUPPORTED_NETWORKS[chainId] && { id: chainId, icon: NETWORK_ICON[chainId], name: NETWORK_LABEL[chainId] }
+    SUPPORTED_NETWORKS[chainId] && { id: chainId, icon: NETWORK_ICON[chainId], name: NETWORK_LABEL[chainId], currencyName: SUPPORTED_NETWORKS[chainId].nativeCurrency.symbol }
 
   useEffect(() => {
     activate(bridgeInjected)
@@ -119,10 +135,20 @@ export default function Bridge() {
   const [chainTo, setChainTo] = useState<Chain | null>(
     chainId == ChainId.MOONRIVER ? DEFAULT_CHAIN_FROM : DEFAULT_CHAIN_TO
   )
+  const [relayBridges, setRelayBridges] = useState(false)
+  useEffect(() => {
+    const relayChains = [43114, 137]
+    if (relayChains.includes(chainTo?.id) || relayChains.includes(chainFrom?.id)) {
+      setRelayBridges(true)
+    } else {
+      setRelayBridges(false)
+    }
+  }, [chainTo, chainFrom])
 
   const [tokenList, setTokenList] = useState<Currency[] | null>([])
   const [currency0, setCurrency0] = useState<Currency | null>(null)
   const [currencyAmount, setCurrencyAmount] = useState<string | null>('')
+  const [listSwapTokens, setListSwapTokens] = useState({} as AnyswapTokensMap)
   const [tokenToBridge, setTokenToBridge] = useState<AvailableChainsInfo | null>(null)
   const currencyContract = useTokenContract(currency0?.isToken && currency0?.address, true)
   const anyswapCurrencyContract = useAnyswapTokenContract(
@@ -148,7 +174,6 @@ export default function Bridge() {
 
           Object.keys(data || {}).map((key) => {
             const info: AnyswapResultPairInfo = data[key]
-
             let sourceContractAddress = info.SrcToken.ContractAddress
             if (!sourceContractAddress) {
               sourceContractAddress = WNATIVE[parseInt(info.srcChainID)].address
@@ -213,33 +238,98 @@ export default function Bridge() {
               }
             }
           })
-
           return result
         })
   )
 
-  useEffect(() => {
-    let tokens: Currency[] = Object.keys((anyswapInfo && anyswapInfo[chainFrom.id]) || {})
-      .filter((r) => anyswapInfo[chainFrom.id][r].destChainID == chainTo.id.toString())
-      .map((r) => {
-        const info: AvailableChainsInfo = anyswapInfo[chainFrom.id][r]
-        if (r.toLowerCase() == WNATIVE[chainFrom.id].address.toLowerCase()) {
-          if (chainFrom.id == ChainId.MOONRIVER) {
-            return Moonriver.onChain(chainFrom.id)
+  const addRelayData = (res: AnyswapTokensMap, relayBridgeData: any[]) => {
+    if (relayBridgeData.length && res) {
+      relayBridgeData.map(data => {
+        data.tokens.map(token => {
+          const preparedTokenData = {} as AvailableChainsInfo
+          const relayBridgeFee = relayFees.length && (relayFees.find(feeData => feeData.chainId === data.networkId))
+          preparedTokenData.destChainID = token?.allowedChainsToTransfer[0]
+          const destinationChainId = relayFees.find(feeData => feeData.chainId === preparedTokenData.destChainID)
+          preparedTokenData.symbol = token.symbol
+          preparedTokenData.name = token.symbol
+          preparedTokenData.id = `${token.symbol}v5`
+          preparedTokenData.other = {} as AnyswapTokenInfo
+          preparedTokenData.other.ContractAddress = data?.bridgeAddress
+          preparedTokenData.other.DestChainIdInRelay = destinationChainId?.chainBridgeId
+          preparedTokenData.other.BridgeFee = relayBridgeFee?.crosschainFee
+          preparedTokenData.other.ResourceId = token.resourceId
+          preparedTokenData.token = {} as AnyswapTokenInfo
+          preparedTokenData.token.Decimals = token.decimals
+          preparedTokenData.token.Symbol = token.symbol
+          if (res[data.networkId]) {
+            res[data.networkId][token.address.toLowerCase()] = preparedTokenData
+          } else {
+            res[data.networkId] = {} as { string, AvailableChainsInfo }
+            res[data.networkId][token.address.toLowerCase()] = preparedTokenData
           }
-          if (chainFrom.id == ChainId.BSC) {
-            return Binance.onChain(chainFrom.id)
-          }
-          if (chainFrom.id == ChainId.MAINNET) {
-            return Ether.onChain(chainFrom.id)
-          }
-        }
-        return new Token(chainFrom.id, getAddress(r), info.token.Decimals, info.token.Symbol, info.name)
+        })
       })
+      return res
+    }
 
-    setTokenList(tokens)
-    setCurrency0(null)
-    setCurrencyAmount('')
+  }
+
+  const relayBridgeContract = useRelayBridgeContract(
+    tokenToBridge && tokenToBridge.other.ContractAddress,
+    true
+  )
+  useEffect(() => {
+    if (rbd) {
+      rbd
+        .then((res) => {
+          if (res.length) {
+            setRelayData(res)
+            setHasRelayData(true)
+          }
+        })
+    }
+    if (relayFeesData) {
+      relayFeesData
+        .then(resFees => {
+          if (resFees.length) {
+            setRelayFees(resFees)
+            setHasRelayFees(true)
+          }
+        })
+    }
+  }, [rbd, relayFeesData])
+
+  useEffect(() => {
+    setListSwapTokens(addRelayData(anyswapInfo, relayData))
+    if (listSwapTokens) {
+      let tokens: Currency[] = Object.keys((listSwapTokens && listSwapTokens[chainFrom.id]) || {})
+        .filter((r) => listSwapTokens[chainFrom.id][r].destChainID == chainTo.id.toString())
+        .map((r) => {
+          const info: AvailableChainsInfo = listSwapTokens[chainFrom.id][r]
+          if (r.toLowerCase() == WNATIVE[chainFrom.id].address.toLowerCase()) {
+            if (chainFrom.id == ChainId.MOONRIVER) {
+              return Moonriver.onChain(chainFrom.id)
+            }
+            if (chainFrom.id == ChainId.MATIC) {
+              return Matic.onChain(chainFrom.id)
+            }
+            if (chainFrom.id == ChainId.AVALANCHE) {
+              return Avalanche.onChain(chainFrom.id)
+            }
+            if (chainFrom.id == ChainId.BSC) {
+              return Binance.onChain(chainFrom.id)
+            }
+            if (chainFrom.id == ChainId.MAINNET) {
+              return Ether.onChain(chainFrom.id)
+            }
+          }
+          return new Token(chainFrom.id, getAddress(r), info.token.Decimals, info.token.Symbol, info.name)
+        })
+      setTokenList(tokens)
+      setCurrency0(null)
+      setCurrencyAmount('')
+    }
+
   }, [chainFrom, anyswapInfo, chainTo.id])
 
   const handleChainFrom = useCallback(
@@ -248,7 +338,7 @@ export default function Bridge() {
       if (chainTo.id == chain.id) {
         changeTo = chainFrom
       }
-      if (changeTo.id !== ChainId.MOONRIVER && chain.id !== ChainId.MOONRIVER) {
+      if (changeTo.id === chainFrom.id) {
         setChainTo(DEFAULT_CHAIN_TO)
       } else {
         setChainTo(changeTo)
@@ -264,7 +354,7 @@ export default function Bridge() {
       if (chainFrom.id == chain.id) {
         changeFrom = chainTo
       }
-      if (changeFrom.id !== ChainId.MOONRIVER && chain.id !== ChainId.MOONRIVER) {
+      if (changeFrom.id === chainTo.id) {
         setChainFrom(DEFAULT_CHAIN_TO)
       } else {
         setChainFrom(changeFrom)
@@ -286,14 +376,16 @@ export default function Bridge() {
       setCurrency0(currency)
       handleTypeInput('')
       if (currency) {
+        console.log("🚀 ~ file: index.tsx ~ line 358 ~ Bridge ~ currency", currency)
         const tokenTo =
-          anyswapInfo[chainFrom.id][
-            currency.isToken ? currency?.address?.toLowerCase() : currency?.wrapped?.address?.toLowerCase()
+          listSwapTokens[chainFrom.id][
+          currency.isToken ? currency?.address?.toLowerCase() : currency?.wrapped?.address?.toLowerCase()
           ]
+        console.log("🚀 ~ file: index.tsx ~ line 359 ~ Bridge ~ tokenTo", chainFrom.id, tokenTo, listSwapTokens)
         setTokenToBridge(tokenTo)
       }
     },
-    [anyswapInfo, chainFrom.id, handleTypeInput]
+    [anyswapInfo, chainFrom.id, handleTypeInput, listSwapTokens]
   )
 
   const insufficientBalance = () => {
@@ -310,12 +402,13 @@ export default function Bridge() {
   }
 
   const aboveMin = () => {
+    console.log('currencyAmount && tokenToBridge :>> ', currencyAmount, tokenToBridge);
     if (currencyAmount && tokenToBridge) {
       const amount = parseFloat(currencyAmount)
-      const minAmount = parseFloat(tokenToBridge?.other?.MinimumSwap.toString())
+      const minAmount = parseFloat(tokenToBridge?.other?.MinimumSwap?.toString())
       return amount >= minAmount
     }
-    return false
+    return true
   }
 
   const belowMax = () => {
@@ -329,55 +422,59 @@ export default function Bridge() {
 
   const getAmountToReceive = () => {
     if (!tokenToBridge) return 0
+    if (tokenToBridge?.other?.SwapFeeRate) {
+      let fee = parseFloat(currencyAmount) * tokenToBridge?.other?.SwapFeeRate
+      if (fee < tokenToBridge?.other?.MinimumSwapFee) {
+        fee = tokenToBridge?.other?.MinimumSwapFee
+      } else if (fee > tokenToBridge?.other?.MaximumSwapFee) {
+        fee = tokenToBridge?.other?.MinimumSwapFee
+      }
 
-    let fee = parseFloat(currencyAmount) * tokenToBridge?.other?.SwapFeeRate
-    if (fee < tokenToBridge?.other?.MinimumSwapFee) {
-      fee = tokenToBridge?.other?.MinimumSwapFee
-    } else if (fee > tokenToBridge?.other?.MaximumSwapFee) {
-      fee = tokenToBridge?.other?.MinimumSwapFee
+      return (parseFloat(currencyAmount) - fee).toFixed(6)
+    } else {
+      return parseFloat(currencyAmount)
     }
 
-    return (parseFloat(currencyAmount) - fee).toFixed(6)
   }
 
-  const buttonDisabled =
-    (chainFrom && chainFrom.id !== chainId) ||
-    !currency0 ||
-    !currencyAmount ||
-    currencyAmount == '' ||
-    !aboveMin() ||
-    !belowMax() ||
-    insufficientBalance() ||
-    pendingTx
+  const buttonDisabled = false
+  // (chainFrom && chainFrom.id !== chainId) ||
+  // !currency0 ||
+  // !currencyAmount ||
+  // currencyAmount == '' ||
+  // !aboveMin() ||
+  // !belowMax() ||
+  // insufficientBalance() ||
+  // pendingTx
 
   const buttonText =
     chainFrom && chainFrom.id !== chainId
       ? `Switch to ${chainFrom.name} Network`
       : !currency0
-      ? `Select a Token`
-      : !currencyAmount || currencyAmount == ''
-      ? 'Enter an Amount'
-      : !aboveMin()
-      ? `Below Minimum Amount`
-      : !belowMax()
-      ? `Above Maximum Amount`
-      : insufficientBalance()
-      ? `Insufficient Balance`
-      : pendingTx
-      ? `Confirming Transaction`
-      : `Bridge ${currency0?.symbol}`
+        ? `Select a Token`
+        : !currencyAmount || currencyAmount == ''
+          ? 'Enter an Amount'
+          : !aboveMin()
+            ? `Below Minimum Amount`
+            : !belowMax()
+              ? `Above Maximum Amount`
+              : insufficientBalance()
+                ? `Insufficient Balance`
+                : pendingTx
+                  ? `Confirming Transaction`
+                  : `Bridge ${currency0?.symbol}`
 
   const bridgeToken = async () => {
     const token = tokenToBridge.other
-    const depositAddress = currency0.chainId == ChainId.MOONRIVER ? token.ContractAddress : token.DepositAddress
+    const depositAddress = currency0?.chainId == ChainId.MOONRIVER ? token.ContractAddress : token.DepositAddress
 
     const amountToBridge = ethers.utils.parseUnits(currencyAmount, token.Decimals)
     setPendingTx(true)
 
     try {
-      if (currency0.chainId == ChainId.MOONRIVER) {
-        if (currency0.isNative) {
-        } else if (currency0.isToken) {
+      if (currency0?.chainId == ChainId.MOONRIVER) {
+        if (currency0?.isNative) {
+        } else if (currency0?.isToken) {
           const fn = anyswapCurrencyContract?.interface?.getFunction('Swapout')
           const data = anyswapCurrencyContract.interface.encodeFunctionData(fn, [amountToBridge.toString(), account])
           const tx = await library.getSigner().sendTransaction({
@@ -394,7 +491,49 @@ export default function Bridge() {
           })
           push('/bridge/history')
         }
-      } else {
+      }
+      else if (relayBridges) {
+        // relayBridgeContract
+        const hexAmount = utils.hexZeroPad(BigNumber.from(amountToBridge).toHexString(), 32).substr(2)
+        console.log("🚀 ~ file: index.tsx ~ line 484 ~ bridgeToken ~ hexAmount", hexAmount)
+        const hexAccount = utils.hexZeroPad(utils.hexlify((account.length - 2) / 2), 32).substr(2) + account.substr(2) // len(recipientAddress) (32 bytes)  
+        console.log("🚀 ~ file: index.tsx ~ line 486 ~ bridgeToken ~ hexAccount", hexAccount)
+        const data = '0x' + hexAmount + hexAccount +
+          utils.hexZeroPad(utils.hexlify((account.length - 2) / 2), 32).substr(2) + // len(recipientAddress) (32 bytes)
+          account.substr(2)
+        const auxData = '0x00'
+        console.log('tokenToBridge :>> ', tokenToBridge);
+        console.log("🚀 ~ file: index.tsx ~ line 482 ~ bridgeToken ~ data", data)
+        const resultDepositTx = await relayBridgeContract
+          .deposit(tokenToBridge?.other?.DestChainIdInRelay.toString(), tokenToBridge?.other?.ResourceId, data, auxData, {
+            value: BigNumber.from(utils.parseUnits(tokenToBridge.other?.BridgeFee?.toString(), 18)),
+          })
+          .catch((err: any) => {
+            console.log(err)
+          })
+
+        if (!resultDepositTx) {
+          return
+        }
+
+        await resultDepositTx.wait()
+        // const fn = relayBridgeContract?.interface?.getFunction('deposit')
+        // const dataForTx = relayBridgeContract?.interface?.encodeFunctionData(fn, [
+        //   chainTo.id.toString(), tokenToBridge?.other?.ResourceId, data, auxData
+        //   ])
+        //     , {
+        //       value: BigNumber.from(utils.parseUnits(tokenToBridge.other?.BridgeFee?.toString(), 18))
+        // }
+        //const tx = await library.getSigner().sendTransaction(dataForTx)
+        addTransaction(resultDepositTx, {
+          summary: `${i18n._(t`Bridge `)} ${tokenToBridge.symbol}`,
+          destChainId: chainTo.id.toString(),
+          srcChaindId: chainFrom.id.toString(),
+          pairId: tokenToBridge.id,
+        })
+        push('/bridge/history')
+      }
+      else {
         if (currency0.isNative) {
           const tx = await library.getSigner().sendTransaction({
             from: account,
@@ -427,10 +566,13 @@ export default function Bridge() {
         }
       }
     } catch (ex) {
+      console.log("🚀 ~ file: index.tsx ~ line 543 ~ bridgeToken ~ ex", ex)
     } finally {
       setPendingTx(false)
     }
   }
+  allChains = (Object.keys(anyswapInfo || {}).map((r) => parseInt(r)))
+
   return (
     <>
       <Modal isOpen={showConfirmation} onDismiss={() => setShowConfirmation(false)}>
@@ -523,7 +665,7 @@ export default function Bridge() {
 
             <div className="flex flex-row justify-between items-center text-center">
               <ChainSelect
-                availableChains={Object.keys(anyswapInfo || {}).map((r) => parseInt(r))}
+                availableChains={allChains}
                 label="From"
                 chain={chainFrom}
                 otherChain={chainTo}
@@ -534,7 +676,7 @@ export default function Bridge() {
                 <ArrowRight size="32" />
               </button>
               <ChainSelect
-                availableChains={Object.keys(anyswapInfo || {}).map((r) => parseInt(r))}
+                availableChains={allChains}
                 label="To"
                 chain={chainTo}
                 otherChain={chainFrom}
@@ -555,7 +697,7 @@ export default function Bridge() {
               chainFrom={chainFrom}
               chainTo={chainTo}
               tokenList={tokenList}
-              chainList={anyswapInfo}
+              chainList={listSwapTokens}
             />
 
             <BottomGrouping>
@@ -599,21 +741,21 @@ export default function Bridge() {
                     </div>
                   </div>
                 )}
-                <div className="flex flex-col justify-between space-y-3 sm:space-y-0 sm:flex-row">
+                {tokenToBridge?.other?.SwapFeeRate && <div className="flex flex-col justify-between space-y-3 sm:space-y-0 sm:flex-row">
                   <div className="text-sm font-medium text-secondary">
                     Minimum Bridge Amount: {formatNumber(tokenToBridge?.other?.MinimumSwap)}{' '}
                     {tokenToBridge?.other?.Symbol}
                   </div>
-                </div>
-                <div className="flex flex-col justify-between space-y-3 sm:space-y-0 sm:flex-row">
+                </div>}
+                {tokenToBridge?.other?.SwapFeeRate && <div className="flex flex-col justify-between space-y-3 sm:space-y-0 sm:flex-row">
                   <div className="text-sm font-medium text-secondary">
                     Maximum Bridge Amount: {formatNumber(tokenToBridge?.other?.MaximumSwap)}{' '}
                     {tokenToBridge?.other?.Symbol}
                   </div>
-                </div>
+                </div>}
                 <div className="flex flex-col justify-between space-y-3 sm:space-y-0 sm:flex-row">
                   <div className="text-sm font-medium text-secondary">
-                    Fee: {formatNumber(tokenToBridge?.other?.SwapFeeRate * 100)} %
+                    Fee: {tokenToBridge?.other?.SwapFeeRate ? formatNumber(tokenToBridge?.other?.SwapFeeRate * 100) + '%' : tokenToBridge?.other?.BridgeFee + ' ' + currentChainFrom.currencyName}
                   </div>
                 </div>
                 <div className="flex flex-col justify-between space-y-3 sm:space-y-0 sm:flex-row">
@@ -630,7 +772,9 @@ export default function Bridge() {
               justify={'center'}
               gap={'0 3px'}
             >
-              {i18n._(t`Powered by Anyswap Network`)}
+              {relayBridges ?
+                i18n._(t`Powered by Relay`) :
+                i18n._(t`Powered by Anyswap Network`)}
             </AutoRow>
           </div>
         </DoubleGlowShadow>

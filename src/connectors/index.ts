@@ -56,14 +56,14 @@ export const injected = new InjectedConnector({
     // 42, // kovan
     // 250, // fantom
     // 4002, // fantom testnet
-    // 137, // matic
+    137, // matic
     // 80001, // matic testnet
     // 100, // xdai
     // 56, // binance smart chain
     // 97, // binance smart chain testnet
     // 1287, // moonbase
     1285, // moonriver
-    // 43114, // avalanche
+    43114, // avalanche
     // 43113, // fuji
     // 128, // heco
     // 256, // heco testnet
@@ -86,14 +86,14 @@ export const bridgeInjected = new InjectedConnector({
     // 42, // kovan
     // 250, // fantom
     // 4002, // fantom testnet
-    // 137, // matic
+    137, // matic
     // 80001, // matic testnet
     // 100, // xdai
     56, // binance smart chain
     // 97, // binance smart chain testnet
     // 1287, // moonbase
     1285, // moonriver
-    // 43114, // avalanche
+    43114, // avalanche
     // 43113, // fuji
     // 128, // heco
     // 256, // heco testnet
