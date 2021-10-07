@@ -138,7 +138,7 @@ export default function NFTLaunchpad(): JSX.Element {
                         </div>
                       </>
                       <Typography variant="base" className={'max-w-xl m-auto text-center mb-2 text-gray-400'}>
-                        We are currently accepting subscriptions to launch on Eclipse.
+                        Applications for Eclipse are now open!
                         <br />
                         <a
                           href="https://forms.gle/oik9pbenvwFjMndg9"
