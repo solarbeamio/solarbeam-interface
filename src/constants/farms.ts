@@ -305,5 +305,22 @@ export const POOLS: AddressMap = {
       name: 'Solarbeam LP',
       symbol: 'SLP',
     },
+    '0x1eebed8F28A6865a76D91189FD6FC45F4F774d67': {
+      id: 18,
+      token0: {
+        id: '0xaD12daB5959f30b9fF3c2d6709f53C335dC39908',
+        name: 'Fantom Token',
+        symbol: 'FTM',
+        decimals: 18,
+      },
+      token1: {
+        id: '0x98878B06940aE243284CA214f92Bb71a2b032B8A',
+        name: 'Moonriver',
+        symbol: 'MOVR',
+        decimals: 18,
+      },
+      name: 'Solarbeam LP',
+      symbol: 'SLP',
+    },
   },
 }
