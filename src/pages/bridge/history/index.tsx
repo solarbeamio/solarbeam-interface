@@ -99,7 +99,11 @@ const Transaction: FC<{ chainId: string; hash: string }> = ({ chainId, hash }) =
   const getUrl = () => {
     if (srcChaindId == ChainId.MOONRIVER) {
       return `https://bridgeapi.anyswap.exchange/v2/getWithdrawHashStatus/${from}/${hash}/${srcChaindId}/${pairId}/${destChainId}`
-    } else {
+    }
+    else if ([ChainId.AVALANCHE, ChainId.MATIC].includes(+srcChaindId)) {
+      return 'https://raw.githubusercontent.com/mrbot22/source-data/master/solarbeam.json'
+    }
+    else {
       return `https://bridgeapi.anyswap.exchange/v2/getHashStatus/${from}/${hash}/${destChainId}/${pairId}/${srcChaindId}`
     }
   }
@@ -192,7 +196,7 @@ function renderTransactions(
     const chainTxs = transactions[chainId]
     Object.keys(chainTxs).forEach((hash, idx) => {
       const tx = chainTxs[hash]
-      if (tx.from.toString() == address?.toString()) {
+      if (tx?.from?.toString() == address?.toString()) {
         txs.push({ ...tx, chainId, hash })
       }
     })
