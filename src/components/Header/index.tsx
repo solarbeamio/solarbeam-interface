@@ -27,6 +27,7 @@ function AppBar(): JSX.Element {
                 <div className="flex items-center">
                   <div className="hidden sm:block sm:ml-4">
                     <div className="flex space-x-2">
+                      <img src={'/Logo.svg'} alt="solarbeam_logo" />
                       <NavLink href="/exchange/swap">
                         <a
                           id={`swap-nav-link`}

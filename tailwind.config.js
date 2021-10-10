@@ -13,19 +13,19 @@ module.exports = {
   darkMode: false,
   theme: {
     screens: {
-      'sm': '640px',
+      sm: '640px',
       // => @media (min-width: 640px) { ... }
 
-      'md': '768px',
+      md: '768px',
       // => @media (min-width: 768px) { ... }
 
-      'xmd': '950px',
+      xmd: '950px',
       // => @media (min-width: 920px) { ... }
 
-      'lg': '1024px',
+      lg: '1024px',
       // => @media (min-width: 1024px) { ... }
 
-      'xl': '1280px',
+      xl: '1280px',
       // => @media (min-width: 1280px) { ... }
 
       '2xl': '1536px',
@@ -110,6 +110,7 @@ module.exports = {
         'dark-600': '#303030',
         'dark-500': '#404040',
         'low-emphesis': '#575757',
+        'light-glass': 'rgba(255, 255, 255, 0.1)',
         primary: '#BFBFBF',
         secondary: '#575757',
         'high-emphesis': '#E3E3E3',

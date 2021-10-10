@@ -377,12 +377,13 @@ export default function Swap() {
         tokens={importTokensNotInDefault}
         onConfirm={handleConfirmTokenWarning}
       />
-      <SolarbeamLogo />
       <div className="container px-0 mx-auto pb-6 max-w-screen-lg mt-10">
         <DoubleGlowShadow opacity="0.6" maxWidth={false}>
           <div id="swap-page" className={`grid grid-cols-1 gap-2 rounded z-4 sm:m-6`}>
             <div className={`grid grid-cols-1 lg:grid-cols-2 space-y-4 lg:space-x-4 lg:space-y-0`}>
-              <div className={`col-span-1 flex flex-col order-last lg:order-first mt-6 lg:mt-0 p-6 bg-dark-900 rounded rounded-lg lg:bg-transparent`}>
+              <div
+                className={`col-span-1 flex flex-col order-last lg:order-first mt-6 lg:mt-0 p-6 bg-dark-900 rounded rounded-lg lg:bg-light-glass`}
+              >
                 <Chart inputCurrency={currencies[Field.INPUT]} outputCurrency={currencies[Field.OUTPUT]} />
               </div>
               <div className={`col-span-1 bg-dark-900 rounded p-6 rounded-lg`}>
