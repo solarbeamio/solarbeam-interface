@@ -326,7 +326,7 @@ export const POOLS: AddressMap = {
       id: 19,
       token0: {
         id: '0x0caE51e1032e8461f4806e26332c030E34De3aDb',
-        name: 'MIM',
+        name: 'Magic Internet Money',
         symbol: 'MIM',
         decimals: 18,
       },
