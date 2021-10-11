@@ -282,7 +282,7 @@ export default function Chart({ inputCurrency, outputCurrency }: ChartProps) {
         href={`https://analytics.solarbeam.io/pairs/${pairAddress}`}
         target="_blank"
         rel="noreferrer"
-        className="flex items-center justify-center space-x-4 lg:mt-2 hover:text-gray-200 cursor-pointer rounded p-2 -ml-2 lg:w-min"
+        className="flex items-center justify-center space-x-4 lg:mt-0 hover:text-gray-200 cursor-pointer rounded p-2 -ml-2 lg:w-min"
       >
         <div className="flex items-center space-x-2">
           <CurrencyLogo currency={inputCurrency} size={'30px'} className={'shadow'} />

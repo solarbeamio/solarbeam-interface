@@ -22,12 +22,12 @@ function AppBar(): JSX.Element {
       <Popover as="nav" className="z-10 w-full">
         {({ open }) => (
           <>
-            <div className="px-4 py-4">
+            <div className="px-4 py-6 pr-6">
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <div className="hidden sm:block sm:ml-4">
-                    <div className="flex space-x-2">
-                      <img src={'/Logo.svg'} alt="solarbeam_logo" />
+                  <div className="hidden sm:flex sm:ml-4 space-x-10 items-center">
+                    <Image src={'/solarbeam-text.png'} alt="solarbeam_logo" width="177" height="34" layout="fixed" />
+                    <div className="flex space-x-4">
                       <NavLink href="/exchange/swap">
                         <a
                           id={`swap-nav-link`}
@@ -112,9 +112,9 @@ function AppBar(): JSX.Element {
                     <More />
                   </div>
                 </div>
-                <div className="flex flex-1 -mr-2 sm:hidden">
+                <div className="flex flex-1 -mr-2 sm:hidden items-start">
                   <div className="flex-1">
-                    <Image src="/icon.png" alt="Solarbeam" height="40px" width="40px" className="sm:hidden" />
+                    <Image src={'/solarbeam-text.png'} alt="solarbeam_logo" width="177" height="34" layout="fixed" className="sm:hidden" />
                   </div>
                   <LanguageSwitch />
                   <Popover.Button className="inline-flex items-center justify-center p-2 rounded-md text-primary hover:text-high-emphesis focus:outline-none">

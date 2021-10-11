@@ -19,7 +19,7 @@ const FLEXED = {
   green: 'bg-green bg-opacity-80 flex rounded text-high-emphesis hover:bg-opacity-100 disabled:bg-opacity-80',
   'light-green': 'bg-yellow bg-opacity-80 flex rounded text-dark-900 hover:bg-opacity-100 disabled:bg-opacity-80',
   gradient:
-    'flex text-high-emphesis transition duration-1000 ease-in-out text-high-emphesis bg-gradient-to-r from-light-purple via-dark-purple to-purple opacity-80 hover:opacity-100 disabled:bg-opacity-80',
+    'flex text-high-emphesis transition duration-1000 ease-in-out text-high-emphesis bg-gradient-to-r from-light-purple to-purple opacity-80 hover:opacity-100 disabled:bg-opacity-80',
 }
 
 const FILLED = {
@@ -31,7 +31,7 @@ const FILLED = {
   green: 'bg-green bg-opacity-80 w-full rounded text-high-emphesis hover:bg-opacity-100 disabled:bg-opacity-80',
   'light-green': 'bg-yellow bg-opacity-80 w-full rounded text-dark-900 hover:bg-opacity-100 disabled:bg-opacity-80',
   gradient:
-    'w-full transition duration-1000 ease-in-out text-high-emphesis bg-gradient-to-r from-light-purple via-dark-purple to-purple opacity-70 hover:opacity-100 disabled:bg-opacity-80',
+    'w-full transition duration-1000 ease-in-out text-high-emphesis bg-gradient-to-r from-light-purple  to-purple opacity-70 hover:opacity-100 disabled:bg-opacity-80',
 }
 
 const OUTLINED = {

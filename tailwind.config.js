@@ -64,7 +64,7 @@ module.exports = {
           'green-yellow': ['#4bf2cd', '#FFD166'],
           'pink-red-light-brown': ['#FE5A75', '#FEC464'],
           yellow: ['#7b6532', '#7b6532'],
-          purple: ['#8800ec', '#ffc000'],
+          purple: ['#ab3dfb', '#fba980'],
         },
         background: {
           'dark-1000': '#000',
@@ -80,14 +80,14 @@ module.exports = {
         },
       },
       colors: {
-        'light-purple': '#8800ec',
-        purple: '#ffc000',
+        'light-purple': '#ab3dfb',
+        purple: '#fba980',
         'dark-purple': '#7d00b4',
         blue: '#228df4',
         pink: '#f338c3',
         green: '#7cff6b',
         red: '#ff3838',
-        yellow: '#ffc000',
+        yellow: '#fba980',
         lgreen: '#4bf2cd',
         'light-green': '#4bf2cd',
         'mid-green': '#34a088',
@@ -182,7 +182,7 @@ module.exports = {
       addUtilities({
         '.header-border-b': {
           background:
-            'linear-gradient(to right, rgba(255, 209, 101, 0.5) 0%, rgba(255, 209, 101, 0.5) 100%) left bottom no-repeat',
+            '',
           backgroundSize: '100% 1px',
         },
         '.token-stats-border-b': {

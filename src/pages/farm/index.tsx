@@ -190,7 +190,7 @@ export default function Farm(): JSX.Element {
             </Link>
           </div>
         </div>
-        <DoubleGlowShadow maxWidth={false} opacity={'0.4'}>
+        <DoubleGlowShadow maxWidth={false} opacity={'0.6'}>
           <div className={`grid grid-cols-12 gap-2 min-h-1/2`}>
             <div className={`col-span-12`}>
               <Card className="bg-dark-900 z-4">
