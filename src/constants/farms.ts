@@ -288,5 +288,56 @@ export const POOLS: AddressMap = {
       name: 'Solarbeam LP',
       symbol: 'SLP',
     },
+    '0x55Ee073B38BF1069D5F1Ed0AA6858062bA42F5A9': {
+      id: 17,
+      token0: {
+        id: '0x7f5a79576620C046a293F54FFCdbd8f2468174F1',
+        name: 'miMatic',
+        symbol: 'MAI',
+        decimals: 18,
+      },
+      token1: {
+        id: '0xE3F5a90F9cb311505cd691a46596599aA1A0AD7D',
+        name: 'USDC Coin',
+        symbol: 'USDC',
+        decimals: 6,
+      },
+      name: 'Solarbeam LP',
+      symbol: 'SLP',
+    },
+    '0x1eebed8F28A6865a76D91189FD6FC45F4F774d67': {
+      id: 18,
+      token0: {
+        id: '0xaD12daB5959f30b9fF3c2d6709f53C335dC39908',
+        name: 'Fantom Token',
+        symbol: 'FTM',
+        decimals: 18,
+      },
+      token1: {
+        id: '0x98878B06940aE243284CA214f92Bb71a2b032B8A',
+        name: 'Moonriver',
+        symbol: 'MOVR',
+        decimals: 18,
+      },
+      name: 'Solarbeam LP',
+      symbol: 'SLP',
+    },
+    '0x9051fB701d6D880800e397e5B5d46FdDfAdc7056': {
+      id: 19,
+      token0: {
+        id: '0x0caE51e1032e8461f4806e26332c030E34De3aDb',
+        name: 'MIM',
+        symbol: 'MIM',
+        decimals: 18,
+      },
+      token1: {
+        id: '0xE3F5a90F9cb311505cd691a46596599aA1A0AD7D',
+        name: 'USDC Coin',
+        symbol: 'USDC',
+        decimals: 6,
+      },
+      name: 'Solarbeam LP',
+      symbol: 'SLP',
+    },
   },
 }

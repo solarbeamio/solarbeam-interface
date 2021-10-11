@@ -129,16 +129,8 @@ export default function NFTLaunchpad(): JSX.Element {
                 <div className="mt-12 min-h-[400px]">
                   {projects.length == 0 && (
                     <div className="space-y-4 mt-10 p-6 mb-20 flex flex-col justify-center">
-                      <>
-                        <div
-                          className="flex justify items-center mt-10 mb-10 m-auto"
-                          style={{ minHeight: 40, opacity: 0.2 }}
-                        >
-                          <Image src="/icons/suzu-spaceship.png" alt="Solarbeam" width={280} height={200} />
-                        </div>
-                      </>
                       <Typography variant="base" className={'max-w-xl m-auto text-center mb-2 text-gray-400'}>
-                        We are currently accepting subscriptions to launch on Eclipse.
+                        Applications for Eclipse are now open!
                         <br />
                         <a
                           href="https://forms.gle/oik9pbenvwFjMndg9"

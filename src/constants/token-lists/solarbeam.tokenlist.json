@@ -153,6 +153,30 @@
       "decimals": 18,
       "chainId": 1285,
       "logoURI": "https://solarbeam.io/images/tokens/1swap.png"
+    },
+    {
+      "name": "miMatic",
+      "address": "0x7f5a79576620C046a293F54FFCdbd8f2468174F1",
+      "symbol": "MAI",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://solarbeam.io/images/tokens/mimatic.png"
+    },
+    {
+      "name": "Fantom Token",
+      "address": "0xaD12daB5959f30b9fF3c2d6709f53C335dC39908",
+      "symbol": "FTM",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://solarbeam.io/images/tokens/ftm.png"
+    },
+    {
+      "name": "Magic Internet Money",
+      "address": "0x0caE51e1032e8461f4806e26332c030E34De3aDb",
+      "symbol": "MIM",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://solarbeam.io/images/tokens/mim.png"
     }
   ]
 }
