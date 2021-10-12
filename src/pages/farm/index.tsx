@@ -48,6 +48,8 @@ export default function Farm(): JSX.Element {
 
   const tvlInfo = useTVL()
 
+  console.log(tvlInfo);
+
   const farmingPools = Object.keys(POOLS[chainId]).map((key) => {
     return { ...POOLS[chainId][key], lpToken: key }
   })

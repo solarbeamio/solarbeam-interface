@@ -292,9 +292,17 @@ export function useTVL(): TVLInfo[] {
         lpTotalPrice = token1total * 2
       }
 
-      const lpPrice = lpTotalPrice / (lpTotalSupply / 10 ** 18)
-      const tvl = lpTotalPrice * distributorRatio
+      let lpPrice = lpTotalPrice / (lpTotalSupply / 10 ** 18)
+      let tvl = lpTotalPrice * distributorRatio
 
+      if (isNaN(lpPrice)){
+        lpPrice = 0;
+      }
+
+      if (isNaN(tvl)){
+        tvl = 0;
+      }
+      
       return {
         lpToken,
         tvl,
