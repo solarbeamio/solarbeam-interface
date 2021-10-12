@@ -26,14 +26,14 @@ function AppBar(): JSX.Element {
             <div
               className={classNames(
                 open ? 'header-border-none' : 'header-border-b',
-                'px-4 py-4 pr-6 items-center sm:header-border-none'
+                'px-4 py-4 sm:py-6 pr-6 items-center sm:header-border-none'
               )}
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
                   <div className="hidden sm:flex sm:ml-4 space-x-10 items-center">
                     <Image
-                      onClick={() => window.open('https://app.solarbeam.io')}
+                      onClick={() => window.open('https://app.solarbeam.io', '_parent')}
                       src={'/solarbeam-text.png'}
                       alt="solarbeam_logo"
                       width="177"
@@ -129,7 +129,7 @@ function AppBar(): JSX.Element {
                 <div className="flex flex-1 -mr-2 sm:hidden items-center">
                   <div className="flex-1 flex items-center">
                     <Image
-                      onClick={() => window.open('https://app.solarbeam.io')}
+                      onClick={() => window.open('https://app.solarbeam.io', '_parent')}
                       src={'/solarbeam-text.png'}
                       alt="solarbeam_logo"
                       width="177"
