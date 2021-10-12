@@ -12,21 +12,35 @@ import { useActiveWeb3React } from '../../hooks/useActiveWeb3React'
 import { useLingui } from '@lingui/react'
 import TokenStats from '../TokenStats'
 import LanguageSwitch from '../LanguageSwitch'
+import { classNames } from '../../functions'
 
 function AppBar(): JSX.Element {
   const { i18n } = useLingui()
   const { account, chainId } = useActiveWeb3React()
 
   return (
-    <header className="flex-shrink-0 z-10  w-full">
+    <header className="flex-shrink-0 z-10  w-full bg-dark-1000 sm:bg-transparent">
       <Popover as="nav" className="z-10 w-full">
         {({ open }) => (
           <>
-            <div className="px-4 py-6 pr-6">
+            <div
+              className={classNames(
+                open ? 'header-border-none' : 'header-border-b',
+                'px-4 py-4 pr-6 items-center sm:header-border-none'
+              )}
+            >
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
                   <div className="hidden sm:flex sm:ml-4 space-x-10 items-center">
-                    <Image src={'/solarbeam-text.png'} alt="solarbeam_logo" width="177" height="34" layout="fixed" />
+                    <Image
+                      onClick={() => window.open('https://app.solarbeam.io')}
+                      src={'/solarbeam-text.png'}
+                      alt="solarbeam_logo"
+                      width="177"
+                      height="34"
+                      layout="fixed"
+                      className="cursor-pointer"
+                    />
                     <div className="flex space-x-4">
                       <NavLink href="/exchange/swap">
                         <a
@@ -112,9 +126,17 @@ function AppBar(): JSX.Element {
                     <More />
                   </div>
                 </div>
-                <div className="flex flex-1 -mr-2 sm:hidden items-start">
-                  <div className="flex-1">
-                    <Image src={'/solarbeam-text.png'} alt="solarbeam_logo" width="177" height="34" layout="fixed" className="sm:hidden" />
+                <div className="flex flex-1 -mr-2 sm:hidden items-center">
+                  <div className="flex-1 flex items-center">
+                    <Image
+                      onClick={() => window.open('https://app.solarbeam.io')}
+                      src={'/solarbeam-text.png'}
+                      alt="solarbeam_logo"
+                      width="177"
+                      height="34"
+                      layout="fixed"
+                      className="sm:hidden cursor-pointer"
+                    />
                   </div>
                   <LanguageSwitch />
                   <Popover.Button className="inline-flex items-center justify-center p-2 rounded-md text-primary hover:text-high-emphesis focus:outline-none">

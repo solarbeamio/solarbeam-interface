@@ -121,14 +121,14 @@ function MyApp({
 
         <meta key="twitter:card" name="twitter:card" content="app" />
         <meta key="twitter:title" name="twitter:title" content="Solarbeam App" />
-        <meta key="twitter:url" name="twitter:url" content="https://solarbeam.io" />
+        <meta key="twitter:url" name="twitter:url" content="https://app.solarbeam.io" />
         <meta key="twitter:description" name="twitter:description" content="Solarbeam - AMM on Moonriver." />
-        <meta key="twitter:image" name="twitter:image" content="https://solarbeam.io/icons/icon.png" />
+        <meta key="twitter:image" name="twitter:image" content="https://app.solarbeam.io/icons/icon.png" />
         <meta key="twitter:creator" name="twitter:creator" content="@solarbeam.io" />
         <meta key="og:type" property="og:type" content="website" />
         <meta key="og:site_name" property="og:site_name" content="Solarbeam App" />
-        <meta key="og:url" property="og:url" content="https://solarbeam.io" />
-        <meta key="og:image" property="og:image" content="https://solarbeam.io/icon.png" />
+        <meta key="og:url" property="og:url" content="https://app.solarbeam.io" />
+        <meta key="og:image" property="og:image" content="https://app.solarbeam.io/icon.png" />
         <meta key="og:description" property="og:description" content="Solarbeam - AMM on Moonriver." />
       </Head>
 

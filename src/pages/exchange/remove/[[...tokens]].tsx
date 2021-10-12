@@ -715,7 +715,7 @@ export default function Remove() {
         <meta key="description" name="description" content={i18n._(t`Remove liquidity of Solarbeam`)} />
       </Head>
 
-      <Container id="remove-liquidity-page" maxWidth="2xl" className="space-y-4">
+      <Container id="remove-liquidity-page" maxWidth="2xl" className="space-y-4 sm:pb-16 sm:pt-16">
         <DoubleGlowShadow>
           <div className="p-4 space-y-4 rounded bg-dark-900" style={{ zIndex: 1 }}>          
             <Header input={currencyA} output={currencyB} allowedSlippage={allowedSlippage} />

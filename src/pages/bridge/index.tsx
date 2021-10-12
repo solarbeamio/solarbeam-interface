@@ -138,7 +138,6 @@ export default function Bridge() {
     currency0 ?? undefined
   )
 
-
   const { data: anyswapInfo, error }: SWRResponse<AnyswapTokensMap, Error> = useSWR(
     'https://bridgeapi.anyswap.exchange/v2/serverInfo/1285',
     (url) =>
@@ -471,9 +470,7 @@ export default function Bridge() {
         <meta key="description" name="description" content="Bridge" />
       </Head>
 
-      <SolarbeamLogo />
-
-      <Container maxWidth="2xl" className="space-y-6">
+      <Container maxWidth="2xl" className="space-y-6 sm:pt-6 sm:pb-6">
         <DoubleGlowShadow opacity="0.6">
           <div className="p-4 space-y-4 rounded bg-dark-900" style={{ zIndex: 1 }}>
             <div className="flex items-center justify-center mb-4 space-x-3">

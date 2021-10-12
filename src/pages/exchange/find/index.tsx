@@ -83,10 +83,7 @@ export default function PoolFinder() {
         <title>{i18n._(t`Find Pool`)} | Solarbeam</title>
         <meta key="description" name="description" content="Find pool" />
       </Head>
-
-      <SolarbeamLogo />
-
-      <Container maxWidth="2xl" className="space-y-6">
+      <Container maxWidth="2xl" className="space-y-6 sm:pb-16 sm:pt-16">
         <DoubleGlowShadow>
           <div className="p-4 space-y-4 rounded bg-dark-900" style={{ zIndex: 1 }}>
             <div className="p-4 mb-3 space-y-3 text-center">

@@ -180,9 +180,14 @@ module.exports = {
     require('tailwindcss-border-gradient-radius'),
     plugin(function ({ addUtilities }) {
       addUtilities({
+        '.header-border-none': {
+          background:
+            'transparent',
+          backgroundSize: '100% 1px',
+        },
         '.header-border-b': {
           background:
-            '',
+            'linear-gradient(to right, rgba(171, 61, 251, 0.5) 0%, rgba(251, 169, 128, 0.5) 100%) left bottom no-repeat',
           backgroundSize: '100% 1px',
         },
         '.token-stats-border-b': {

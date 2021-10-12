@@ -377,7 +377,7 @@ export default function Swap() {
         tokens={importTokensNotInDefault}
         onConfirm={handleConfirmTokenWarning}
       />
-      <div className="container px-0 mx-auto pb-6 max-w-screen-lg sm:mt-10">
+      <div className="container px-0 mx-auto sm:pb-10 sm:pt-10 max-w-screen-lg">
         <DoubleGlowShadow opacity="0.6" maxWidth={false}>
           <div id="swap-page" className={`grid grid-cols-1 gap-2 rounded z-4 sm:m-6`}>
             <div className={`grid grid-cols-1 lg:grid-cols-2 space-y-4 lg:space-x-4 lg:space-y-0`}>

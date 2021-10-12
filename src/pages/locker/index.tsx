@@ -66,21 +66,14 @@ export default function Locker(): JSX.Element {
         <meta key="description" name="description" content="Solarbeam Locker" />
       </Head>
 
-      <div className="container px-0 mx-auto pb-6">
-        <div className={`mb-2 pb-4 grid grid-cols-12 gap-4`}>
-          <div className="flex justify-center items-center col-span-12 lg:justify">
-            <Link href="/farm">
-              <SolarbeamLogo />
-            </Link>
-          </div>
-        </div>
+      <div className="container px-0 mx-auto pb-5 pt-5">
         <DoubleGlowShadow maxWidth={false} opacity={'0.3'}>
           <div className={`grid grid-cols-12 gap-2 min-h-1/2`}>
             <div className={`col-span-12 flex flex-col md:flex-row md:space-x-2`}>
               <NavLink
                 exact
                 href={'/locker'}
-                activeClassName="font-bold bg-transparent border rounded text-high-emphesis border-transparent border-gradient-r-yellow-dark-900"
+                activeClassName="font-bold bg-transparent border rounded text-high-emphesis border-transparent border-gradient-r-purple-dark-900"
               >
                 <a className="flex items-center justify-between px-6 py-2 text-base font-bold border border-transparent rounded cursor-pointer">
                   {i18n._(t`Search lockers`)}
@@ -89,7 +82,7 @@ export default function Locker(): JSX.Element {
               <NavLink
                 exact
                 href={'/locker/create'}
-                activeClassName="font-bold bg-transparent border rounded text-high-emphesis border-transparent border-gradient-r-yellow-dark-900"
+                activeClassName="font-bold bg-transparent border rounded text-high-emphesis border-transparent border-gradient-r-purple-dark-900"
               >
                 <a className="flex items-center justify-between px-6 py-2 text-base font-bold border border-transparent rounded cursor-pointer">
                   {i18n._(t`Create lock`)}

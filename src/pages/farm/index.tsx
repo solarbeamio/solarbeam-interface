@@ -48,7 +48,7 @@ export default function Farm(): JSX.Element {
 
   const tvlInfo = useTVL()
 
-  console.log(tvlInfo);
+  console.log(tvlInfo)
 
   const farmingPools = Object.keys(POOLS[chainId]).map((key) => {
     return { ...POOLS[chainId][key], lpToken: key }
@@ -184,14 +184,7 @@ export default function Farm(): JSX.Element {
         <meta key="description" name="description" content="Farm SOLAR" />
       </Head>
 
-      <div className="container px-0 mx-auto pb-6">
-        <div className={`mb-2 pb-4 grid grid-cols-12 gap-4`}>
-          <div className="flex justify-center items-center col-span-12 lg:justify">
-            <Link href="/farm">
-              <SolarbeamLogo />
-            </Link>
-          </div>
-        </div>
+      <div className="container px-0 mx-auto sm:pb-16 sm:pt-16">
         <DoubleGlowShadow maxWidth={false} opacity={'0.6'}>
           <div className={`grid grid-cols-12 gap-2 min-h-1/2`}>
             <div className={`col-span-12`}>

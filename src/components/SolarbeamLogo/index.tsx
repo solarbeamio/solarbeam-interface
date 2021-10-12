@@ -8,7 +8,7 @@ const SolarbeamLogo = () => {
   return (
     <>
       <div className="mt-4 mb-4 sm:hidden"></div>
-      <div className="flex justify items-center mt-8 mb-12 hidden sm:block" style={{ minHeight: 40 }}>
+      <div className="flex justify items-center mt-10 mb-10 hidden sm:block">
         {/* <Image src="/logo.png" alt="Solarbeam" width={328} height={40} /> */}
       </div>
     </>

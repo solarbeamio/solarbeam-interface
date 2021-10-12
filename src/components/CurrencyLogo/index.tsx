@@ -55,7 +55,7 @@ const MoonbeamLogo = 'https://raw.githubusercontent.com/sushiswap/icons/master/t
 const OKExLogo = 'https://raw.githubusercontent.com/sushiswap/icons/master/token/okt.jpg'
 const xDaiLogo = 'https://raw.githubusercontent.com/sushiswap/icons/master/token/dai.jpg'
 const CeloLogo = 'https://raw.githubusercontent.com/sushiswap/icons/master/token/celo.jpg'
-const MoonriverLogo = 'https://solarbeam.io/images/tokens/movr.png'
+const MoonriverLogo = 'https://app.solarbeam.io/images/tokens/movr.png'
 
 const logo: { readonly [chainId in ChainId]?: string } = {
   [ChainId.MAINNET]: EthereumLogo,
@@ -90,7 +90,7 @@ interface CurrencyLogoProps {
 }
 
 const unknown = 'https://raw.githubusercontent.com/sushiswap/icons/master/token/unknown.png'
-const solar = 'https://solarbeam.io/icon.png'
+const solar = 'https://app.solarbeam.io/icon.png'
 
 const CurrencyLogo: FunctionComponent<CurrencyLogoProps> = ({
   currency,

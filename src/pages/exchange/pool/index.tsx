@@ -99,9 +99,9 @@ export default function Pool() {
           content="Solarbeam liquidity pools are markets for trades between the two tokens, you can provide these tokens and become a liquidity provider to earn 0.25% of fees from trades."
         />
       </Head>
-      <SolarbeamLogo />
+
       <DoubleGlowShadow opacity="0.6">
-        <Container maxWidth="2xl" className="space-y-6">
+        <Container maxWidth="2xl" className="space-y-6 sm:mt-16 sm:mb-16">
           {/* <Alert
           title={i18n._(t`Liquidity Provider Rewards`)}
           message={i18n._(t`Liquidity providers earn a 0.25% fee on all trades proportional to their share of

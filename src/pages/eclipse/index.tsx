@@ -58,7 +58,7 @@ export default function NFTLaunchpad(): JSX.Element {
           <div className={`grid grid-cols-12 gap-2 min-h-1/2`}>
             <div className={`col-span-12`}>
               <div className={'container p-6 md:p-0 justify-center flex flex-col mb-5 md:mb-20'}>
-                <Typography variant="hero" className={'font-bold mt-5 text-white'}>
+                <Typography variant="hero" className={'font-bold sm:mt-5 text-white'}>
                   Eclipse
                 </Typography>
                 <Typography variant="base" className={'max-w-xl text-gray-400'}>
