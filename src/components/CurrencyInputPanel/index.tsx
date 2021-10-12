@@ -39,26 +39,26 @@ interface CurrencyInputPanelProps {
 }
 
 export default function CurrencyInputPanel({
-  value,
-  onUserInput,
-  onMax,
-  showMaxButton,
-  label = 'Input',
-  onCurrencySelect,
-  currency,
-  disableCurrencySelect = false,
-  otherCurrency,
-  id,
-  showCommonBases,
-  renderBalance,
-  fiatValue,
-  priceImpact,
-  hideBalance = false,
-  pair = null, // used for double token logo
-  hideInput = false,
-  locked = false,
-  customBalanceText,
-}: CurrencyInputPanelProps) {
+                                             value,
+                                             onUserInput,
+                                             onMax,
+                                             showMaxButton,
+                                             label = 'Input',
+                                             onCurrencySelect,
+                                             currency,
+                                             disableCurrencySelect = false,
+                                             otherCurrency,
+                                             id,
+                                             showCommonBases,
+                                             renderBalance,
+                                             fiatValue,
+                                             priceImpact,
+                                             hideBalance = false,
+                                             pair = null, // used for double token logo
+                                             hideInput = false,
+                                             locked = false,
+                                             customBalanceText
+                                           }: CurrencyInputPanelProps) {
   const { i18n } = useLingui()
   const [modalOpen, setModalOpen] = useState(false)
   const { account } = useActiveWeb3React()
@@ -76,9 +76,9 @@ export default function CurrencyInputPanel({
   return (
     <div id={id} className={classNames(hideInput ? 'py-4' : 'py-5', 'rounded')}>
       <div className={'flex justify-between mb-1'}>
-        {label && <div className="text-xs font-medium text-secondary whitespace-nowrap ">{label}</div>}
+        {label && <div className='text-xs font-medium text-secondary whitespace-nowrap '>{label}</div>}
         {!hideBalance && currency && selectedCurrencyBalance ? (
-          <div onClick={onMax} className="text-xxs font-medium text-right cursor-pointer text-low-emphesis">
+          <div onClick={onMax} className='text-xxs font-medium text-right cursor-pointer text-low-emphesis'>
             {renderBalance ? (
               renderBalance(selectedCurrencyBalance)
             ) : (
@@ -89,7 +89,7 @@ export default function CurrencyInputPanel({
           </div>
         ) : null}
       </div>
-      <div className="flex justify-between space-y-0 flex-row  rounded bg-dark-800">
+      <div className='flex justify-between space-y-0 flex-row  rounded bg-dark-800'>
         {!hideInput && (
           <div
             className={classNames(
@@ -99,7 +99,7 @@ export default function CurrencyInputPanel({
           >
             <>
               <NumericalInput
-                id="token-amount-input"
+                id='token-amount-input'
                 value={value}
                 onUserInput={(val) => {
                   onUserInput(val)
@@ -108,8 +108,8 @@ export default function CurrencyInputPanel({
               {showMaxButton && selectedCurrencyBalance && (
                 <Button
                   onClick={onMax}
-                  size="xs"
-                  className="text-xxs font-medium bg-transparent border rounded-full hover:bg-primary border-low-emphesis text-secondary whitespace-nowrap"
+                  size='xs'
+                  className='text-xxs font-medium bg-transparent border rounded-full hover:bg-primary border-low-emphesis text-secondary whitespace-nowrap'
                 >
                   {i18n._(t`Max`)}
                 </Button>
@@ -119,7 +119,7 @@ export default function CurrencyInputPanel({
         )}
         <div>
           <button
-            type="button"
+            type='button'
             className={classNames(
               !!currency ? 'text-primary' : 'text-high-emphesis',
               'w-[150px] m-auto open-currency-select-button h-full outline-none select-none cursor-pointer border-none text-xl font-medium items-center'
@@ -130,15 +130,15 @@ export default function CurrencyInputPanel({
               }
             }}
           >
-            <div className="flex border-l-2 space-between items-center border-dark-900 px-3">
+            <div className='flex border-l-2 space-between items-center border-dark-900 px-3'>
               {pair ? (
                 <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={24} margin={true} />
               ) : currency ? (
-                <div className="flex items-center">
+                <div className='flex items-center'>
                   <CurrencyLogo currency={currency} size={'24px'} />
                 </div>
               ) : (
-                <div className="rounded bg-dark-700" style={{ maxWidth: 24, maxHeight: 24 }}>
+                <div className='rounded bg-dark-700' style={{ maxWidth: 24, maxHeight: 24 }}>
                   <div style={{ width: 24, height: 24 }}>
                     <Lottie animationData={selectCoinAnimation} autoplay loop />
                   </div>
@@ -154,24 +154,29 @@ export default function CurrencyInputPanel({
                   {pair?.token0.symbol}:{pair?.token1.symbol}
                 </span>
               ) : (
-                <div className="flex flex-1 flex-col items-start justify-center mx-3.5">
-                  <div className="flex flex-1 items-center">
-                    <div className="text-sm font-bold token-symbol-container md:text-md">
-                      {(currency && currency.symbol && currency.symbol.length > 20
-                        ? currency.symbol.slice(0, 4) +
-                          '...' +
-                          currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
-                        : currency?.symbol) || (
-                        <div className="px-2 py-1 mt-1 text-xs font-medium bg-transparent border rounded-full hover:bg-primary border-low-emphesis text-secondary whitespace-nowrap ">
-                          {i18n._(t`Select a token`)}
-                        </div>
+                <div className='flex flex-1 flex-col items-start justify-center'>
+                  <div className='flex flex-1 items-center'>
+                    <div className='text-sm font-bold token-symbol-container md:text-md'>
+                      {(
+                        currency
+                          ? <div className={'mx-3.5'}>
+                              {currency.symbol && currency.symbol.length > 20
+                                ? currency.symbol.slice(0, 4) +
+                                  '...' +
+                                  currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
+                                : currency?.symbol}
+                            </div>
+                          : <div
+                            className='mx-0.5 px-2 py-1 mt-1 text-xs font-medium bg-transparent border rounded-full hover:bg-primary border-low-emphesis text-secondary whitespace-nowrap'>
+                            {i18n._(t`Select a token`)}
+                          </div>
                       )}
                     </div>
                   </div>
                 </div>
               )}
               {!disableCurrencySelect && currency && (
-                <ChevronDownIcon width={16} height={16} className="ml-2 stroke-current" />
+                <ChevronDownIcon width={16} height={16} className='ml-2 stroke-current' />
               )}
             </div>
           </button>
