@@ -121,15 +121,15 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     color: '#4196FC',
     mobile: true,
   },
-  TRUST_WALLET: {
-    connector: injected,
-    name: 'Trust Wallet',
-    iconName: 'trustwallet.svg',
-    description: 'The most trusted & secure crypto wallet.',
-    href: null,
-    color: '#3688EB',
-    mobile: true,
-  },
+  // TRUST_WALLET: {
+  //   connector: injected,
+  //   name: 'Trust Wallet',
+  //   iconName: 'trustwallet.svg',
+  //   description: 'The most trusted & secure crypto wallet.',
+  //   href: null,
+  //   color: '#3688EB',
+  //   mobile: true,
+  // },
   // LATTICE: {
   //   connector: async () => {
   //     const LatticeConnector = (await import('@web3-react/lattice-connector')).LatticeConnector
@@ -190,15 +190,15 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
   //   color: '#315CF5',
   //   mobile: true,
   // },
-  Binance: {
-    connector: binance,
-    name: 'Binance',
-    iconName: 'bsc.jpg',
-    description: 'Login using Binance hosted wallet',
-    href: null,
-    color: '#F0B90B',
-    mobile: false,
-  },
+  // Binance: {
+  //   connector: binance,
+  //   name: 'Binance',
+  //   iconName: 'bsc.jpg',
+  //   description: 'Login using Binance hosted wallet',
+  //   href: null,
+  //   color: '#F0B90B',
+  //   mobile: false,
+  // },
 }
 
 export const NetworkContextName = 'NETWORK'
