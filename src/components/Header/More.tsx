@@ -13,7 +13,7 @@ const items = (i18n: I18n) => [
   {
     name: i18n._(t`Website`),
     description: i18n._(t`Solarbeam.io landing page`),
-    href: 'https://solarbeam.io',
+    href: 'https://solarbeam.io/home',
     external: true,
   },
   {
