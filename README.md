@@ -4,7 +4,7 @@ Solarbeam DEX on Moonriver
 ### Whitelisting
 
 Make a Pull Request to this repo including:
- - Add token's png under the *public/images/tokens* folder
+ - Add token's icon (.png) under the *public/images/tokens* folder
  - Add token's info in the *src/constants/token-lists/solarbeam.tokenlist.json* file, in this format:
    ```
    {
@@ -13,7 +13,11 @@ Make a Pull Request to this repo including:
        "symbol": [token_symbol],
        "decimals": 18,
        "chainId": 1285,
-       "logoURI": "https://solarbeam.io/images/tokens/[token_png_filename]"
+       "logoURI": "https://solarbeam.io/images/tokens/[token_icon_filename]"
    }
    ```
    
+<br>
+
+More info about pull requests:
+ - [Creating a pull request from a fork](https://docs.github.com/en/github/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork)
