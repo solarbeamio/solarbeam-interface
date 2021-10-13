@@ -33,7 +33,7 @@ function AppBar(): JSX.Element {
                 <div className="flex items-center">
                   <div className="hidden sm:flex sm:ml-4 space-x-10 items-center">
                     <Image
-                      onClick={() => window.open('https://app.solarbeam.io', '_parent')}
+                      onClick={() => window.open('https://solarbeam.io', '_parent')}
                       src={'/solarbeam-text.png'}
                       alt="solarbeam_logo"
                       width="177"
@@ -129,7 +129,7 @@ function AppBar(): JSX.Element {
                 <div className="flex flex-1 -mr-2 sm:hidden items-center">
                   <div className="flex-1 flex items-center">
                     <Image
-                      onClick={() => window.open('https://app.solarbeam.io', '_parent')}
+                      onClick={() => window.open('https://solarbeam.io', '_parent')}
                       src={'/solarbeam-text.png'}
                       alt="solarbeam_logo"
                       width="177"

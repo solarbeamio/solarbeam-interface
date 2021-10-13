@@ -11,6 +11,12 @@ import NavLink from '../NavLink'
 
 const items = (i18n: I18n) => [
   {
+    name: i18n._(t`Website`),
+    description: i18n._(t`Solarbeam.io landing page`),
+    href: 'https://solarbeam.io',
+    external: true,
+  },
+  {
     name: i18n._(t`Docs`),
     description: i18n._(t`Documentation for Solarbeam.io users`),
     href: 'https://docs.solarbeam.io',

@@ -148,9 +148,11 @@ export default function Pool() {
                   <div className="px-4 py-2">{i18n._(t`No liquidity was found.`)}</div>
                 </Empty>
               )}
-              <Empty className="flex text-lg text-center text-low-emphesis">
-                <div className="px-4 py-2">{i18n._(t`Don't see a pool you joined? Import It.`)}</div>
-              </Empty>
+              {account && (
+                <Empty className="flex text-lg text-center text-low-emphesis">
+                  <div className="px-4 py-2">{i18n._(t`Don't see a pool you joined? Import It.`)}</div>
+                </Empty>
+              )}
               {account && (
                 <div className={classNames('grid gap-4', migrationSupported ? 'grid-cols-3' : 'grid-cols-2')}>
                   <Button
