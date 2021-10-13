@@ -11,31 +11,31 @@ const SIZE = {
 }
 
 const FLEXED = {
-  default: 'bg-transparent opacity-80 hover:opacity-100',
-  red: 'bg-red bg-opacity-80 flex rounded text-high-emphesis hover:bg-opacity-100 disabled:bg-opacity-80',
-  blue: 'bg-blue bg-opacity-80 flex rounded text-high-emphesis hover:bg-opacity-100 disabled:bg-opacity-80',
-  pink: 'bg-gradient-to-r from-pink to-opaque-pink flex rounded text-high-emphesis opacity-80 hover:opacity-100 disabled:bg-opacity-80',
-  gray: 'border rounded shadow-sm focus:ring-2 focus:ring-offset-2 bg-dark-700 bg-opacity-80 flex text-primary border-dark-800 hover:bg-opacity-100 focus:ring-offset-dark-700 focus:ring-dark-800 disabled:bg-opacity-80',
-  green: 'bg-green bg-opacity-80 flex rounded text-high-emphesis hover:bg-opacity-100 disabled:bg-opacity-80',
-  'light-green': 'bg-yellow bg-opacity-80 flex rounded text-dark-900 hover:bg-opacity-100 disabled:bg-opacity-80',
+  default: 'bg-transparent opacity-90 hover:opacity-100',
+  red: 'bg-red bg-opacity-90 flex rounded text-white hover:bg-opacity-100 disabled:bg-opacity-90',
+  blue: 'bg-blue bg-opacity-90 flex rounded text-white hover:bg-opacity-100 disabled:bg-opacity-90',
+  pink: 'bg-gradient-to-r from-pink to-opaque-pink flex rounded text-white opacity-90 hover:opacity-100 disabled:bg-opacity-90',
+  gray: 'border rounded shadow-sm focus:ring-2 focus:ring-offset-2 bg-dark-700 bg-opacity-90 flex text-primary border-dark-800 hover:bg-opacity-100 focus:ring-offset-dark-700 focus:ring-dark-800 disabled:bg-opacity-90',
+  green: 'bg-green bg-opacity-90 flex rounded text-white hover:bg-opacity-100 disabled:bg-opacity-90',
+  'light-green': 'bg-yellow bg-opacity-90 flex rounded text-dark-900 hover:bg-opacity-100 disabled:bg-opacity-90',
   gradient:
-    'flex text-high-emphesis transition duration-1000 ease-in-out text-high-emphesis bg-gradient-to-r from-light-purple to-purple opacity-80 hover:opacity-100 disabled:bg-opacity-80',
+    'flex text-white transition duration-1000 ease-in-out text-white bg-gradient-to-r from-light-purple to-purple opacity-90 hover:opacity-100 disabled:bg-opacity-90',
 }
 
 const FILLED = {
-  default: 'bg-transparent opacity-80 hover:opacity-100',
-  red: 'bg-red bg-opacity-80 w-full rounded text-high-emphesis hover:bg-opacity-100 disabled:bg-opacity-80',
-  blue: 'bg-blue bg-opacity-80 w-full rounded text-high-emphesis hover:bg-opacity-100 disabled:bg-opacity-80',
-  pink: 'bg-gradient-to-r from-pink to-opaque-pink w-full rounded text-high-emphesis opacity-80 hover:opacity-100 disabled:bg-opacity-80',
-  gray: 'border rounded shadow-sm focus:ring-2 focus:ring-offset-2 bg-dark-700 bg-opacity-80 w-full text-primary border-dark-800 hover:bg-opacity-100 focus:ring-offset-dark-700 focus:ring-dark-800 disabled:bg-opacity-80',
-  green: 'bg-green bg-opacity-80 w-full rounded text-high-emphesis hover:bg-opacity-100 disabled:bg-opacity-80',
-  'light-green': 'bg-yellow bg-opacity-80 w-full rounded text-dark-900 hover:bg-opacity-100 disabled:bg-opacity-80',
+  default: 'bg-transparent opacity-90 hover:opacity-100',
+  red: 'bg-red bg-opacity-90 w-full rounded text-white hover:bg-opacity-100 disabled:bg-opacity-90',
+  blue: 'bg-blue bg-opacity-90 w-full rounded text-white hover:bg-opacity-100 disabled:bg-opacity-90',
+  pink: 'bg-gradient-to-r from-pink to-opaque-pink w-full rounded text-white opacity-90 hover:opacity-100 disabled:bg-opacity-90',
+  gray: 'border rounded shadow-sm focus:ring-2 focus:ring-offset-2 bg-dark-700 bg-opacity-90 w-full text-primary border-dark-800 hover:bg-opacity-100 focus:ring-offset-dark-700 focus:ring-dark-800 disabled:bg-opacity-90',
+  green: 'bg-green bg-opacity-90 w-full rounded text-white hover:bg-opacity-100 disabled:bg-opacity-90',
+  'light-green': 'bg-yellow bg-opacity-90 w-full rounded text-dark-900 hover:bg-opacity-100 disabled:bg-opacity-90',
   gradient:
-    'w-full transition duration-1000 ease-in-out text-high-emphesis bg-gradient-to-r from-light-purple  to-purple opacity-70 hover:opacity-100 disabled:bg-opacity-80',
+    'w-full transition duration-1000 ease-in-out text-white bg-gradient-to-r from-light-purple  to-purple opacity-90 hover:opacity-100 disabled:bg-opacity-90',
 }
 
 const OUTLINED = {
-  default: 'bg-transparent opacity-80 hover:opacity-100',
+  default: 'bg-transparent opacity-90 hover:opacity-100',
   red: 'bg-red bg-opacity-20 outline-red rounded text-red hover:bg-opacity-40 disabled:bg-opacity-20',
   blue: 'bg-blue bg-opacity-20 outline-blue rounded text-blue hover:bg-opacity-40 disabled:bg-opacity-20',
   pink: 'bg-pink bg-opacity-20 outline-pink rounded text-pink hover:bg-opacity-40 disabled:bg-opacity-20',
@@ -44,19 +44,19 @@ const OUTLINED = {
   'light-green':
     'bg-transparent bg-opacity-20 border border-light-purple rounded text-light-purple hover:bg-opacity-40 disabled:bg-opacity-20',
   gradient:
-    'border border-transparent border-gradient-r-purple-dark-900 opacity-80 hover:opacity-100 disabled:bg-opacity-100 disabled:border-dark-800 disabled:bg-none disabled:bg-dark-700',
+    'border border-transparent border-gradient-r-purple-dark-900 opacity-90 hover:opacity-100 disabled:bg-opacity-100 disabled:border-dark-800 disabled:bg-none disabled:bg-dark-700',
 }
 
 const EMPTY = {
   default:
-    'flex bg-transparent justify-center items-center disabled:opacity-50 disabled:cursor-auto bg-opacity-80 hover:bg-opacity-100',
+    'flex bg-transparent justify-center items-center disabled:opacity-50 disabled:cursor-auto bg-opacity-90 hover:bg-opacity-100',
 }
 
 const LINK = {
-  default: 'text-primary hover:text-high-emphesis focus:text-high-emphesis whitespace-nowrap focus:ring-0',
-  blue: 'text-blue text-opacity-80 hover:text-opacity-100 focus:text-opacity-100 whitespace-nowrap focus:ring-0',
+  default: 'text-primary hover:text-white focus:text-white whitespace-nowrap focus:ring-0',
+  blue: 'text-blue text-opacity-90 hover:text-opacity-100 focus:text-opacity-100 whitespace-nowrap focus:ring-0',
   'light-green':
-    'text-yellow text-opacity-80 hover:text-opacity-100 focus:text-opacity-100 whitespace-nowrap focus:ring-0',
+    'text-yellow text-opacity-90 hover:text-opacity-100 focus:text-opacity-100 whitespace-nowrap focus:ring-0',
 }
 
 const VARIANT = {
