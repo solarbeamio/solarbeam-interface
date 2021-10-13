@@ -11,7 +11,7 @@ Make a Pull Request to this repo including:
        "name": [token_name],
        "address": [token_address],
        "symbol": [token_symbol],
-       "decimals": 18,
+       "decimals": [token_decimals],
        "chainId": 1285,
        "logoURI": "https://solarbeam.io/images/tokens/[token_icon_filename]"
    }
