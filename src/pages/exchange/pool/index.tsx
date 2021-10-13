@@ -100,7 +100,7 @@ export default function Pool() {
         />
       </Head>
 
-      <DoubleGlowShadow opacity="0.6">
+      <DoubleGlowShadow>
         <Container maxWidth="2xl" className="space-y-6 sm:mt-16 sm:mb-16">
           {/* <Alert
           title={i18n._(t`Liquidity Provider Rewards`)}

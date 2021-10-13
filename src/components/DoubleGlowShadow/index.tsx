@@ -1,7 +1,7 @@
 import { classNames } from '../../functions'
 import Image from 'next/image'
 
-const DoubleGlowShadow = ({ maxWidth = true, opacity = '0.6', children }) => {
+const DoubleGlowShadow = ({ maxWidth = true, opacity = '0.35', children }) => {
   return (
     <div className={`force-gpu relative w-full ${maxWidth ? 'max-w-2xl' : ''}`}>
       {/* <div style={{ position: 'absolute', top: 0, right: 0, left: 0, bottom: 0 }}>

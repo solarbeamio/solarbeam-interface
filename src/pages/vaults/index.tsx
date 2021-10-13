@@ -136,7 +136,7 @@ export default function Vault(): JSX.Element {
       </Head>
 
       <div className="container px-0 mx-auto sm:pb-16 sm:pt-16">
-        <DoubleGlowShadow maxWidth={false} opacity={'0.4'}>
+        <DoubleGlowShadow maxWidth={false}>
           <div className={`grid grid-cols-12 gap-2 min-h-1/2`}>
             <div className={`col-span-12`}>
               <Card className="bg-dark-900 z-4">

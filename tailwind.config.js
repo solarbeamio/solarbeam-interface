@@ -64,7 +64,7 @@ module.exports = {
           'green-yellow': ['#4bf2cd', '#FFD166'],
           'pink-red-light-brown': ['#FE5A75', '#FEC464'],
           yellow: ['#7b6532', '#7b6532'],
-          purple: ['#ab3dfb', '#fba980'],
+          purple: ['#D64FA0', '#FFC979'],
         },
         background: {
           'dark-1000': '#000',
@@ -80,14 +80,14 @@ module.exports = {
         },
       },
       colors: {
-        'light-purple': '#ab3dfb',
-        purple: '#fba980',
-        'dark-purple': '#7d00b4',
+        'light-purple': '#D64FA0',
+        purple: '#FFC979',
+        'dark-purple': '#c84995',
         blue: '#228df4',
         pink: '#f338c3',
         green: '#7cff6b',
         red: '#ff3838',
-        yellow: '#fba980',
+        yellow: '#FFC979',
         lgreen: '#4bf2cd',
         'light-green': '#4bf2cd',
         'mid-green': '#34a088',
@@ -187,7 +187,7 @@ module.exports = {
         },
         '.header-border-b': {
           background:
-            'linear-gradient(to right, rgba(171, 61, 251, 0.5) 0%, rgba(251, 169, 128, 0.5) 100%) left bottom no-repeat',
+            'linear-gradient(147.45deg, #D64FA0 19.48%, #FFC979 86.75%) left bottom no-repeat',
           backgroundSize: '100% 1px',
         },
         '.token-stats-border-b': {
