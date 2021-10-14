@@ -241,15 +241,15 @@ export default function Chart({ inputCurrency, outputCurrency }: ChartProps) {
     let formattedCandleData: NumericalCandlestickDatum[] = fillCandlestickGaps(candleData, candlePeriod)
 
     if (formattedCandleData && formattedCandleData.length) {
-      let differentBases = inputCurrency?.decimals != outputCurrency?.decimals
+      let differentBases = altCurrency?.decimals != majorCurrency?.decimals
       if (differentBases) {
-        let decimals = Math.abs(inputCurrency?.decimals - outputCurrency?.decimals)
+        let decimals = altCurrency?.decimals - majorCurrency?.decimals
         formattedCandleData = formattedCandleData.map((r) => {
           return {
-            close: r.close * (10 ** decimals),
-            high: r.high * (10 ** decimals),
-            low: r.low * (10 ** decimals),
-            open: r.open * (10 ** decimals),
+            close: r.close * 10 ** decimals,
+            high: r.high * 10 ** decimals,
+            low: r.low * 10 ** decimals,
+            open: r.open * 10 ** decimals,
             time: r.time,
           }
         })
@@ -264,7 +264,8 @@ export default function Chart({ inputCurrency, outputCurrency }: ChartProps) {
   // const fmtLastClose = lastClose ? formattedNum(lastClose) : 'N/A'
 
   const weth = WNATIVE[ChainId.MOONRIVER]
-  const isWrapped = (inputCurrency?.isNative && weth.equals(outputCurrency)) || (outputCurrency?.isNative && weth.equals(inputCurrency))
+  const isWrapped =
+    (inputCurrency?.isNative && weth.equals(outputCurrency)) || (outputCurrency?.isNative && weth.equals(inputCurrency))
 
   const pairAddress =
     inputCurrency &&
