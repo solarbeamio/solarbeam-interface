@@ -177,6 +177,14 @@
       "decimals": 18,
       "chainId": 1285,
       "logoURI": "https://app.solarbeam.io/images/tokens/mim.png"
+    },
+    {
+      "name": "DOT@moonriver",
+      "address": "0x15B9CA9659F5dfF2b7d35a98dd0790a3CBb3D445",
+      "symbol": "DOT.m",
+      "decimals": 10,
+      "chainId": 1285,
+      "logoURI": "https://app.solarbeam.io/images/tokens/dot-m.png"
     }
   ]
 }
