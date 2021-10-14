@@ -152,7 +152,7 @@ export default async function handler(req, res) {
     const usedBridge = await checkBridgeUsage(address)
     if (usedBridge) {
       const movrBalance = parseFloat(web3.utils.fromWei(await web3.eth.getBalance(address)))
-      if (movrBalance < 0.001) {
+      if (movrBalance < 0.002) {
         const ref = await isBlacklisted(address, ip)
         if (ref) {
           res.status(200).json({
