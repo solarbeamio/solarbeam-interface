@@ -87,6 +87,9 @@ export default function ChainModal({
   const goToRelay = () => {
     window.open('https://app.relaychain.com/transfer', '_blank').focus()
   }
+  const goToWan = () => {
+    window.open('https://bridge.wanchain.org/', '_blank').focus()
+  }
 
   return (
     <Modal isOpen={isOpen} onDismiss={onDismiss} maxWidth={400}>
@@ -133,7 +136,6 @@ export default function ChainModal({
             </button>
           )
         })}
-
         {/* Redirect to relay bridge while implementing UI integration */}
         <button className="w-full col-span-1 p-px rounded bg-dark-800 hover:bg-dark-900" onClick={() => goToRelay()}>
           <div className="flex items-center w-full h-full p-3 space-x-3 rounded">
@@ -148,7 +150,6 @@ export default function ChainModal({
             <ExternalLinkIcon style={{ width: '26px', height: '26px', marginLeft: 'auto' }} />
           </div>
         </button>
-
         <button className="w-full col-span-1 p-px rounded bg-dark-800 hover:bg-dark-900" onClick={() => goToRelay()}>
           <div className="flex items-center w-full h-full p-3 space-x-3 rounded">
             <Image
@@ -162,7 +163,6 @@ export default function ChainModal({
             <ExternalLinkIcon style={{ width: '26px', height: '26px', marginLeft: 'auto' }} />
           </div>
         </button>
-
         <button className="w-full col-span-1 p-px rounded bg-dark-800 hover:bg-dark-900" onClick={() => goToRelay()}>
           <div className="flex items-center w-full h-full p-3 space-x-3 rounded">
             <Image
@@ -173,6 +173,19 @@ export default function ChainModal({
               height="32px"
             />
             <div className="font-bold text-primary">{NETWORK_LABEL[ChainId.FANTOM]}</div>
+            <ExternalLinkIcon style={{ width: '26px', height: '26px', marginLeft: 'auto' }} />
+          </div>
+        </button>
+        <button className="w-full col-span-1 p-px rounded bg-dark-800 hover:bg-dark-900" onClick={() => goToWan()}>
+          <div className="flex items-center w-full h-full p-3 space-x-3 rounded">
+            <Image
+              src={`/images/networks/polkadot.jpg`}
+              alt={`Select Polkadot Network`}
+              className="rounded-md"
+              width="32px"
+              height="32px"
+            />
+            <div className="font-bold text-primary">{`Polkadot`}</div>
             <ExternalLinkIcon style={{ width: '26px', height: '26px', marginLeft: 'auto' }} />
           </div>
         </button>
