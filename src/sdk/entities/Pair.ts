@@ -4,8 +4,8 @@ import {
   MINIMUM_LIQUIDITY,
   ONE,
   ZERO,
-  _1000,
-  _997,
+  _9975,
+  _10000
 } from '../constants'
 import {
   InsufficientInputAmountError,
@@ -140,10 +140,10 @@ export class Pair {
     const outputReserve = this.reserveOf(
       inputAmount.currency.equals(this.token0) ? this.token1 : this.token0
     )
-    const inputAmountWithFee = JSBI.multiply(inputAmount.quotient, _997)
+    const inputAmountWithFee = JSBI.multiply(inputAmount.quotient, _9975)
     const numerator = JSBI.multiply(inputAmountWithFee, outputReserve.quotient)
     const denominator = JSBI.add(
-      JSBI.multiply(inputReserve.quotient, _1000),
+      JSBI.multiply(inputReserve.quotient, _10000),
       inputAmountWithFee
     )
     const outputAmount = CurrencyAmount.fromRawAmount(
@@ -183,11 +183,11 @@ export class Pair {
     )
     const numerator = JSBI.multiply(
       JSBI.multiply(inputReserve.quotient, outputAmount.quotient),
-      _1000
+      _10000
     )
     const denominator = JSBI.multiply(
       JSBI.subtract(outputReserve.quotient, outputAmount.quotient),
-      _997
+      _9975
     )
     const inputAmount = CurrencyAmount.fromRawAmount(
       outputAmount.currency.equals(this.token0) ? this.token1 : this.token0,
