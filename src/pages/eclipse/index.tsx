@@ -20,7 +20,24 @@ import Search from '../../components/Search'
 import Button from '../../components/Button'
 
 export default function NFTLaunchpad(): JSX.Element {
-  const projects: any[] = []
+  const router = useRouter()
+  const projects: any[] = [
+    {
+      status: 'upcoming',
+      name: 'PolkaPet World',
+      symbol: '$PETS',
+      raise: '$ 100,000',
+      logo: 'ppw',
+      starts: 'October 28th 2021',
+      readmore: '',
+    },
+  ]
+
+  const goToLink = (link) => {
+    window.open(link, '_blank').focus()
+  }
+
+  const filter = router.query['filter'] || ''
 
   return (
     <>
@@ -63,18 +80,16 @@ export default function NFTLaunchpad(): JSX.Element {
                 </Typography>
                 <Typography variant="base" className={'max-w-xl text-gray-400'}>
                   Be the first to join Eclipse, a launchpad built for cross-chain token pools and auctions, enabling
-                  projects to raise capital on a decentralized and interoperable environment based on Moonriver.
+                  projects to raise capital on a decentralized and interoperable environment based on Moonriver
                 </Typography>
-                {/* <a
-                  href="https://forms.gle/oik9pbenvwFjMndg9"
+                <a
+                  href="https://solarbeam.medium.com/solarbeam-eclipse-everything-you-need-to-know-4812b00065c9"
                   target="_blank"
                   rel="noreferrer"
-                  className={
-                    'underline mt-1'
-                  }
+                  className={'underline mt-1'}
                 >
-                  How it work?
-                </a> */}
+                  Read more
+                </a>
               </div>
 
               <Card className="bg-dark-900 z-4 rounded">
@@ -91,7 +106,7 @@ export default function NFTLaunchpad(): JSX.Element {
                     </NavLink>
                     <NavLink
                       exact
-                      href={'/eclipse?upcoming'}
+                      href={'/eclipse?filter=upcoming'}
                       activeClassName="font-bold bg-transparent border rounded text-high-emphesis border-transparent border-gradient-r-purple-dark-900"
                     >
                       <a className="flex items-center justify-between px-6 py-2 text-base font-bold border border-transparent rounded cursor-pointer">
@@ -100,7 +115,7 @@ export default function NFTLaunchpad(): JSX.Element {
                     </NavLink>
                     <NavLink
                       exact
-                      href={'/eclipse?closed'}
+                      href={'/eclipse?filter=closed'}
                       activeClassName="font-bold bg-transparent border rounded text-high-emphesis border-transparent border-gradient-r-purple-dark-900"
                     >
                       <a className="flex items-center justify-between px-6 py-2 text-base font-bold border border-transparent rounded cursor-pointer">
@@ -109,7 +124,7 @@ export default function NFTLaunchpad(): JSX.Element {
                     </NavLink>
                     <NavLink
                       exact
-                      href={'/eclipse?my'}
+                      href={'/eclipse?filter=my'}
                       activeClassName="font-bold bg-transparent border rounded text-high-emphesis border-transparent border-gradient-r-purple-dark-900"
                     >
                       <a className="flex items-center justify-between px-6 py-2 text-base font-bold border border-transparent rounded cursor-pointer">
@@ -127,62 +142,84 @@ export default function NFTLaunchpad(): JSX.Element {
                   </div>
                 </div>
                 <div className="mt-12 min-h-[400px]">
-                  {projects.length == 0 && (
-                    <div className="space-y-4 mt-10 p-6 mb-20 flex flex-col justify-center">
-                      <Typography variant="base" className={'max-w-xl m-auto text-center mb-2 text-gray-400'}>
-                        Applications for Eclipse are now open!
-                        <br />
-                        <a
-                          href="https://forms.gle/oik9pbenvwFjMndg9"
-                          target="_blank"
-                          rel="noreferrer"
-                          className={
-                            'underline font-extrabold bg-clip-text text-transparent bg-gradient-to-l from-purple to-dark-purple mt-2'
-                          }
-                        >
-                          Click here to apply.
-                        </a>
-                      </Typography>
-                    </div>
+                  {projects.filter((r) => r.status == filter).length == 0 && (
+                    <>
+                      {filter && (
+                        <Typography variant="base" className={'max-w-xl m-auto text-center mb-2 text-gray-400'}>
+                          No data
+                        </Typography>
+                      )}
+                      {!filter && (
+                        <div className="space-y-4 mt-10 p-6 mb-20 flex flex-col justify-center">
+                          <Typography variant="base" className={'max-w-xl m-auto text-center mb-2 text-gray-400'}>
+                            Want to see your project here?
+                            <br />
+                            <a
+                              href="https://forms.gle/oik9pbenvwFjMndg9"
+                              target="_blank"
+                              rel="noreferrer"
+                              className={
+                                'underline font-extrabold bg-clip-text text-transparent bg-gradient-to-l from-purple to-dark-purple mt-2'
+                              }
+                            >
+                              Click here to apply for Eclipse.
+                            </a>
+                          </Typography>
+                        </div>
+                      )}
+                    </>
                   )}
                   <div className="grid grid-cols-4">
-                    {projects.map((p, i) => (
-                      <Disclosure key={i}>
-                        {({ open }) => (
-                          <div className="mb-4">
-                            <Disclosure.Button
-                              className={classNames(
-                                open && '',
-                                'w-full px-4 py-6 text-left rounded cursor-pointer select-none bg-dark-800  text-primary text-sm md:text-lg'
-                              )}
-                            >
-                              <div className="grid grid-cols-1">
-                                <div className="flex">
-                                  <div className={`flex flex-row justify-center items-center space-x-3`}>
-                                    <Image
-                                      src={`/images/tokens/${p.logo}.png`}
-                                      width="60px"
-                                      height="60px"
-                                      className="rounded-full bg-white"
-                                      layout="fixed"
-                                      alt={p.name}
-                                    />
-                                    <Typography variant="lg" className={'text-center'}>
+                    {projects
+                      .filter((r) => r.status == filter)
+                      .map((p, i) => (
+                        <Disclosure key={i}>
+                          {({ open }) => (
+                            <div className="mb-4">
+                              <Disclosure.Button
+                                onClick={() => goToLink(p.readmore)}
+                                className={classNames(
+                                  open && '',
+                                  'w-full px-4 py-6 text-left rounded cursor-pointer select-none bg-dark-800  text-primary text-sm md:text-lg'
+                                )}
+                              >
+                                <div className="grid grid-cols-1 space-y-4">
+                                  <div className="flex">
+                                    <div className={`flex flex-row justify-center items-center space-x-3`}>
+                                      <Image
+                                        src={`/images/tokens/${p.logo}.png`}
+                                        width="60px"
+                                        height="60px"
+                                        className="rounded-full"
+                                        layout="fixed"
+                                        alt={p.name}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="flex flex-col">
+                                    <Typography variant="h3" className="font-bold">
                                       {p.name}
+                                    </Typography>
+                                    <Typography variant="base"> {p.symbol}</Typography>
+                                  </div>
+                                  <div className="flex flex-col">
+                                    <Typography variant="base">Total raise</Typography>
+                                    <Typography variant="lg" className="font-bold">
+                                      {p.raise}
+                                    </Typography>
+                                  </div>
+                                  <div className="flex flex-col">
+                                    <Typography variant="base">Starts on</Typography>
+                                    <Typography variant="lg" className="font-bold">
+                                      {p.starts}
                                     </Typography>
                                   </div>
                                 </div>
-                                <div className="flex flex-col justify-center">{p.method}</div>
-                                <div className="flex flex-col justify-center">{p.price}</div>
-                                <div className="flex flex-col justify-center">{p.raise}</div>
-                                <div className="flex flex-col justify-center">{p.duration}</div>
-                                <div className="flex flex-col justify-center">{p.filled}</div>
-                              </div>
-                            </Disclosure.Button>
-                          </div>
-                        )}
-                      </Disclosure>
-                    ))}
+                              </Disclosure.Button>
+                            </div>
+                          )}
+                        </Disclosure>
+                      ))}
                   </div>
                 </div>
               </Card>
