@@ -27,9 +27,10 @@ export default function NFTLaunchpad(): JSX.Element {
       name: 'PolkaPet World',
       symbol: '$PETS',
       raise: '$ 100,000',
-      logo: 'ppw',
+      logo: '/eclipse/polkapet/logo.png',
+      teaser: '/eclipse/polkapet/teaser.mp4',
       starts: 'October 28th 2021',
-      readmore: '',
+      readmore: 'https://solarbeam.medium.com/eclipse-ido-partnership-pets-polkapets-world-8e746af1e7b2',
     },
   ]
 
@@ -169,7 +170,7 @@ export default function NFTLaunchpad(): JSX.Element {
                       )}
                     </>
                   )}
-                  <div className="grid grid-cols-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                     {projects
                       .filter((r) => r.status == filter)
                       .map((p, i) => (
@@ -177,42 +178,56 @@ export default function NFTLaunchpad(): JSX.Element {
                           {({ open }) => (
                             <div className="mb-4">
                               <Disclosure.Button
-                                onClick={() => goToLink(p.readmore)}
                                 className={classNames(
                                   open && '',
-                                  'w-full px-4 py-6 text-left rounded cursor-pointer select-none bg-dark-800  text-primary text-sm md:text-lg'
+                                  'w-full text-left rounded cursor-pointer select-none bg-dark-800  text-primary text-sm md:text-lg'
                                 )}
                               >
-                                <div className="grid grid-cols-1 space-y-4">
-                                  <div className="flex">
-                                    <div className={`flex flex-row justify-center items-center space-x-3`}>
-                                      <Image
-                                        src={`/images/tokens/${p.logo}.png`}
-                                        width="60px"
-                                        height="60px"
-                                        className="rounded-full"
-                                        layout="fixed"
-                                        alt={p.name}
-                                      />
+                                <div>
+                                  <video src={p.teaser} autoPlay loop muted controls={false} />
+                                </div>
+                                <div className="px-4 py-6 -mt-24">
+                                  <div className="grid grid-cols-1 space-y-4">
+                                    <div className="flex">
+                                      <div className={`flex flex-row justify-center items-center`}>
+                                        <Image
+                                          src={p.logo}
+                                          width="60px"
+                                          height="60px"
+                                          className="rounded-full bg-white"
+                                          layout="fixed"
+                                          alt={p.name}
+                                        />
+                                      </div>
                                     </div>
-                                  </div>
-                                  <div className="flex flex-col">
-                                    <Typography variant="h3" className="font-bold">
-                                      {p.name}
-                                    </Typography>
-                                    <Typography variant="base"> {p.symbol}</Typography>
-                                  </div>
-                                  <div className="flex flex-col">
-                                    <Typography variant="base">Total raise</Typography>
-                                    <Typography variant="lg" className="font-bold">
-                                      {p.raise}
-                                    </Typography>
-                                  </div>
-                                  <div className="flex flex-col">
-                                    <Typography variant="base">Starts on</Typography>
-                                    <Typography variant="lg" className="font-bold">
-                                      {p.starts}
-                                    </Typography>
+                                    <div className="flex flex-col">
+                                      <Typography variant="h3" className="font-bold  mt-2">
+                                        {p.name}
+                                      </Typography>
+                                      <Typography variant="base"> {p.symbol}</Typography>
+                                    </div>
+                                    <div className="flex flex-col">
+                                      <Typography variant="base">Total raise</Typography>
+                                      <Typography variant="lg" className="font-bold">
+                                        {p.raise}
+                                      </Typography>
+                                    </div>
+                                    <div className="flex flex-col">
+                                      <Typography variant="base">Starts on</Typography>
+                                      <Typography variant="lg" className="font-bold">
+                                        {p.starts}
+                                      </Typography>
+                                    </div>
+                                    <a
+                                      href={p.readmore}
+                                      target="_blank"
+                                      rel="noreferrer"
+                                      className={
+                                        'underline font-extrabold bg-clip-text text-transparent bg-gradient-to-l from-purple to-dark-purple mt-2'
+                                      }
+                                    >
+                                      Read more
+                                    </a>
                                   </div>
                                 </div>
                               </Disclosure.Button>
