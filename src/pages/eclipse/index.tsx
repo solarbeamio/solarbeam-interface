@@ -31,6 +31,7 @@ export default function NFTLaunchpad(): JSX.Element {
       teaser: '/eclipse/polkapet/teaser.mp4',
       starts: 'October 28th 2021',
       readmore: 'https://solarbeam.medium.com/eclipse-ido-partnership-pets-polkapets-world-8e746af1e7b2',
+      website: 'https://www.polkapet.world/',
     },
   ]
 
@@ -218,16 +219,28 @@ export default function NFTLaunchpad(): JSX.Element {
                                         {p.starts}
                                       </Typography>
                                     </div>
-                                    <a
-                                      href={p.readmore}
-                                      target="_blank"
-                                      rel="noreferrer"
-                                      className={
-                                        'underline font-extrabold bg-clip-text text-transparent bg-gradient-to-l from-purple to-dark-purple mt-2'
-                                      }
-                                    >
-                                      Read more
-                                    </a>
+                                    <div className="flex sm:flex-row justify-between space-x-3">
+                                      <a
+                                        href={p.website}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className={
+                                          'hover:underline hover:font-extrabold bg-clip-text text-transparent bg-gradient-to-l from-purple to-dark-purple mt-2'
+                                        }
+                                      >
+                                        Project Website
+                                      </a>
+                                      <a
+                                        href={p.readmore}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className={
+                                          'hover:underline hover:font-extrabold bg-clip-text text-transparent bg-gradient-to-l from-purple to-dark-purple mt-2'
+                                        }
+                                      >
+                                        Official announcement
+                                      </a>
+                                    </div>
                                   </div>
                                 </div>
                               </Disclosure.Button>
