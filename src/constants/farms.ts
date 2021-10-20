@@ -21,7 +21,32 @@ type AddressMap = {
   }
 }
 
+export const POOLS_V2: AddressMap = {
+  [ChainId.MOONBEAM_TESTNET]: {
+    '0xB256C57AA0778a184D26D3B7c033dB950c7bF007': {
+      id: 0,
+      token0: {
+        id: '0xB256C57AA0778a184D26D3B7c033dB950c7bF007',
+        name: 'Solarbeam',
+        symbol: 'SOLAR',
+        decimals: 18,
+      },
+    },
+  },
+}
+
 export const POOLS: AddressMap = {
+  [ChainId.MOONBEAM_TESTNET]: {
+    '0xB256C57AA0778a184D26D3B7c033dB950c7bF007': {
+      id: 0,
+      token0: {
+        id: '0xB256C57AA0778a184D26D3B7c033dB950c7bF007',
+        name: 'Solarbeam',
+        symbol: 'SOLAR',
+        decimals: 18,
+      },
+    },
+  },
   [ChainId.MOONRIVER]: {
     '0x7eDA899b3522683636746a2f3a7814e6fFca75e1': {
       id: 0,
