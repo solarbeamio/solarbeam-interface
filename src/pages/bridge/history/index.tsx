@@ -96,10 +96,14 @@ const Transaction: FC<{ chainId: string; hash: string }> = ({ chainId, hash }) =
 
   const addedTime = moment.unix(tzTime).fromNow()
 
-  const getUrl = () => {
+  const getUrl = () => {    
     if (srcChaindId == ChainId.MOONRIVER) {
       return `https://bridgeapi.anyswap.exchange/v2/getWithdrawHashStatus/${from}/${hash}/${srcChaindId}/${pairId}/${destChainId}`
-    } else {
+    }
+    else if ([ChainId.AVALANCHE, ChainId.MATIC, ChainId.HECO, ChainId.BSC].includes(Number(srcChaindId))) {    
+      return 'https://relay-api-33e56.ondigitalocean.app/api/solar-tx'
+    }
+    else {
       return `https://bridgeapi.anyswap.exchange/v2/getHashStatus/${from}/${hash}/${destChainId}/${pairId}/${srcChaindId}`
     }
   }
@@ -107,8 +111,10 @@ const Transaction: FC<{ chainId: string; hash: string }> = ({ chainId, hash }) =
     fetch(url)
       .then((result) => result.json())
       .then((data) => {
+        console.log("🚀 ~ file: index.tsx ~ line 115 ~ .then ~ data", data)
         if (data && data.msg == 'Success') {
           let resultStatus = data?.info?.status || 8
+          console.log("🚀 ~ file: index.tsx ~ line 117 ~ .then ~ resultStatus", resultStatus)
           setStatus(resultStatus)
         }
       })
@@ -192,7 +198,7 @@ function renderTransactions(
     const chainTxs = transactions[chainId]
     Object.keys(chainTxs).forEach((hash, idx) => {
       const tx = chainTxs[hash]
-      if (tx.from.toString() == address?.toString()) {
+      if (tx?.from?.toString() == address?.toString()) {
         txs.push({ ...tx, chainId, hash })
       }
     })

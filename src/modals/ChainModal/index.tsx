@@ -60,6 +60,50 @@ export const SUPPORTED_NETWORKS: {
     rpcUrls: ['https://rpc.moonriver.moonbeam.network', 'https://moonriver.api.onfinality.io/public'],
     blockExplorerUrls: ['https://blockscout.moonriver.moonbeam.network/'],
   },
+  [ChainId.MATIC]: {
+    chainId: '0x89',
+    chainName: 'Matic',
+    nativeCurrency: {
+      name: 'Matic',
+      symbol: 'MATIC',
+      decimals: 18,
+    },
+    rpcUrls: ['https://rpc-mainnet.maticvigil.com/'],
+    blockExplorerUrls: ['https://polygonscan.com/'],
+  },
+  [ChainId.AVALANCHE]: {
+    chainId: '0xa86a',
+    chainName: 'Avalanche',
+    nativeCurrency: {
+      name: 'Avalanche',
+      symbol: 'AVAX',
+      decimals: 18,
+    },
+    rpcUrls: ['https://api.avax.network/ext/bc/C/rpc'],
+    blockExplorerUrls: ['https://avascan.info/'],
+  },
+  [ChainId.HECO]: {
+    chainId: '0x80',
+    chainName: 'Heco',
+    nativeCurrency: {
+      name: 'Heco',
+      symbol: 'HT',
+      decimals: 18,
+    },
+    rpcUrls: ['https://http-mainnet-node.huobichain.com'],
+    blockExplorerUrls: ['https://hecoinfo.com/'],
+  },
+  [ChainId.FANTOM]: {
+    chainId: '0xFA',
+    chainName: 'Fantom',
+    nativeCurrency: {
+      name: 'Fantom',
+      symbol: 'Fantom',
+      decimals: 18,
+    },
+    rpcUrls: ['https://rpcapi.fantom.network'],
+    blockExplorerUrls: ['https://ftmscan.com/'],
+  },
 }
 
 interface ChainModalProps {
@@ -87,7 +131,7 @@ export default function ChainModal({
     <Modal isOpen={isOpen} onDismiss={onDismiss} maxWidth={400}>
       <ModalHeader onClose={onDismiss} title={title} />
       <div className="grid grid-flow-row-dense grid-cols-1 gap-3 overflow-y-auto mt-4">
-        {availableChains.map((key: ChainId, i: number) => {
+        {availableChains?.map((key: ChainId, i: number) => {
           if (chain.id === key) {
             return (
               <button key={i} className="w-full col-span-1 p-px rounded bg-gradient-to-r from-yellow to-yellow">
