@@ -58,7 +58,4 @@ export const getSushiSwapLiquidityTransactions = (chainId = ChainId.MAINNET, add
   fetch(`https://api.covalenthq.com/v1/${chainId}/address/${address}/stacks/sushiswap/acts/`).then((res) => res.json())
 
 export const getRalayBridgeData = (notloaded: boolean) =>
-  (notloaded) ? null : fetch(`https://relay-api-33e56.ondigitalocean.app/api/crosschain-config?chainIds=2,5`).then((res) => res.json())
-
-export const getRalayBridgeFee = (notloaded: boolean) =>
-  (notloaded) ? null : fetch(`https://relay-api-33e56.ondigitalocean.app/api/crosschain-fee`).then((res) => res.json())
+  (notloaded) ? null : fetch(`https://relay-api-33e56.ondigitalocean.app/api/crosschain-config?chainIds=2,3,4,5`).then((res) => res.json())

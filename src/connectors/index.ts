@@ -95,7 +95,7 @@ export const bridgeInjected = new InjectedConnector({
     1285, // moonriver
     43114, // avalanche
     // 43113, // fuji
-    // 128, // heco
+    128, // heco
     // 256, // heco testnet
     // 1666600000, // harmony
     // 1666700000, // harmony testnet

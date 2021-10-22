@@ -51,7 +51,7 @@ import { useTransactionAdder } from '../../state/bridgeTransactions/hooks'
 import { useRouter } from 'next/router'
 import Modal from '../../components/Modal'
 import ModalHeader from '../../components/ModalHeader'
-import { getRalayBridgeData, getRalayBridgeFee } from '../../services/covalent'
+import { getRalayBridgeData } from '../../services/covalent'
 
 type AnyswapTokenInfo = {
   ID: string
@@ -73,8 +73,6 @@ type AnyswapTokenInfo = {
   PlusGasPricePercentage: number
   SwapFeeRate: number
   ResourceId?: string
-  BridgeFee?: string
-  DestChainIdInRelay?: number
 }
 
 type AnyswapResultPairInfo = {
@@ -97,6 +95,18 @@ type AvailableChainsInfo = {
   symbol: string
   destChainID: string
   bridgeTokenAddress?: string
+  bridgeAddress?: string
+  destChainsInRelay?: number[]
+}
+
+const RelayNetworkId = {
+  "1": 1,
+  "43114": 2,
+  "56": 3,
+  "128": 4,
+  "137": 5,
+  "1285": 6,
+
 }
 
 export type AnyswapTokensMap = { [chainId: number]: { [contract: string]: AvailableChainsInfo } }
@@ -104,18 +114,16 @@ export type AnyswapTokensMap = { [chainId: number]: { [contract: string]: Availa
 export default function Bridge() {
   const { i18n } = useLingui()
   const initData: any[] = []
-  const initFeeData: any[] = []
   const [relayData, setRelayData] = useState(initData)
-  const [relayFees, setRelayFees] = useState(initFeeData)
   const [hasRelayData, setHasRelayData] = useState(false)
-  const [hasRelayFees, setHasRelayFees] = useState(false)
+  const [relayFee, setRelayFee] = useState(BigNumber.from(0))
   const { account: activeAccount, chainId: activeChainId } = useActiveWeb3React()
 
   const { account, chainId, library, activate } = useWeb3React(BridgeContextName)
   const { push } = useRouter()
-  let allChains: number[] = []
+  const initChains: number[] = []
+  const [allChains, setAllChains] = useState(initChains)
   const rbd = getRalayBridgeData(hasRelayData)
-  const relayFeesData = getRalayBridgeFee(hasRelayFees)
 
   const addTransaction = useTransactionAdder()
 
@@ -127,6 +135,7 @@ export default function Bridge() {
     if (chainId) {
       if (chainId == chainTo.id) {
         setChainTo(chainFrom)
+
       }
       setChainFrom({ id: chainId, icon: NETWORK_ICON[chainId], name: NETWORK_LABEL[chainId] })
     }
@@ -138,14 +147,9 @@ export default function Bridge() {
     chainId == ChainId.MOONRIVER ? DEFAULT_CHAIN_FROM : DEFAULT_CHAIN_TO
   )
   const [relayBridges, setRelayBridges] = useState(false)
-  useEffect(() => {
-    const relayChains = [43114, 137]
-    if (relayChains.includes(chainTo?.id) || relayChains.includes(chainFrom?.id)) {
-      setRelayBridges(true)
-    } else {
-      setRelayBridges(false)
-    }
-  }, [chainTo, chainFrom])
+  const [listRelayBridges, setListRelayBridges] = useState({})
+
+
 
   const [tokenList, setTokenList] = useState<Currency[] | null>([])
   const [currency0, setCurrency0] = useState<Currency | null>(null)
@@ -153,12 +157,17 @@ export default function Bridge() {
   const [listSwapTokens, setListSwapTokens] = useState({} as AnyswapTokensMap)
   const [tokenToBridge, setTokenToBridge] = useState<AvailableChainsInfo | null>(null)
   const currencyContract = useTokenContract(currency0?.isToken && currency0?.address, true)
+
   const anyswapCurrencyContract = useAnyswapTokenContract(
     currency0 && currency0.chainId == ChainId.MOONRIVER && tokenToBridge.other.ContractAddress,
     true
   )
   const [pendingTx, setPendingTx] = useState(false)
   const [showConfirmation, setShowConfirmation] = useState(false)
+  const relayBridgeContract = useRelayBridgeContract(
+    listRelayBridges[chainFrom?.id.toString()],
+    true
+  )
 
   const selectedCurrencyBalance = useMultichainCurrencyBalance(
     chainFrom?.id,
@@ -244,47 +253,54 @@ export default function Bridge() {
         })
   )
 
-  const addRelayData = (res: AnyswapTokensMap, relayBridgeData: any[]) => {
-    if (relayBridgeData.length && res) {
-      relayBridgeData.map(data => {
-        data.tokens.map(token => {
-          const preparedTokenData = {} as AvailableChainsInfo
-          const relayBridgeFee = relayFees.length && (relayFees.find(feeData => feeData.chainId === data.networkId))
-          preparedTokenData.destChainID = token?.allowedChainsToTransfer[0]
-          const destinationChainId = relayFees.find(feeData => feeData.chainId === preparedTokenData.destChainID)
-          preparedTokenData.symbol = token.symbol
-          preparedTokenData.name = token.symbol
-          preparedTokenData.id = `${token.symbol}v5`
-          preparedTokenData.other = {} as AnyswapTokenInfo
-          preparedTokenData.other.ContractAddress = data?.bridgeAddress
-          preparedTokenData.other.Decimals = token.decimals
-          preparedTokenData.other.MinimumSwap = 0
-          preparedTokenData.other.MaximumSwap = 10 ** 6
-          preparedTokenData.other.DestChainIdInRelay = destinationChainId?.chainBridgeId
-          preparedTokenData.other.BridgeFee = relayBridgeFee?.crosschainFee
-          preparedTokenData.other.ResourceId = token.resourceId
-          preparedTokenData.token = {} as AnyswapTokenInfo
-          preparedTokenData.token.ContractAddress = token.address
-          preparedTokenData.token.Decimals = token.decimals
-          preparedTokenData.token.Symbol = token.symbol
-          preparedTokenData.bridgeTokenAddress = data.erc20HandlerAddress
-          if (res[data.networkId]) {
-            res[data.networkId][token.address.toLowerCase()] = preparedTokenData
-          } else {
-            res[data.networkId] = {} as { string, AvailableChainsInfo }
-            res[data.networkId][token.address.toLowerCase()] = preparedTokenData
-          }
-        })
-      })
-      return res
-    }
+  useEffect(() => {
+    const relayChains = [43114, 137, 128]
+    if (relayChains.includes(chainTo?.id) || relayChains.includes(chainFrom?.id)) {
+      setRelayBridges(true)
 
+    } else {
+      setRelayBridges(false)
+    }
+  }, [chainFrom])
+
+
+  const addRelayData = (res: AnyswapTokensMap, relayBridgeData: any[]) => {
+    relayBridgeData?.map(data => {
+      const bridges = listRelayBridges
+      bridges[data?.networkId.toString()] = data?.bridgeAddress
+      setListRelayBridges(bridges)
+      data?.tokens?.map(async token => {
+        const preparedTokenData = {} as AvailableChainsInfo
+        preparedTokenData.destChainID = chainTo.id.toString()
+        preparedTokenData.destChainsInRelay = token?.allowedChainsToTransfer
+        preparedTokenData.bridgeAddress = data?.bridgeAddress
+        preparedTokenData.symbol = token.symbol
+        preparedTokenData.name = token.symbol
+        preparedTokenData.id = `${token.symbol}v5`
+        preparedTokenData.other = {} as AnyswapTokenInfo
+        preparedTokenData.other.ContractAddress = token.address
+        preparedTokenData.other.Decimals = token.decimals
+        preparedTokenData.other.MinimumSwap = 0
+        preparedTokenData.other.MaximumSwap = 10 ** 6
+        preparedTokenData.other.ResourceId = token.resourceId
+        preparedTokenData.token = {} as AnyswapTokenInfo
+        preparedTokenData.token.ContractAddress = token.address
+        preparedTokenData.token.Decimals = token.decimals
+        preparedTokenData.token.Symbol = token.symbol
+        preparedTokenData.bridgeTokenAddress = data.erc20HandlerAddress
+        if (res[data?.networkId]) {
+          res[data.networkId][token.address.toLowerCase()] = preparedTokenData
+        } else {
+          res[data.networkId] = {} as { string, AvailableChainsInfo }
+          res[data.networkId][token.address.toLowerCase()] = preparedTokenData
+        }
+      })
+
+    })
+    return res
   }
 
-  const relayBridgeContract = useRelayBridgeContract(
-    tokenToBridge && tokenToBridge.other.ContractAddress,
-    true
-  )
+
   useEffect(() => {
     if (rbd) {
       rbd
@@ -295,22 +311,13 @@ export default function Bridge() {
           }
         })
     }
-    if (relayFeesData) {
-      relayFeesData
-        .then(resFees => {
-          if (resFees.length) {
-            setRelayFees(resFees)
-            setHasRelayFees(true)
-          }
-        })
-    }
-  }, [rbd, relayFeesData])
+  }, [rbd])
 
   useEffect(() => {
-    setListSwapTokens(addRelayData(anyswapInfo, relayData))
-    if (listSwapTokens) {
+    if (anyswapInfo) {
+      relayBridges && setListSwapTokens(addRelayData(anyswapInfo, relayData))
       let tokens: Currency[] = Object.keys((listSwapTokens && listSwapTokens[chainFrom.id]) || {})
-        .filter((r) => listSwapTokens[chainFrom.id][r].destChainID == chainTo.id.toString())
+        .filter((r) => listSwapTokens[chainFrom.id][r].destChainsInRelay?.some(chain => chain === RelayNetworkId[chainTo.id.toString()]))
         .map((r) => {
           const info: AvailableChainsInfo = listSwapTokens[chainFrom.id][r]
           if (r.toLowerCase() == WNATIVE[chainFrom.id].address.toLowerCase()) {
@@ -337,10 +344,19 @@ export default function Bridge() {
       setCurrencyAmount('')
     }
 
-  }, [chainFrom, anyswapInfo, chainTo.id])
+  }, [chainFrom, anyswapInfo, chainTo, relayBridges])
+
+  useEffect(() => {
+    const chains = anyswapInfo && Object.keys(anyswapInfo)
+    if (chains && allChains.length !== chains?.length) {
+      const newChains = chains?.map((r) => parseInt(r))
+      setAllChains(allChains => [...newChains])
+    }
+  }, [anyswapInfo, listSwapTokens])
 
   const handleChainFrom = useCallback(
     (chain: Chain) => {
+
       let changeTo = chainTo
       if (chainTo.id == chain.id) {
         changeTo = chainFrom
@@ -351,6 +367,7 @@ export default function Bridge() {
         setChainTo(changeTo)
       }
       setChainFrom(chain)
+
     },
     [chainFrom, chainTo]
   )
@@ -367,6 +384,7 @@ export default function Bridge() {
         setChainFrom(changeFrom)
       }
       setChainTo(chain)
+
     },
     [chainFrom, chainTo]
   )
@@ -378,6 +396,18 @@ export default function Bridge() {
     [setCurrencyAmount]
   )
 
+  useEffect(() => {
+    if (relayBridgeContract) {
+      const relayChainId = RelayNetworkId[chainTo.id.toString()] || 5
+      relayBridgeContract?._fees(relayChainId)
+        .then(fee => {
+          setRelayFee(fee)
+        })
+        .catch(err => console.log('err :>> ', err))
+    }
+
+  }, [relayBridgeContract, chainTo.id])
+
   const handleCurrencySelect = useCallback(
     (currency: Currency) => {
       setCurrency0(currency)
@@ -385,7 +415,9 @@ export default function Bridge() {
       if (currency) {
         const tokenTo =
           listSwapTokens[chainFrom.id][
-          currency.isToken ? currency?.address?.toLowerCase() : currency?.wrapped?.address?.toLowerCase()
+          currency.isToken ?
+            currency?.address?.toLowerCase() :
+            currency?.wrapped?.address?.toLowerCase()
           ]
         setTokenToBridge(tokenTo)
       }
@@ -433,6 +465,7 @@ export default function Bridge() {
       } else if (fee > tokenToBridge?.other?.MaximumSwapFee) {
         fee = tokenToBridge?.other?.MinimumSwapFee
       }
+
 
       return (parseFloat(currencyAmount) - fee).toFixed(6)
     } else {
@@ -552,8 +585,9 @@ export default function Bridge() {
       setPendingTx(false)
     }
   }
-  allChains = (Object.keys(anyswapInfo || {}).map((r) => parseInt(r)))
+
   const getTokenAllowance = async (tokenAddress, account, amount) => {
+
     const allowanceAmount = await currencyContract.allowance(account, tokenAddress)
     const bignAllowance = BigNumber.from(allowanceAmount)
     const isAllowance = bignAllowance.gte(amount)
@@ -566,9 +600,10 @@ export default function Bridge() {
 
     const data = '0x' + hexAmount + hexAccount
     const auxData = '0x00'
-    const hexFee = BigNumber.from(utils.parseUnits(tokenToBridge.other?.BridgeFee?.toString(), tokenToBridge.other?.Decimals)).toHexString()
+
+    const hexFee = (relayFee).toHexString()
     const resultDepositTx = await relayBridgeContract
-      .deposit(tokenToBridge?.other?.DestChainIdInRelay, tokenToBridge?.other?.ResourceId, data, auxData, {
+      .deposit(RelayNetworkId[chainTo.id.toString()], tokenToBridge?.other?.ResourceId, data, auxData, {
         value: hexFee
       })
       .catch((err: any) => {
@@ -776,7 +811,8 @@ export default function Bridge() {
                 </div>}
                 <div className="flex flex-col justify-between space-y-3 sm:space-y-0 sm:flex-row">
                   <div className="text-sm font-medium text-secondary">
-                    Fee: {tokenToBridge?.other?.SwapFeeRate ? formatNumber(tokenToBridge?.other?.SwapFeeRate * 100) + '%' : tokenToBridge?.other?.BridgeFee + ' ' + currentChainFrom?.currencyName}
+                    Fee: {tokenToBridge?.other?.SwapFeeRate ? formatNumber(tokenToBridge?.other?.SwapFeeRate * 100) + '%' :
+                      utils.formatEther(relayFee) + ' ' + currentChainFrom?.currencyName}
                   </div>
                 </div>
                 <div className="flex flex-col justify-between space-y-3 sm:space-y-0 sm:flex-row">
