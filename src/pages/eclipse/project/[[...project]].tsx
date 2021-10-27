@@ -116,13 +116,13 @@ const Pool = ({ project, poolInfo, eclipseInfo }) => {
     project.status == PROJECT_STATUS.COMPLETED
       ? 'Sale ended'
       : project.status == PROJECT_STATUS.UPCOMING
-      ? 'Sale starting soon'
+      ? 'Sale is not active'
       : !eligible && stakingPool.amount == 0
       ? `You're not eligible`
       : null
 
   const unstakeErrorMessage = stakingInOtherPools
-    ? `You're already participating in another pool`
+    ? `You're participating in another pool`
     : isNaN(parseFloat(valueUnstake)) || parseFloat(valueUnstake) == 0
     ? 'Enter Amount'
     : parseFloat(valueUnstake) > userCommittedAmount
@@ -521,7 +521,7 @@ const Claim = ({ project, pools, eclipseInfo }) => {
               </div>
             </div>
           </div>
-          <div className="flex flex-col mt-10">
+          <div className="flex flex-col mt-4">
             <Typography variant="h3" className="text-emphesis mt-2 mb-2">
               Claim
             </Typography>

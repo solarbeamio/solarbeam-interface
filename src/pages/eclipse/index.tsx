@@ -232,6 +232,11 @@ export default function Eclipse(): JSX.Element {
                               </Typography>
                               <Typography variant="xs" className="">
                                 {p.status == PROJECT_STATUS.UPCOMING
+                                  ? `≈ ${p.startsOn}`
+                                  : p.status == PROJECT_STATUS.COMPLETED
+                                  ? `≈ ${p.endsOn}`
+                                  : `≈ ${p.endsOn}`}
+                                {/* {p.status == PROJECT_STATUS.UPCOMING
                                   ? `≈ ${moment
                                       .unix(
                                         Date.now() / 1000 + (p.startBlock - blockNumber) * AVERAGE_BLOCK_TIME_IN_SECS
@@ -243,7 +248,7 @@ export default function Eclipse(): JSX.Element {
                                       .format('MMMM Do YYYY, HH:mm:ss Z')}`
                                   : `≈ ${moment
                                       .unix(Date.now() / 1000 + (p.endBlock - blockNumber) * AVERAGE_BLOCK_TIME_IN_SECS)
-                                      .format('MMMM Do YYYY, HH:mm:ss Z')}`}
+                                      .format('MMMM Do YYYY, HH:mm:ss Z')}`} */}
                                 {/* {p.status?}${moment.unix(pblockNumber / 1000).fromNow()} */}
                               </Typography>
                             </div>

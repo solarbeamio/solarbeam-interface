@@ -49,7 +49,7 @@ export const AboutProjectTab = ({ project }) => {
             {project.socials.map((p, i) => (
               <div
                 key={i}
-                className="grid  justify-center py-1 grid-cols-3 border border-t-0 border-r-0 border-l-0 border-dotted"
+                className="grid  justify-center py-1 grid-cols-3 border border-t-0 border-r-0 border-l-0 border-thin border-dark-600"
               >
                 <div>{p.title}</div>
                 <a className="col-span-2" href={p.link} target="_blank" rel="noreferrer">
@@ -70,7 +70,7 @@ export const AboutProjectTab = ({ project }) => {
             {project.tokenomics.map((p, i) => (
               <div
                 key={i}
-                className="grid  justify-center py-1 grid-cols-3 border border-t-0 border-r-0 border-l-0 border-dotted"
+                className="grid  justify-center py-1 grid-cols-3 border border-t-0 border-r-0 border-l-0 border-thin border-dark-600"
               >
                 <div>{p.title}</div>
                 <div>{p.description}</div>
@@ -89,7 +89,7 @@ export const AboutProjectTab = ({ project }) => {
             {project.ido.map((p, i) => (
               <div
                 key={i}
-                className="grid  justify-center py-1 grid-cols-3 border border-t-0 border-r-0 border-l-0 border-dotted"
+                className="grid  justify-center py-1 grid-cols-3 border border-t-0 border-r-0 border-l-0 border-thin border-dark-600"
               >
                 <div>{p.title}</div>
                 <div>{p.description}</div>

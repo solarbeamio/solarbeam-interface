@@ -13,7 +13,7 @@ export const ProjectHero = ({ project, totalCommited }) => {
   const router = useRouter()
   const blockNumber = useBlockNumber()
 
-  const totalCommitedPercent = (totalCommited / project.raise) * 100;
+  const totalCommitedPercent = (totalCommited / project.raise) * 100
 
   return (
     <div
@@ -81,6 +81,11 @@ export const ProjectHero = ({ project, totalCommited }) => {
             </Typography>
             <Typography variant="xs" className="">
               {project.status == PROJECT_STATUS.UPCOMING
+                ? `≈ ${project.startsOn}`
+                : project.status == PROJECT_STATUS.COMPLETED
+                ? `≈ ${project.endsOn}`
+                : `≈ ${project.endsOn}`}
+              {/* {project.status == PROJECT_STATUS.UPCOMING
                 ? `≈ ${moment
                     .unix(Date.now() / 1000 + (project.startBlock - blockNumber) * AVERAGE_BLOCK_TIME_IN_SECS)
                     .format('MMMM Do YYYY, HH:mm:ss Z')}`
@@ -90,7 +95,7 @@ export const ProjectHero = ({ project, totalCommited }) => {
                     .format('MMMM Do YYYY, HH:mm:ss Z')}`
                 : `≈ ${moment
                     .unix(Date.now() / 1000 + (project.endBlock - blockNumber) * AVERAGE_BLOCK_TIME_IN_SECS)
-                    .format('MMMM Do YYYY, HH:mm:ss Z')}`}
+                    .format('MMMM Do YYYY, HH:mm:ss Z')}`} */}
             </Typography>
           </div>
           <div className="flex flex-col">

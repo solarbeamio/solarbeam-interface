@@ -39,6 +39,8 @@ export type ProjectInfo = {
   starts?: string
   startBlock?: number
   endBlock?: number
+  startsOn?: string
+  endsOn?: string
   raise?: number
   price?: number
   baseUrl?: string
@@ -68,6 +70,8 @@ export const ECLIPSE_PROJECTS: ProjectsMap = {
     starts: 'October 28th 2021',
     startBlock: 810960 - 1490,
     endBlock: 810960,
+    startsOn: 'October 28th 2021, 10:00 UTC',
+    endsOn: 'October 28th 2021, 16:00 UTC',
     readmore: 'https://solarbeam.medium.com/eclipse-ido-partnership-pets-polkapets-world-8e746af1e7b2',
     website: 'https://www.polkapet.world/',
     tokenContract: 'PETS',
