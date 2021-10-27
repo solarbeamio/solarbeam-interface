@@ -66,9 +66,9 @@ export default function Eclipse(): JSX.Element {
 
       <SolarEclipse />
 
-      <div className="container px-0 mx-auto pb-6 -mt-48">
+      <div className="container mx-auto pb-6 -mt-48 ">
         <div className="relative w-full">
-          <div className={`grid grid-cols-12 gap-2 min-h-1/2`}>
+          <div className={`grid grid-cols-12 gap-2 min-h-1/2 `}>
             <div className={`col-span-12`}>
               <div className={'container p-6 md:p-0 justify-center flex flex-col mb-5 md:mb-20'}>
                 <Typography variant="hero" className={'font-bold sm:mt-5 text-white'}>
@@ -88,7 +88,7 @@ export default function Eclipse(): JSX.Element {
                 </a>
               </div>
 
-              <Card className="bg-dark-900 z-4 rounded">
+              <Card className="bg-dark-900 z-4 rounded ">
                 <div className={`flex md:flex-row flex-col space-y-4 md:space-x-8 md:space-y-0`}>
                   <div className={'col-span-5 p-2.5 rounded flex bg-dark-700 flex-col md:flex-row md:space-x-2'}>
                     <NavLink

@@ -668,7 +668,7 @@ export default function EclipseProject(): JSX.Element {
 
       <SolarEclipse />
 
-      <div className="container px-0 mx-auto pb-6 -mt-48">
+      <div className="container mx-auto pb-6 -mt-48 px-2 md:px-0">
         <div className="relative w-full">
           <div className={`grid grid-cols-1 md:grid-cols-12 gap-2 min-h-1/2`}>
             <div className="block mb-10">
