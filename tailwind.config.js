@@ -68,9 +68,10 @@ module.exports = {
         },
         background: {
           'dark-1000': '#000',
-          'dark-900': '#111',
+          'dark-900': '#080808',
           'dark-800': '#1d1d1d',
           'dark-pink-red': '#4e3034',
+          transparent: 'transparent',
         },
         border: {
           1: '1px',
@@ -181,13 +182,11 @@ module.exports = {
     plugin(function ({ addUtilities }) {
       addUtilities({
         '.header-border-none': {
-          background:
-            'transparent',
+          background: 'transparent',
           backgroundSize: '100% 1px',
         },
         '.header-border-b': {
-          background:
-            'linear-gradient(147.45deg, #D64FA0 19.48%, #FFC979 86.75%) left bottom no-repeat',
+          background: 'linear-gradient(147.45deg, #D64FA0 19.48%, #FFC979 86.75%) left bottom no-repeat',
           backgroundSize: '100% 1px',
         },
         '.token-stats-border-b': {

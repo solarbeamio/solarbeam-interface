@@ -58,6 +58,7 @@ import MASTERCHEF_ABI from '../constants/abis/masterchef.json'
 import SOLAR_DISTRIBUTOR_ABI from '../constants/abis/solar-distributor.json'
 import SOLAR_VAULT_ABI from '../constants/abis/solar-vault.json'
 import SOLAR_LOCKER_ABI from '../constants/abis/solar-locker.json'
+import ECLIPSE_ABI from '../constants/abis/eclipse.json'
 import MASTERCHEF_V2_ABI from '../constants/abis/masterchef-v2.json'
 import MEOWSHI_ABI from '../constants/abis/meowshi.json'
 import MERKLE_DISTRIBUTOR_ABI from '../constants/abis/merkle-distributor.json'
@@ -199,6 +200,11 @@ export function useSolarVaultContract(withSignerIfPossible?: boolean): Contract 
 export function useLockerContract(withSignerIfPossible?: boolean): Contract | null {
   const { chainId } = useActiveWeb3React()
   return useContract(chainId && LOCKER_ADDRESS[chainId], SOLAR_LOCKER_ABI, withSignerIfPossible)
+}
+
+export function useEclipseContract(address?: string, withSignerIfPossible?: boolean): Contract | null {
+  const { chainId } = useActiveWeb3React()
+  return useContract(chainId && address !== undefined && address !== '' && address, ECLIPSE_ABI, withSignerIfPossible)
 }
 
 export function useSolarMovrContract(withSignerIfPossible?: boolean): Contract | null {
