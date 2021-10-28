@@ -42,6 +42,7 @@ export type ProjectInfo = {
   startsOn?: string
   endsOn?: string
   raise?: number
+  pairPrice?: number
   price?: number
   baseUrl?: string
   readmore?: string
@@ -60,9 +61,10 @@ export const ECLIPSE_PROJECTS: ProjectsMap = {
   0: {
     name: 'PolkaPet World',
     symbol: '$PETS',
-    status: PROJECT_STATUS.UPCOMING,
+    status: PROJECT_STATUS.COMPLETED,
     raise: 100000,
     price: 0.3,
+    pairPrice: 205,
     baseUrl: '/eclipse/polkapet',
     logo: '/eclipse/polkapet/logo.png',
     teaser: '/eclipse/polkapet/teaser.mp4',

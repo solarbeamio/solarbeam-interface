@@ -436,10 +436,10 @@ const ClaimItem = ({ project, eclipseInfo, releaseBlock, k }) => {
       <Typography variant="base" className="text-emphesis text-right">
         {formatPercent(eclipseInfo?.harvestReleasePercent[k] / 1e2)}
       </Typography>
-      {!account || !claimEnabled ? (
+      {!account || !claimEnabled || !userPoolId ? (
         <div className="flex justify-end px-6">
           <Typography variant="base" className="text-emphesis text-center">
-            {!claimEnabled ? 'Locked' : 'Connect wallet'}
+            {!claimEnabled ? 'Locked' : !userPoolId ? 'Not eligible' : 'Connect wallet'}
           </Typography>
         </div>
       ) : (
@@ -676,8 +676,11 @@ export default function EclipseProject(): JSX.Element {
   let token0 = useCurrency(SOLAR_ADDRESS[chainId])
   let token1 = useCurrency(WNATIVE[chainId])
   const [data] = useV2PairsWithPrice([[token0, token1]])
-  const [state, pair, pairPrice] = data
+  let [state, pair, pairPrice] = data
 
+  if (projectInfo?.pairPrice) {
+    pairPrice = projectInfo?.pairPrice
+  }
   const totalRaise = eclipsePools?.reduce((previousValue, currentValue) => {
     return previousValue + currentValue.raisingAmount * 1
   }, 0)
