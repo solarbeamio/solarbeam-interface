@@ -540,7 +540,15 @@ const UserInfo = ({ project, pools, eclipseInfo }) => {
         </Typography>
         <Typography variant="base" className="text-emphesis">
           You need to stake at least 50 SOLAR in one of the Vaults to be eligible. Multiplier boosts are tiered, you can
-          read more about it here.
+          read more about it{' '}
+          <a
+            className="underline"
+            href="https://solarbeam.medium.com/solarbeam-eclipse-everything-you-need-to-know-4812b00065c9"
+            target="_blank"
+            rel="noreferrer"
+          >
+            here.
+          </a>
         </Typography>
         <Typography variant="base" className="text-secondary mt-2">
           During Sale
