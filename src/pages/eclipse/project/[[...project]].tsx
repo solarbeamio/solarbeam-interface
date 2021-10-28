@@ -65,6 +65,7 @@ const MenuItem = ({ tabName, title }) => {
 }
 
 const Pool = ({ project, poolInfo, eclipseInfo }) => {
+  
   const { account, chainId } = useActiveWeb3React()
   const [value, setValue] = useState('')
   const [valueUnstake, setValueUnstake] = useState('')
@@ -109,7 +110,6 @@ const Pool = ({ project, poolInfo, eclipseInfo }) => {
     : ''
 
   const allInfoSubmitted = errorMessage == ''
-
   const saleMessage =
     project.status == PROJECT_STATUS.COMPLETED
       ? 'Sale ended'
@@ -170,7 +170,7 @@ const Pool = ({ project, poolInfo, eclipseInfo }) => {
                   <span className="text-base inline-block">Total Commited</span>
                 </div>
                 <div className="text-right">
-                  <span className="text-xs text-purple">
+                  <span className="text-base text-purple">
                     {formatNumber(totalCommited, true, false)} ({formatPercent(totalCommitedPercent)})
                   </span>
                 </div>
@@ -335,7 +335,7 @@ const Pool = ({ project, poolInfo, eclipseInfo }) => {
                             onClick={() => setValueUnstake(userCommittedAmount.toFixed())}
                             className="text-xxs font-medium text-right cursor-pointer text-low-emphesis"
                           >
-                            Commited: {formatNumber(userCommittedAmount, true, false)}
+                            Commited: {formatNumber(userCommittedAmount, false, false)}
                           </div>
                         </div>
                         <div className="flex flex-col">

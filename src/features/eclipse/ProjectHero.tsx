@@ -89,7 +89,7 @@ export const ProjectHero = ({ project, totalCommited }) => {
                   <span className="text-base inline-block">Total Committed</span>
                 </div>
                 <div className="text-right">
-                  <span className="text-xs text-purple">
+                  <span className="text-base text-purple">
                     {formatNumber(totalCommited, true, false)} ({formatPercent(totalCommitedPercent)})
                   </span>
                 </div>
