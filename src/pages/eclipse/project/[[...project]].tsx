@@ -95,7 +95,8 @@ const Pool = ({ project, poolInfo, eclipseInfo }) => {
   const stakingInOtherPools = eclipseInfo?.userInfo?.pools?.find((p) => p.amount > 0 && p.id !== poolInfo.id)
   const stakingPool = eclipseInfo?.userInfo?.pools?.find((p) => p.id == poolInfo.id)
 
-  const commited = CurrencyAmount.fromRawAmount(assetToken, stakingPool?.amount)
+  const commited =
+    (stakingPool?.amount && assetToken && CurrencyAmount.fromRawAmount(assetToken, stakingPool?.amount)) || 0
 
   const userCommittedAmount = stakingPool?.amount / 1e18
   const maxUserCommitAmount = (poolInfo.baseLimitInLP / 1e18) * multiplier - userCommittedAmount
@@ -334,7 +335,11 @@ const Pool = ({ project, poolInfo, eclipseInfo }) => {
                       <div className="flex flex-col">
                         <div className="flex flex-col">
                           <div
-                            onClick={() => setValueUnstake(commited.toFixed(18))}
+                            onClick={() => {
+                              if (commited) {
+                                setValueUnstake(commited.toFixed(18))
+                              }
+                            }}
                             className="text-xxs font-medium text-right cursor-pointer text-low-emphesis"
                           >
                             Commited: {formatNumber(userCommittedAmount, false, false)}
@@ -342,7 +347,11 @@ const Pool = ({ project, poolInfo, eclipseInfo }) => {
                         </div>
                         <div className="flex flex-col">
                           <div
-                            onClick={() => setValueUnstake(commited.toFixed(18))}
+                            onClick={() => {
+                              if (commited) {
+                                setValueUnstake(commited.toFixed(18))
+                              }
+                            }}
                             className="text-xxs font-medium text-right cursor-pointer text-low-emphesis"
                           >
                             ≈ {formatNumber(userCommittedAmount * eclipseInfo.pairPrice, true, false)}
