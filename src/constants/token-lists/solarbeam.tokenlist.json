@@ -185,6 +185,14 @@
       "decimals": 10,
       "chainId": 1285,
       "logoURI": "https://app.solarbeam.io/images/tokens/dot-m.png"
+    },
+    {
+      "name": "PolkaPet World",
+      "address": "0x1e0F2A75Be02c025Bd84177765F89200c04337Da",
+      "symbol": "PETS",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://app.solarbeam.io/images/tokens/ppw.png"
     }
   ]
 }
