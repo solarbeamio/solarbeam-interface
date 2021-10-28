@@ -100,13 +100,15 @@ const Pool = ({ project, poolInfo, eclipseInfo }) => {
   const maxUserCommitAmount = (poolInfo.baseLimitInLP / 1e18) * multiplier - userCommittedAmount
   const maxUserCommitValue = maxUserCommitAmount * eclipseInfo.pairPrice
 
+  console.log(maxUserCommitAmount)
+
   const errorMessage = stakingInOtherPools
-    ? `You're already participating in another pool`
+    ? `You're participating in another pool`
     : isNaN(parseFloat(value)) || parseFloat(value) == 0
     ? 'Enter Amount'
     : parseFloat(value) > parseFloat(selectedCurrencyBalance.toExact())
     ? 'Insufficient Balance'
-    : parseFloat(value) > maxUserCommitAmount
+    : poolInfo?.baseLimitInLP > 0 && parseFloat(value) > maxUserCommitAmount
     ? 'Amount Exceeds User Limit'
     : ''
 
@@ -160,7 +162,7 @@ const Pool = ({ project, poolInfo, eclipseInfo }) => {
           </div> */}
           <div className="flex flex-col">
             <Typography variant="h3" className="font-bold  mt-2">
-              {poolInfo.baseLimitInLP == 0 ? 'Unlimited Sale' : 'Basic Sale'}
+              {poolInfo?.baseLimitInLP == 0 ? 'Unlimited Sale' : 'Basic Sale'}
             </Typography>
           </div>
           <div className={`flex flex-row space-x-10`}>
@@ -449,7 +451,12 @@ const Claim = ({ project, pools, eclipseInfo }) => {
         </Typography>
         <Typography variant="base" className="text-emphesis">
           While the sale is live, you need to create SOLAR-MOVR liquidity pairs to commit to the pool of your choice.
+        </Typography>
+        <Typography variant="base" className="text-emphesis">
           You can only choose between one of the two pools: Basic or Unlimited.
+        </Typography>
+        <Typography variant="base" className="text-emphesis">
+          The IDO contract will renew all the user vaults on user commit.
         </Typography>
         <Typography variant="base" className="text-secondary mt-2">
           Immediately after sale
@@ -564,6 +571,7 @@ const Claim = ({ project, pools, eclipseInfo }) => {
                         onClick={async () => {
                           setPendingTx(true)
                           try {
+                            console.log(userPoolId?.id?.toString(), k.toString())
                             const tx = await harvest(userPoolId?.id?.toString(), k.toString())
                             addTransaction(tx, { summary: 'Harvest' })
                           } catch (error) {
