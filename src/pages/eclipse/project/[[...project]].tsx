@@ -332,7 +332,7 @@ const Pool = ({ project, poolInfo, eclipseInfo }) => {
                       <div className="flex flex-col">
                         <div className="flex flex-col">
                           <div
-                            onClick={() => setValueUnstake(userCommittedAmount.toFixed())}
+                            onClick={() => setValueUnstake(userCommittedAmount.toFixed(20))}
                             className="text-xxs font-medium text-right cursor-pointer text-low-emphesis"
                           >
                             Commited: {formatNumber(userCommittedAmount, false, false)}
@@ -340,7 +340,7 @@ const Pool = ({ project, poolInfo, eclipseInfo }) => {
                         </div>
                         <div className="flex flex-col">
                           <div
-                            onClick={() => setValueUnstake(userCommittedAmount.toFixed())}
+                            onClick={() => setValueUnstake(userCommittedAmount.toFixed(20))}
                             className="text-xxs font-medium text-right cursor-pointer text-low-emphesis"
                           >
                             ≈ {formatNumber(userCommittedAmount * eclipseInfo.pairPrice, true, false)}
