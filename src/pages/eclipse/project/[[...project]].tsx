@@ -4,15 +4,15 @@ import React, { useCallback, useState } from 'react'
 import { useRouter } from 'next/router'
 import Card from '../../../components/Card'
 import Typography from '../../../components/Typography'
-import { classNames, formatNumber, formatNumberScale, formatPercent, tryParseAmount } from '../../../functions'
+import { classNames, formatNumber, formatPercent, tryParseAmount } from '../../../functions'
 import Image from '../../../components/Image'
-import Button, { ButtonConfirmed, ButtonError } from '../../../components/Button'
+import { ButtonConfirmed, ButtonError } from '../../../components/Button'
 import { ECLIPSE_PROJECTS, PROJECT_STATUS } from '../../../constants/eclipse'
 import Back from '../../../components/Back'
 import NumericalInput from '../../../components/NumericalInput'
 import { ApprovalState, useActiveWeb3React, useApproveCallback } from '../../../hooks'
 import { useCurrency } from '../../../hooks/Tokens'
-import { LOCKER_ADDRESS, SOLAR_ADDRESS, SOLAR_MOVR_PAIR, WNATIVE } from '../../../constants'
+import { SOLAR_ADDRESS, SOLAR_MOVR_PAIR, WNATIVE } from '../../../constants'
 import Web3Connect from '../../../components/Web3Connect'
 import { AutoRow, RowBetween } from '../../../components/Row'
 import Loader from '../../../components/Loader'
@@ -65,12 +65,11 @@ const MenuItem = ({ tabName, title }) => {
 }
 
 const Pool = ({ project, poolInfo, eclipseInfo }) => {
-  const { chainId, account, library } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const [value, setValue] = useState('')
   const [valueUnstake, setValueUnstake] = useState('')
 
-  // const assetToken = useCurrency(SOLAR_MOVR_PAIR[chainId]) || undefined
-  const assetToken = useCurrency('0x579E6E41dEAEed8F65768E161A0FD63D760Cae5c') || undefined //MOCK CHANGE THAT
+  const assetToken = useCurrency(SOLAR_MOVR_PAIR[chainId]) || undefined
 
   const typedDepositValue = tryParseAmount(value, assetToken)
 
@@ -96,11 +95,8 @@ const Pool = ({ project, poolInfo, eclipseInfo }) => {
   const stakingPool = eclipseInfo?.userInfo?.pools?.find((p) => p.id == poolInfo.id)
 
   const userCommittedAmount = stakingPool?.amount / 1e18
-  const userCommittedValue = userCommittedAmount * eclipseInfo.pairPrice
   const maxUserCommitAmount = (poolInfo.baseLimitInLP / 1e18) * multiplier - userCommittedAmount
   const maxUserCommitValue = maxUserCommitAmount * eclipseInfo.pairPrice
-
-  console.log(maxUserCommitAmount)
 
   const errorMessage = stakingInOtherPools
     ? `You're participating in another pool`
@@ -137,7 +133,7 @@ const Pool = ({ project, poolInfo, eclipseInfo }) => {
     await approve()
   }, [approve])
 
-  const { deposit, withdraw, harvest } = useEclipse(project.eclipseContract)
+  const { deposit, withdraw } = useEclipse(project.eclipseContract)
 
   return (
     <div className={'w-full text-left rounded  bg-dark-800 text-primary text-sm md:text-lg'}>
@@ -154,14 +150,8 @@ const Pool = ({ project, poolInfo, eclipseInfo }) => {
       </div>
       <div className="px-4 py-6 -mt-8">
         <div className="grid grid-cols-1 space-y-4">
-          {/* <div className="flex flex-col">
-            <Typography variant="h3" className="font-bold  mt-2">
-              {project.name}
-            </Typography>
-            <Typography variant="base"> {project.symbol}</Typography>
-          </div> */}
           <div className="flex flex-col">
-            <Typography variant="h3" className="font-bold  mt-2">
+            <Typography variant="h3" className="font-bold  mt-4">
               {poolInfo?.baseLimitInLP == 0 ? 'Unlimited Sale' : 'Basic Sale'}
             </Typography>
           </div>
@@ -408,8 +398,8 @@ const Pool = ({ project, poolInfo, eclipseInfo }) => {
   )
 }
 
-const Claim = ({ project, pools, eclipseInfo }) => {
-  const { chainId, account, library } = useActiveWeb3React()
+const ClaimItem = ({ project, eclipseInfo, releaseBlock, k }) => {
+  const { account } = useActiveWeb3React()
   const blockNumber = useBlockNumber()
 
   const [pendingTx, setPendingTx] = useState(false)
@@ -418,20 +408,126 @@ const Claim = ({ project, pools, eclipseInfo }) => {
 
   const { harvest } = useEclipse(project.eclipseContract)
 
-  const eligible = eclipseInfo?.userInfo?.eligible
   const claimEnabled = eclipseInfo.claimEnabled
+
+  const userPoolId = eclipseInfo?.userInfo?.pools?.find((r) => r.amount > 0)
+
+  return (
+    <div className="grid py-1 grid-cols-3 border border-t-0 border-r-0 border-l-0 items-center border-thin border-dark-600">
+      <a
+        className="text-emphesis font-xs"
+        href={'https://moonriver.moonscan.io/block/countdown/' + releaseBlock?.toString()}
+        target="_blank"
+        rel="noreferrer"
+      >
+        {releaseBlock?.toString()}
+      </a>
+      <Typography variant="base" className="text-emphesis text-right">
+        {formatPercent(eclipseInfo?.harvestReleasePercent[k] / 1e2)}
+      </Typography>
+      {!account || !claimEnabled ? (
+        <div className="flex justify-end px-6">
+          <Typography variant="base" className="text-emphesis text-center">
+            {!claimEnabled ? 'Locked' : 'Connect wallet'}
+          </Typography>
+        </div>
+      ) : (
+        <div className="flex justify-end">
+          <ButtonError
+            className="font-bold text-emphesis text-center px-6"
+            onClick={async () => {
+              setPendingTx(true)
+              try {
+                const tx = await harvest(userPoolId?.id?.toString(), k.toString())
+                addTransaction(tx, { summary: 'Harvest' })
+              } catch (error) {
+                console.error(error)
+              }
+              setPendingTx(false)
+            }}
+            style={{
+              width: '150px',
+            }}
+            size="xs"
+            disabled={releaseBlock > blockNumber || !claimEnabled || userPoolId?.claimed?.[k] || pendingTx}
+          >
+            {pendingTx ? (
+              <div className="flex items-center justify-center">
+                <div className="pr-2">Claim</div> <Loader stroke="white" size="12px" />
+              </div>
+            ) : releaseBlock > blockNumber ? (
+              'Locked'
+            ) : userPoolId?.claimed?.[k] ? (
+              'Claimed'
+            ) : (
+              'Claim'
+            )}
+          </ButtonError>
+        </div>
+      )}
+    </div>
+  )
+}
+
+const Claim = ({ project, eclipseInfo }) => {
+  const { account } = useActiveWeb3React()
+
+  const errorMessage = !account ? 'Connect your wallet' : ''
+  const allInfoSubmitted = errorMessage === ''
+
+  return (
+    <div className={`bg-light-glass md:px-6 px-4 py-4 md:rounded`}>
+      <div className="mb-2 text-2xl text-emphesis">{`Eclipse #${parseInt(project.id) + 1} - ${project.name}`}</div>
+      <div className="mb-4 text-base">
+        <Typography variant="base" className="text-emphesis">
+          Here you can claim your offering tokens, and your refund (if there is overflow). The rest of the tokens are
+          gradually released following the vesting schedule.
+        </Typography>
+      </div>
+      <>
+        <div className="flex flex-col mt-4">
+          <Typography variant="h3" className="text-emphesis mt-2 mb-2">
+            Vesting Schedule
+          </Typography>
+        </div>
+        <div className={'flex flex-col mt-1'}>
+          {!allInfoSubmitted ? (
+            <Typography variant="base" className="text-secondary">
+              {errorMessage}
+            </Typography>
+          ) : (
+            <div className={'bg-dark-700 rounded flex-col p-4 '}>
+              <div className="grid  py-1 grid-cols-3 border border-t-0 border-r-0 border-l-0 border-thin border-dark-600">
+                <Typography variant="base" className="text-light font-bold">
+                  Block Number
+                </Typography>
+                <Typography variant="base" className="text-light text-right  font-bold">
+                  %
+                </Typography>
+                <Typography variant="base" className="text-light text-center  font-bold"></Typography>
+              </div>
+              {eclipseInfo?.harvestReleaseBlocks?.map((releaseBlock, k) => {
+                return (
+                  <ClaimItem releaseBlock={releaseBlock} key={k} k={k} eclipseInfo={eclipseInfo} project={project} />
+                )
+              })}
+            </div>
+          )}
+        </div>
+      </>
+    </div>
+  )
+}
+
+const UserInfo = ({ project, pools, eclipseInfo }) => {
+  const { account } = useActiveWeb3React()
+
+  const eligible = eclipseInfo?.userInfo?.eligible
 
   const userPoolId = eclipseInfo?.userInfo?.pools?.find((r) => r.amount > 0)
   const pool = pools[userPoolId?.id]
   const commited = !userPoolId ? 0 : (userPoolId?.amount / 1e18) * eclipseInfo.pairPrice
-  const participation = !userPoolId
-    ? 0
-    : pool.baseLimitInLP > 0
-    ? userPoolId.amount / pool.totalAmountPool
-    : userPoolId.allocPoints / pool.totalAllocPoints
-
-  const errorMessage = !account ? 'Connect your wallet' : ''
-  const allInfoSubmitted = errorMessage === ''
+  const participation = !userPoolId ? 0 : userPoolId?.allocation / 1e12
 
   console.log(userPoolId)
 
@@ -500,7 +596,7 @@ const Claim = ({ project, pools, eclipseInfo }) => {
               Your Participation
             </Typography>
           </div>
-          <div className={`flex flex-col  space-x-10`}>
+          <div className={`flex flex-col  space-x-10 pb-2`}>
             <div className="grid grid-cols-3 justify-between">
               <div>
                 <Typography variant="base" className="text-secondary">
@@ -520,97 +616,13 @@ const Claim = ({ project, pools, eclipseInfo }) => {
               </div>
               <div>
                 <Typography variant="base" className="text-secondary">
-                  % of Pool
+                  Allocation
                 </Typography>
                 <Typography variant="base" className="text-emphesis">
                   {userPoolId ? `${formatPercent(participation * 100)}` : '--'}
                 </Typography>
               </div>
             </div>
-          </div>
-          <div className="flex flex-col mt-4">
-            <Typography variant="h3" className="text-emphesis mt-2 mb-2">
-              Claim
-            </Typography>
-          </div>
-          <div className={'flex flex-col mt-1'}>
-            {!allInfoSubmitted ? (
-              <Typography variant="base" className="text-secondary">
-                {errorMessage}
-              </Typography>
-            ) : (
-              <div className={'bg-dark-700 rounded flex-col p-4 '}>
-                <div className="grid  py-1 grid-cols-3 border border-t-0 border-r-0 border-l-0 border-dotted">
-                  <Typography variant="base" className="text-light font-bold">
-                    Block Number
-                  </Typography>
-                  <Typography variant="base" className="text-light text-center  font-bold">
-                    %
-                  </Typography>
-                  <Typography variant="base" className="text-light text-center  font-bold"></Typography>
-                </div>
-                {eclipseInfo?.harvestReleaseBlocks?.map((releaseBlock, k) => {
-                  return (
-                    <div
-                      key={k}
-                      className="grid  py-1 grid-cols-3 border border-t-0 border-r-0 border-l-0 items-center border-dotted"
-                    >
-                      <a
-                        className="text-light font-xs"
-                        href={'https://moonriver.moonscan.io/block/countdown/' + releaseBlock?.toString()}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {releaseBlock?.toString()}
-                      </a>
-                      <Typography variant="base" className="text-light text-center">
-                        {formatPercent(eclipseInfo?.harvestReleasePercent[k] / 1e2)}
-                      </Typography>
-                      <ButtonError
-                        className="font-bold text-light text-center"
-                        onClick={async () => {
-                          setPendingTx(true)
-                          try {
-                            console.log(userPoolId?.id?.toString(), k.toString())
-                            const tx = await harvest(userPoolId?.id?.toString(), k.toString())
-                            addTransaction(tx, { summary: 'Harvest' })
-                          } catch (error) {
-                            console.error(error)
-                          }
-                          setPendingTx(false)
-                        }}
-                        style={{
-                          width: '100%',
-                        }}
-                        size="xs"
-                        disabled={
-                          releaseBlock > blockNumber ||
-                          !claimEnabled ||
-                          eclipseInfo?.userInfo?.claimed?.[k] ||
-                          pendingTx
-                        }
-                      >
-                        {pendingTx ? (
-                          <div className={'p-2'}>
-                            <AutoRow gap="6px" justify="center">
-                              Claim <Loader stroke="white" />
-                            </AutoRow>
-                          </div>
-                        ) : !claimEnabled ? (
-                          ''
-                        ) : releaseBlock > blockNumber ? (
-                          'Locked'
-                        ) : eclipseInfo?.userInfo?.claimed?.[k] ? (
-                          'Claimed'
-                        ) : (
-                          'Claim'
-                        )}
-                      </ButtonError>
-                    </div>
-                  )
-                })}
-              </div>
-            )}
           </div>
         </>
       )}
@@ -642,11 +654,10 @@ export default function EclipseProject(): JSX.Element {
   const eclipsePools = useEclipsePools(project.eclipseContract)
   const eclipseUserInfo = useEclipseUserInfo(project.eclipseContract)
 
-  // let token0 = useCurrency(SOLAR_ADDRESS[chainId])
-  // let token1 = useCurrency(WNATIVE[chainId])
-  // const [data] = useV2PairsWithPrice([[token0, token1]])
-  // const [state, pair, pairPrice] = data
-  const pairPrice = 1 //MOCK CHANGE THAT
+  let token0 = useCurrency(SOLAR_ADDRESS[chainId])
+  let token1 = useCurrency(WNATIVE[chainId])
+  const [data] = useV2PairsWithPrice([[token0, token1]])
+  const [state, pair, pairPrice] = data
 
   const totalRaise = eclipsePools?.reduce((previousValue, currentValue) => {
     return previousValue + currentValue.raisingAmount * 1
@@ -676,7 +687,7 @@ export default function EclipseProject(): JSX.Element {
 
       <SolarEclipse />
 
-      <div className="container mx-auto pb-6 -mt-48 px-2 md:px-0">
+      <div className="container mx-auto pb-6 -mt-48 px-2 md:px-0 mb-20 md:mb-10">
         <div className="relative w-full">
           <div className={`grid grid-cols-1 md:grid-cols-12 gap-2 min-h-1/2`}>
             <div className="block mb-10">
@@ -690,11 +701,12 @@ export default function EclipseProject(): JSX.Element {
                   <Menu>
                     <MenuItem tabName="about" title="About The Project" />
                     <MenuItem tabName="join" title="Join Pool" />
+                    <MenuItem tabName="claim" title="Claim" />
                   </Menu>
                 }
                 removePadding
               >
-                <div className="p-6 min-h-[400px]">
+                <div className="md:p-6 min-h-[400px]">
                   {!project ? (
                     <Typography variant="base" className={'max-w-xl m-auto text-center mb-2 text-gray-400'}>
                       Project not Found
@@ -703,13 +715,14 @@ export default function EclipseProject(): JSX.Element {
                     <>
                       {tab == 'about' && <AboutProjectTab project={project} />}
                       {tab == 'join' && (
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mt-4 md:mt-0">
                           {eclipsePools.map((pool, idx) => {
                             return <Pool key={idx} project={project} poolInfo={pool} eclipseInfo={extraEclipseInfo} />
                           })}
-                          <Claim project={project} pools={eclipsePools} eclipseInfo={extraEclipseInfo} />
+                          <UserInfo project={project} pools={eclipsePools} eclipseInfo={extraEclipseInfo} />
                         </div>
                       )}
+                      {tab == 'claim' && <Claim project={project} eclipseInfo={extraEclipseInfo} />}
                     </>
                   )}
                 </div>

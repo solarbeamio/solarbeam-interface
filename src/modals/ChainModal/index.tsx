@@ -59,7 +59,7 @@ export const SUPPORTED_NETWORKS: {
       decimals: 18,
     },
     rpcUrls: ['https://rpc.moonriver.moonbeam.network', 'https://moonriver.api.onfinality.io/public'],
-    blockExplorerUrls: ['https://blockscout.moonriver.moonbeam.network/'],
+    blockExplorerUrls: ['https://moonriver.moonscan.io/'],
   },
 }
 

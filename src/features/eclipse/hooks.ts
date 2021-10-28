@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react'
 import { useActiveWeb3React, useEclipseContract } from '../../hooks'
 import { NEVER_RELOAD, useSingleCallResult, useSingleContractMultipleData } from '../../state/multicall/hooks'
-import { zip } from 'lodash'
+import { zip, chunk } from 'lodash'
 import { BigNumber } from 'ethers'
 
 export function useEclipseUserInfo(contractAddress?: string) {
@@ -36,35 +36,34 @@ export function useEclipseUserInfo(contractAddress?: string) {
       return
     }
     let result = []
-    for (let i = 0; i < numberPools.length; i++) {
-      const pid = numberPools[i]
-      for (let j = 0; j < harvestPeriods.length; j++) {
-        const hid = harvestPeriods[j]
-        result.push(String(account), String(pid), String(hid))
+    for (let i = 0; i < +numberPools; i++) {
+      for (let j = 0; j < +harvestPeriods; j++) {
+        result.push([String(account), String(i), String(j)])
       }
     }
     return result
   }, [account, numberPools, harvestPeriods])
 
   const userAllocationPools = useSingleCallResult(args ? contract : null, 'viewUserAllocationPools', args)
+
   const userInfo = useSingleContractMultipleData(args2 ? contract : null, 'userInfo', args2)
 
-  const claimed = useSingleContractMultipleData(args2 ? contract : null, 'hasHarvested', args3)
+  const claimed = useSingleContractMultipleData(args3 ? contract : null, 'hasHarvested', args3)
 
   return useMemo(
     () => ({
       eligible,
       multiplier,
-      allocationPools: userAllocationPools.result || [],
       pools: zip(userInfo).map((data, i) => ({
         id: args2[i][1],
         amount: data[0].result?.[`amount`] || 0,
         allocPoints: data[0].result?.[`allocPoints`] || 0,
-        claimed: [],
+        claimed: chunk(claimed, harvestPeriods)[i].map((claim) => claim?.result?.[0]),
         isRefunded: data[0].result?.[`isRefunded`] || false,
+        allocation: userAllocationPools?.result?.[0]?.[i],
       })),
     }),
-    [eligible, multiplier, userAllocationPools, userInfo, args2]
+    [eligible, multiplier, userAllocationPools, userInfo, args2, claimed, harvestPeriods]
   )
 }
 

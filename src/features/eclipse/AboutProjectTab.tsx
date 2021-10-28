@@ -5,7 +5,7 @@ import Image from '../../components/Image'
 
 export const AboutProjectTab = ({ project }) => {
   return (
-    <>
+    <div className="bg-light-glass md:bg-transparent md:px-0 px-4 py-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 space-y-10 md:space-y-0 md:space-x-10">
         <div className="grid grid-cols-1 space-y-4 items-center">
           <div className="flex flex-col">
@@ -98,6 +98,6 @@ export const AboutProjectTab = ({ project }) => {
           </Card>
         </div>
       </div>
-    </>
+    </div>
   )
 }

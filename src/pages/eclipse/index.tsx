@@ -3,26 +3,15 @@
 import Head from 'next/head'
 import React from 'react'
 import { useRouter } from 'next/router'
-import Link from 'next/link'
-import { useLingui } from '@lingui/react'
-import SolarbeamLogo from '../../components/SolarbeamLogo'
-import DoubleGlowShadow from '../../components/DoubleGlowShadow'
 import Card from '../../components/Card'
 import Typography from '../../components/Typography'
 import NavLink from '../../components/NavLink'
-import { Disclosure } from '@headlessui/react'
-import { classNames, formatNumberScale, formatPrice } from '../../functions'
-import CurrencyLogo from '../../components/CurrencyLogo'
+import { formatNumberScale } from '../../functions'
 import Image from '../../components/Image'
-import IconWrapper from '../../components/IconWrapper'
-import { Info } from 'react-feather'
 import Search from '../../components/Search'
-import Button from '../../components/Button'
 import { ECLIPSE_PROJECTS, PROJECT_STATUS } from '../../constants/eclipse'
 import { SolarEclipse } from '../../features/eclipse/SolarEclipse'
 import { useBlockNumber } from '../../state/application/hooks'
-import moment from 'moment'
-import { AVERAGE_BLOCK_TIME_IN_SECS } from '../../constants'
 import { useFuse } from '../../hooks'
 
 export default function Eclipse(): JSX.Element {
@@ -118,15 +107,6 @@ export default function Eclipse(): JSX.Element {
                         Completed
                       </a>
                     </NavLink>
-                    {/* <NavLink
-                      exact
-                      href={'/eclipse?filter=my'}
-                      activeClassName="font-bold bg-transparent border rounded text-high-emphesis border-transparent border-gradient-r-purple-dark-900"
-                    >
-                      <a className="flex items-center justify-between px-6 py-2 text-base font-bold border border-transparent rounded cursor-pointer">
-                        Participated
-                      </a>
-                    </NavLink> */}
                   </div>
                   <div className={'flex flex-1 p-2 rounded flex bg-dark-800 flex-col md:flex-row md:space-x-2'}>
                     <Search
@@ -228,7 +208,6 @@ export default function Eclipse(): JSX.Element {
                                   : p.status == PROJECT_STATUS.COMPLETED
                                   ? `Block ${p.endBlock}`
                                   : `Block ${p.endBlock}`}
-                                {/* {p.status?}${moment.unix(pblockNumber / 1000).fromNow()} */}
                               </Typography>
                               <Typography variant="xs" className="">
                                 {p.status == PROJECT_STATUS.UPCOMING
@@ -236,20 +215,6 @@ export default function Eclipse(): JSX.Element {
                                   : p.status == PROJECT_STATUS.COMPLETED
                                   ? `≈ ${p.endsOn}`
                                   : `≈ ${p.endsOn}`}
-                                {/* {p.status == PROJECT_STATUS.UPCOMING
-                                  ? `≈ ${moment
-                                      .unix(
-                                        Date.now() / 1000 + (p.startBlock - blockNumber) * AVERAGE_BLOCK_TIME_IN_SECS
-                                      )
-                                      .format('MMMM Do YYYY, HH:mm:ss Z')}`
-                                  : p.status == PROJECT_STATUS.COMPLETED
-                                  ? `≈ ${moment
-                                      .unix(Date.now() / 1000 - (blockNumber - p.endBlock) * AVERAGE_BLOCK_TIME_IN_SECS)
-                                      .format('MMMM Do YYYY, HH:mm:ss Z')}`
-                                  : `≈ ${moment
-                                      .unix(Date.now() / 1000 + (p.endBlock - blockNumber) * AVERAGE_BLOCK_TIME_IN_SECS)
-                                      .format('MMMM Do YYYY, HH:mm:ss Z')}`} */}
-                                {/* {p.status?}${moment.unix(pblockNumber / 1000).fromNow()} */}
                               </Typography>
                             </div>
                             <div className="flex sm:flex-row justify-between space-x-3">

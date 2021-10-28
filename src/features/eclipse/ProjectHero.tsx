@@ -2,17 +2,12 @@ import Card from '../../components/Card'
 import Typography from '../../components/Typography'
 import Image from '../../components/Image'
 import Button from '../../components/Button'
-import { formatNumber, formatNumberScale, formatPercent } from '../../functions'
+import { formatNumber, formatPercent } from '../../functions'
 import { useRouter } from 'next/router'
 import { PROJECT_STATUS } from '../../constants/eclipse'
-import { AVERAGE_BLOCK_TIME_IN_SECS } from '../../constants'
-import moment from 'moment'
-import { useBlockNumber } from '../../state/application/hooks'
 
 export const ProjectHero = ({ project, totalCommited }) => {
   const router = useRouter()
-  const blockNumber = useBlockNumber()
-
   const totalCommitedPercent = (totalCommited / project.raise) * 100
 
   return (
@@ -34,7 +29,7 @@ export const ProjectHero = ({ project, totalCommited }) => {
           {project.name}
         </Typography>
         <a
-          href={`https://blockscout.moonriver.moonbeam.network/address/${project.tokenContract}`}
+          href={`https://moonriver.moonscan.io/address/${project.tokenContract}`}
           target="_blank"
           rel="noreferrer"
           className={'-mt-1 text-gray-400'}
@@ -85,17 +80,6 @@ export const ProjectHero = ({ project, totalCommited }) => {
                 : project.status == PROJECT_STATUS.COMPLETED
                 ? `≈ ${project.endsOn}`
                 : `≈ ${project.endsOn}`}
-              {/* {project.status == PROJECT_STATUS.UPCOMING
-                ? `≈ ${moment
-                    .unix(Date.now() / 1000 + (project.startBlock - blockNumber) * AVERAGE_BLOCK_TIME_IN_SECS)
-                    .format('MMMM Do YYYY, HH:mm:ss Z')}`
-                : project.status == PROJECT_STATUS.COMPLETED
-                ? `≈ ${moment
-                    .unix(Date.now() / 1000 - (blockNumber - project.endBlock) * AVERAGE_BLOCK_TIME_IN_SECS)
-                    .format('MMMM Do YYYY, HH:mm:ss Z')}`
-                : `≈ ${moment
-                    .unix(Date.now() / 1000 + (project.endBlock - blockNumber) * AVERAGE_BLOCK_TIME_IN_SECS)
-                    .format('MMMM Do YYYY, HH:mm:ss Z')}`} */}
             </Typography>
           </div>
           <div className="flex flex-col">
