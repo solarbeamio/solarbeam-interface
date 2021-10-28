@@ -121,7 +121,7 @@ export default function TokenStatsModal({ token }: { token: any }) {
               <div className="flex items-center justify-between space-x-3 gap-2">
                 {token?.address && (
                   <ExternalLink
-                    href={'https://moonriver.moonscan.io/tokens/0x6bD193Ee6D2104F14F94E2cA6efefae561A4334B'}
+                    href={'https://moonriver.moonscan.io/token/0x6bD193Ee6D2104F14F94E2cA6efefae561A4334B'}
                     className="px-3 ring-0 ring-transparent ring-opacity-0"
                     color="light-green"
                     startIcon={<LinkIcon size={16} />}

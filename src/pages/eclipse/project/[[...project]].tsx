@@ -24,6 +24,7 @@ import { useBlockNumber } from '../../../state/application/hooks'
 import { useV2PairsWithPrice } from '../../../hooks/useV2Pairs'
 import { useCurrencyBalance } from '../../../state/wallet/hooks'
 import { useTransactionAdder } from '../../../state/transactions/hooks'
+import { CurrencyAmount } from '../../../sdk'
 
 const Menu = ({ children }) => {
   return (
@@ -65,7 +66,6 @@ const MenuItem = ({ tabName, title }) => {
 }
 
 const Pool = ({ project, poolInfo, eclipseInfo }) => {
-  
   const { account, chainId } = useActiveWeb3React()
   const [value, setValue] = useState('')
   const [valueUnstake, setValueUnstake] = useState('')
@@ -95,6 +95,8 @@ const Pool = ({ project, poolInfo, eclipseInfo }) => {
   const stakingInOtherPools = eclipseInfo?.userInfo?.pools?.find((p) => p.amount > 0 && p.id !== poolInfo.id)
   const stakingPool = eclipseInfo?.userInfo?.pools?.find((p) => p.id == poolInfo.id)
 
+  const commited = CurrencyAmount.fromRawAmount(assetToken, stakingPool?.amount)
+
   const userCommittedAmount = stakingPool?.amount / 1e18
   const maxUserCommitAmount = (poolInfo.baseLimitInLP / 1e18) * multiplier - userCommittedAmount
   const maxUserCommitValue = maxUserCommitAmount * eclipseInfo.pairPrice
@@ -115,7 +117,7 @@ const Pool = ({ project, poolInfo, eclipseInfo }) => {
       ? 'Sale ended'
       : project.status == PROJECT_STATUS.UPCOMING
       ? 'Sale is not active'
-      : !eligible && stakingPool.amount == 0
+      : !eligible && stakingPool?.amount == 0
       ? `You're not eligible`
       : null
 
@@ -332,7 +334,7 @@ const Pool = ({ project, poolInfo, eclipseInfo }) => {
                       <div className="flex flex-col">
                         <div className="flex flex-col">
                           <div
-                            onClick={() => setValueUnstake(userCommittedAmount.toFixed(20))}
+                            onClick={() => setValueUnstake(commited.toFixed(18))}
                             className="text-xxs font-medium text-right cursor-pointer text-low-emphesis"
                           >
                             Commited: {formatNumber(userCommittedAmount, false, false)}
@@ -340,7 +342,7 @@ const Pool = ({ project, poolInfo, eclipseInfo }) => {
                         </div>
                         <div className="flex flex-col">
                           <div
-                            onClick={() => setValueUnstake(userCommittedAmount.toFixed(20))}
+                            onClick={() => setValueUnstake(commited.toFixed(18))}
                             className="text-xxs font-medium text-right cursor-pointer text-low-emphesis"
                           >
                             ≈ {formatNumber(userCommittedAmount * eclipseInfo.pairPrice, true, false)}
