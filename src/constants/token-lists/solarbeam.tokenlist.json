@@ -193,6 +193,30 @@
       "decimals": 18,
       "chainId": 1285,
       "logoURI": "https://app.solarbeam.io/images/tokens/ppw.png"
+    },
+    {
+      "name": "Neku Finance",
+      "address": "0x3Bf0880fd26E49c46d1A1e69ADb268889B4be840",
+      "symbol": "NEKU",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://app.solarbeam.io/images/tokens/neku.png"
+    },
+    {
+      "name": "Million",
+      "address": "0x95bf7E307BC1ab0BA38ae10fc27084bC36FcD605",
+      "symbol": "MM",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://app.solarbeam.io/images/tokens/mm-square.png"
+    },
+    {
+      "name": "RivrDoge",
+      "address": "0x5D4360f1Be94bD6f182F09cFE5EF9832e65EB1ac",
+      "symbol": "RivrDoge",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://app.solarbeam.io/images/tokens/rivrdoge.png"
     }
   ]
 }
