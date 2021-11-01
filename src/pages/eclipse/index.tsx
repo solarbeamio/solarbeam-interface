@@ -59,7 +59,7 @@ export default function Eclipse(): JSX.Element {
         <div className="relative w-full">
           <div className={`grid grid-cols-12 gap-2 min-h-1/2 `}>
             <div className={`col-span-12`}>
-              <div className={'container p-6 md:p-0 justify-center flex flex-col mb-5 md:mb-20'}>
+              <div className={'container p-6 md:p-0 justify-center flex flex-col mb-5 md:mb-10'}>
                 <Typography variant="hero" className={'font-bold sm:mt-5 text-white'}>
                   Eclipse
                 </Typography>
@@ -67,14 +67,21 @@ export default function Eclipse(): JSX.Element {
                   Be the first to join Eclipse, a launchpad built for cross-chain token pools and auctions, enabling
                   projects to raise capital on a decentralized and interoperable environment based on Moonriver
                 </Typography>
-                <a
-                  href="https://solarbeam.medium.com/solarbeam-eclipse-everything-you-need-to-know-4812b00065c9"
-                  target="_blank"
-                  rel="noreferrer"
-                  className={'underline mt-1'}
-                >
-                  Read more
-                </a>
+                <br />
+                <Typography variant="base" className={'max-w-xl text-gray-400'}>
+                  Want to launch your project with us?
+                  <br />
+                  <a
+                    href="https://forms.gle/oik9pbenvwFjMndg9"
+                    target="_blank"
+                    rel="noreferrer"
+                    className={
+                      'underline font-extrabold bg-clip-text text-transparent bg-gradient-to-l from-purple to-dark-purple mt-2'
+                    }
+                  >
+                    Click here to apply for Eclipse.
+                  </a>
+                </Typography>
               </div>
 
               <Card className="bg-dark-900 z-4 rounded ">
@@ -122,29 +129,9 @@ export default function Eclipse(): JSX.Element {
                 <div className="mt-12 min-h-[400px]">
                   {result.length == 0 && (
                     <>
-                      {(filter || term) && (
-                        <Typography variant="base" className={'max-w-xl m-auto text-center mb-2 text-gray-400'}>
-                          No data
-                        </Typography>
-                      )}
-                      {!filter && !term && (
-                        <div className="space-y-4 mt-10 p-6 mb-20 flex flex-col justify-center">
-                          <Typography variant="base" className={'max-w-xl m-auto text-center mb-2 text-gray-400'}>
-                            Want to see your project here?
-                            <br />
-                            <a
-                              href="https://forms.gle/oik9pbenvwFjMndg9"
-                              target="_blank"
-                              rel="noreferrer"
-                              className={
-                                'underline font-extrabold bg-clip-text text-transparent bg-gradient-to-l from-purple to-dark-purple mt-2'
-                              }
-                            >
-                              Click here to apply for Eclipse.
-                            </a>
-                          </Typography>
-                        </div>
-                      )}
+                      <Typography variant="base" className={'max-w-xl m-auto text-center mb-2 text-gray-400'}>
+                        No data
+                      </Typography>
                     </>
                   )}
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
