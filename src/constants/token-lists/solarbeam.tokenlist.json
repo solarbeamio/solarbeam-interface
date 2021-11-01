@@ -155,20 +155,19 @@
       "logoURI": "https://solarbeam.io/images/tokens/1swap.png"
     },
     {
-      "name": "Saturn Token",
-      "address": "0x2e17c0466895e0a4e3D8CEA64F093339fA1ba279",
-      "symbol": "SAT",
-      "decimals": 18,
-      "chainId": 1285,
-      "logoURI": "https://solarbeam.io/images/tokens/sat.png"
-    },
-    {
       "name": "Million",
       "address": "0x95bf7E307BC1ab0BA38ae10fc27084bC36FcD605",
       "symbol": "MM",
       "decimals": 18,
       "chainId": 1285,
       "logoURI": "https://solarbeam.io/images/tokens/mm-square.png"
+    },
+      "name": "RivrDoge",
+      "address": "0x5D4360f1Be94bD6f182F09cFE5EF9832e65EB1ac",
+      "symbol": "RivrDoge",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://rivrdoge.com/wp-content/uploads/2021/09/logo.png"
     }
   ]
 }
