@@ -1,1 +1,3 @@
 / /exchange/swap 301!
+
+http://subgraph.solarbeam.io/subgraphs/name/solarbeam/dexcandles/* https://api.thegraph.com/subgraphs/name/solar-ape/solarbeam/:splat 200
