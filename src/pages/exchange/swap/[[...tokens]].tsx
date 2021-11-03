@@ -377,16 +377,16 @@ export default function Swap() {
         tokens={importTokensNotInDefault}
         onConfirm={handleConfirmTokenWarning}
       />
-      <div className="container px-0 mx-auto sm:pb-10 sm:pt-10 max-w-screen-lg">
+      <div className="container px-0 mx-auto max-w-screen-lg">
         <DoubleGlowShadow maxWidth={false}>
-          <div id="swap-page" className={`grid grid-cols-1 gap-2 rounded z-4 sm:m-6`}>
+          <div id="swap-page" className={`grid grid-cols-1 gap-2 z-4 sm:mt-28`}>
             <div className={`grid grid-cols-1 lg:grid-cols-2 space-y-4 lg:space-x-4 lg:space-y-0`}>
               <div
-                className={`col-span-1 flex flex-col order-last lg:order-first mt-6 mb-20 sm:mb-0 lg:mt-0 p-6 rounded rounded-lg bg-light-glass`}
+                className={`col-span-1 flex flex-col order-last lg:order-first m-2 mb-20 sm:mb-0 lg:mt-0 p-6 rounded-xxl bg-light-glass`}
               >
                 <Chart inputCurrency={currencies[Field.INPUT]} outputCurrency={currencies[Field.OUTPUT]} />
               </div>
-              <div className={`col-span-1 bg-light-glass sm:bg-dark-900 rounded p-6 rounded-lg`}>
+              <div className={`col-span-1 bg-light-glass sm:bg-dark-900 rounded-xxl p-6 rounded-lg m-2`}>
                 <SwapHeader
                   input={currencies[Field.INPUT]}
                   output={currencies[Field.OUTPUT]}
@@ -622,11 +622,6 @@ export default function Swap() {
               </div>
             </div>
           </div>
-          {/* 
-        <div id="swap-page" className="w-full max-w-2xl p-4 space-y-4 rounded bg-dark-900 z-1 flex flex-row">
-          <div className="w-[400px]"></div>
-          <div className="w-[400px]"></div>
-        </div> */}
         </DoubleGlowShadow>
       </div>
     </>

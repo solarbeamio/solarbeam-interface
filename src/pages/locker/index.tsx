@@ -66,111 +66,109 @@ export default function Locker(): JSX.Element {
         <meta key="description" name="description" content="Solarbeam Locker" />
       </Head>
 
-      <div className="container px-0 mx-auto pb-5 pt-5">
-        <DoubleGlowShadow maxWidth={false}>
-          <div className={`grid grid-cols-12 gap-2 min-h-1/2`}>
-            <div className={`col-span-12 flex flex-col md:flex-row md:space-x-2`}>
-              <NavLink
-                exact
-                href={'/locker'}
-                activeClassName="font-bold bg-transparent border rounded text-high-emphesis border-transparent border-gradient-r-purple-dark-900"
-              >
-                <a className="flex items-center justify-between px-6 py-2 text-base font-bold border border-transparent rounded cursor-pointer">
-                  {i18n._(t`Search lockers`)}
-                </a>
-              </NavLink>
-              <NavLink
-                exact
-                href={'/locker/create'}
-                activeClassName="font-bold bg-transparent border rounded text-high-emphesis border-transparent border-gradient-r-purple-dark-900"
-              >
-                <a className="flex items-center justify-between px-6 py-2 text-base font-bold border border-transparent rounded cursor-pointer">
-                  {i18n._(t`Create lock`)}
-                </a>
-              </NavLink>
-            </div>
-            <div className={`col-span-12`} style={{ minHeight: '35rem' }}>
-              <Card className="h-full bg-dark-900 z-4">
-                <Search
-                  placeholder={'Search by name, symbol or address'}
-                  term={tokenAddress}
-                  search={(value: string): void => {
-                    setTokenAddress(value)
-                  }}
-                />
-                {lockers.length == 0 && isAddress(tokenAddress) && (
-                  <div className="flex justify-center items-center col-span-12 lg:justify mt-20">
-                    <span>
-                      No lockers found for this address,{' '}
-                      <Link href="/locker/create">
-                        <a className="hover:underline hover:text-yellow">click here</a>
-                      </Link>{' '}
-                      to create one.
-                    </span>
+      <DoubleGlowShadow opacity="0.6" maxWidth={false} className={'container px-0 mx-auto '}>
+        <div className={`grid grid-cols-12 gap-2 min-h-1/2 sm:pb-12 sm:pt-12 sm:mt-16 `}>
+          <div className={`col-span-12 flex flex-col md:flex-row md:space-x-2`}>
+            <NavLink
+              exact
+              href={'/locker'}
+              activeClassName="font-bold bg-transparent border rounded text-high-emphesis border-transparent border-gradient-r-purple-dark-900"
+            >
+              <a className="flex items-center justify-between px-6 py-2 text-base font-bold border border-transparent rounded cursor-pointer">
+                {i18n._(t`Search lockers`)}
+              </a>
+            </NavLink>
+            <NavLink
+              exact
+              href={'/locker/create'}
+              activeClassName="font-bold bg-transparent border rounded text-high-emphesis border-transparent border-gradient-r-purple-dark-900"
+            >
+              <a className="flex items-center justify-between px-6 py-2 text-base font-bold border border-transparent rounded cursor-pointer">
+                {i18n._(t`Create lock`)}
+              </a>
+            </NavLink>
+          </div>
+          <div className={`col-span-12`} style={{ minHeight: '35rem' }}>
+            <Card className="h-full bg-dark-900 z-4">
+              <Search
+                placeholder={'Search by name, symbol or address'}
+                term={tokenAddress}
+                search={(value: string): void => {
+                  setTokenAddress(value)
+                }}
+              />
+              {lockers.length == 0 && isAddress(tokenAddress) && (
+                <div className="flex justify-center items-center col-span-12 lg:justify mt-20">
+                  <span>
+                    No lockers found for this address,{' '}
+                    <Link href="/locker/create">
+                      <a className="hover:underline hover:text-yellow">click here</a>
+                    </Link>{' '}
+                    to create one.
+                  </span>
+                </div>
+              )}
+              {lockers.length > 0 && (
+                <div className="grid grid-cols-5 text-base font-bold text-primary mt-10 mb-2">
+                  <div className="flex items-center col-span-2 px-2">
+                    <div className="hover:text-high-emphesis">{i18n._(t`Token`)}</div>
                   </div>
-                )}
-                {lockers.length > 0 && (
-                  <div className="grid grid-cols-5 text-base font-bold text-primary mt-10 mb-2">
-                    <div className="flex items-center col-span-2 px-2">
-                      <div className="hover:text-high-emphesis">{i18n._(t`Token`)}</div>
-                    </div>
-                    <div className="flex items-center ">{i18n._(t`Amount Locked`)}</div>
-                    <div className="items-center justify-end px-2 flex ">{i18n._(t`Unlock date`)}</div>
-                    <div className="items-center justify-end px-2 flex ">{i18n._(t``)}</div>
-                  </div>
-                )}
-                <div className="flex-col">
-                  {lockers.map((locker, index) => {
-                    return (
-                      <Disclosure key={index}>
-                        {() => (
-                          <div className="mb-4">
-                            <Disclosure.Button
-                              className={classNames(
-                                'w-full px-4 py-6 text-left rounded select-none bg-dark-700  text-primary text-sm md:text-lg'
-                              )}
-                            >
-                              <div className="grid grid-cols-5">
-                                <div className="flex col-span-2 items-center">
-                                  {token?.name} ({token?.symbol})
-                                </div>
-                                <div className="flex flex-col justify-center">
-                                  {CurrencyAmount.fromRawAmount(token, locker?.amount).toSignificant(6)}
-                                </div>
-                                <div className="flex flex-col items-end justify-center">
-                                  <div className="text-xs text-right md:text-base text-secondary">
-                                    {moment.unix(locker?.unlockTimestamp.toString()).fromNow()}
-                                  </div>
-                                </div>
-                                <div className="flex flex-col items-end justify-center">
-                                  <div className="text-xs text-right md:text-base text-secondary">
-                                    <Button
-                                      variant="link"
-                                      style={{ width: '100%' }}
-                                      onClick={() => handleWithdraw(locker?.id)}
-                                      disabled={
-                                        moment.unix(locker?.unlockTimestamp.toString()).isAfter(new Date()) ||
-                                        !account ||
-                                        (account && getAddress(account) != getAddress(locker?.withdrawer))
-                                      }
-                                    >
-                                      Withdraw
-                                    </Button>
-                                  </div>
+                  <div className="flex items-center ">{i18n._(t`Amount Locked`)}</div>
+                  <div className="items-center justify-end px-2 flex ">{i18n._(t`Unlock date`)}</div>
+                  <div className="items-center justify-end px-2 flex ">{i18n._(t``)}</div>
+                </div>
+              )}
+              <div className="flex-col">
+                {lockers.map((locker, index) => {
+                  return (
+                    <Disclosure key={index}>
+                      {() => (
+                        <div className="mb-4">
+                          <Disclosure.Button
+                            className={classNames(
+                              'w-full px-4 py-6 text-left rounded select-none bg-dark-700  text-primary text-sm md:text-lg'
+                            )}
+                          >
+                            <div className="grid grid-cols-5">
+                              <div className="flex col-span-2 items-center">
+                                {token?.name} ({token?.symbol})
+                              </div>
+                              <div className="flex flex-col justify-center">
+                                {CurrencyAmount.fromRawAmount(token, locker?.amount).toSignificant(6)}
+                              </div>
+                              <div className="flex flex-col items-end justify-center">
+                                <div className="text-xs text-right md:text-base text-secondary">
+                                  {moment.unix(locker?.unlockTimestamp.toString()).fromNow()}
                                 </div>
                               </div>
-                            </Disclosure.Button>
-                          </div>
-                        )}
-                      </Disclosure>
-                    )
-                  })}
-                </div>
-              </Card>
-            </div>
+                              <div className="flex flex-col items-end justify-center">
+                                <div className="text-xs text-right md:text-base text-secondary">
+                                  <Button
+                                    variant="link"
+                                    style={{ width: '100%' }}
+                                    onClick={() => handleWithdraw(locker?.id)}
+                                    disabled={
+                                      moment.unix(locker?.unlockTimestamp.toString()).isAfter(new Date()) ||
+                                      !account ||
+                                      (account && getAddress(account) != getAddress(locker?.withdrawer))
+                                    }
+                                  >
+                                    Withdraw
+                                  </Button>
+                                </div>
+                              </div>
+                            </div>
+                          </Disclosure.Button>
+                        </div>
+                      )}
+                    </Disclosure>
+                  )
+                })}
+              </div>
+            </Card>
           </div>
-        </DoubleGlowShadow>
-      </div>
+        </div>
+      </DoubleGlowShadow>
     </>
   )
 }

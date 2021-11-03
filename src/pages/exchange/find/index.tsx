@@ -74,7 +74,7 @@ export default function PoolFinder() {
   )
 
   const prerequisiteMessage = (
-    <div className="p-5 text-center rounded bg-dark-800">{i18n._(t`Select a token to find your liquidity`)}</div>
+    <div className="p-5 text-center">{i18n._(t`Select a token to find your liquidity`)}</div>
   )
 
   return (
@@ -83,7 +83,7 @@ export default function PoolFinder() {
         <title>{i18n._(t`Find Pool`)} | Solarbeam</title>
         <meta key="description" name="description" content="Find pool" />
       </Head>
-      <Container maxWidth="2xl" className="space-y-6 sm:pb-16 sm:pt-16">
+      <Container maxWidth="2xl" className="space-y-6 sm:pb-16 sm:pt-28">
         <DoubleGlowShadow>
           <div className="p-4 space-y-4 rounded bg-dark-900" style={{ zIndex: 1 }}>
             <div className="p-4 mb-3 space-y-3 text-center">

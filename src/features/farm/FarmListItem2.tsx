@@ -79,7 +79,7 @@ const FarmListItem2 = ({ farm, ...rest }) => {
             <Disclosure.Button
               className={classNames(
                 open && 'rounded-b-none',
-                'w-full px-4 py-6 text-left rounded cursor-pointer select-none bg-dark-700  text-primary text-sm md:text-lg'
+                'w-full px-4 py-6 text-left rounded-xxl cursor-pointer select-none bg-dark-700  text-primary text-sm md:text-lg'
               )}
             >
               <div className="grid grid-cols-4 ">

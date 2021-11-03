@@ -107,7 +107,7 @@ module.exports = {
         'dark-900': '#080808',
         'dark-850': '#101010',
         'dark-800': '#101010',
-        'dark-700': '#151515',
+        'dark-700': '#231F27',
         'dark-600': '#303030',
         'dark-500': '#404040',
         'low-emphesis': '#575757',
@@ -137,6 +137,8 @@ module.exports = {
         none: '0',
         px: '1px',
         DEFAULT: '0.625rem',
+        xl: '8px',
+        xxl: '16px',
       },
       boxShadow: {
         swap: '0px 50px 250px -47px rgba(39, 176, 230, 0.29)',

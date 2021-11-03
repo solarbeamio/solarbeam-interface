@@ -115,9 +115,9 @@ export default function Eclipse(): JSX.Element {
                       </a>
                     </NavLink>
                   </div>
-                  <div className={'flex flex-1 p-2 rounded flex bg-dark-800 flex-col md:flex-row md:space-x-2'}>
+                  <div className={'flex flex-1 p-2 rounded flex bg-dark-700 flex-col md:flex-row md:space-x-2'}>
                     <Search
-                      className={'bg-dark-800 rounded border border-dark-800'}
+                      className={'bg-dark-700 rounded'}
                       placeholder={'Search by name, symbol or address'}
                       term={term}
                       search={(value: string): void => {

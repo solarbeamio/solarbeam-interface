@@ -1,36 +1,33 @@
 /* eslint-disable @next/next/link-passhref */
-import { useActiveWeb3React, useFuse } from '../../hooks'
-
-import FarmList from '../../features/farm/FarmList'
-import Head from 'next/head'
-import Menu from '../../features/farm/FarmMenu'
 import React, { useContext, useState } from 'react'
-import { formatNumberScale } from '../../functions'
-import { usePositions, useFarms, useDistributorInfo } from '../../features/farm/hooks'
 import { useRouter } from 'next/router'
-import Link from 'next/link'
-import Card from '../../components/Card'
-import Button from '../../components/Button'
+import { getAddress } from '@ethersproject/address'
 import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
+import Head from 'next/head'
+
+import { useActiveWeb3React, useFuse } from '../../hooks'
+import FarmList from '../../features/farm/FarmList'
+import Menu from '../../features/farm/FarmMenu'
+import { formatNumberScale } from '../../functions'
+import { usePositions, useFarms, useDistributorInfo } from '../../features/farm/hooks'
+import Card from '../../components/Card'
+import Button from '../../components/Button'
 import DoubleGlowShadow from '../../components/DoubleGlowShadow'
 import { SOLAR_ADDRESS, AVERAGE_BLOCK_TIME, WNATIVE } from '../../constants'
 import { POOLS } from '../../constants/farms'
-import SolarbeamLogo from '../../components/SolarbeamLogo'
 import { PriceContext } from '../../contexts/priceContext'
 import useMasterChef from '../../features/farm/useMasterChef'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import { useTVL } from '../../hooks/useV2Pairs'
-import { getAddress } from '@ethersproject/address'
 import { useVaults } from '../../features/vault/hooks'
 import Search from '../../components/Search'
+import { Sidebar } from '../../features/farm/FarmSidebar'
 
 export default function Farm(): JSX.Element {
+  const { chainId } = useActiveWeb3React()
   const { i18n } = useLingui()
   const router = useRouter()
-  const { chainId } = useActiveWeb3React()
-  const [pendingTx, setPendingTx] = useState(false)
-  const addTransaction = useTransactionAdder()
 
   const type = router.query.filter as string
 
@@ -43,24 +40,10 @@ export default function Farm(): JSX.Element {
 
   const priceData = useContext(PriceContext)
 
-  const solarPrice = priceData?.['solar']
-  const movrPrice = priceData?.['movr']
+  const solarPrice = priceData?.solar
+  const movrPrice = priceData?.movr
 
   const tvlInfo = useTVL()
-
-  console.log(tvlInfo)
-
-  const farmingPools = Object.keys(POOLS[chainId]).map((key) => {
-    return { ...POOLS[chainId][key], lpToken: key }
-  })
-
-  let summTvl = tvlInfo.reduce((previousValue, currentValue) => {
-    return previousValue + currentValue.tvl
-  }, 0)
-
-  let summTvlVaults = vaults.reduce((previousValue, currentValue) => {
-    return previousValue + (currentValue.totalLp / 1e18) * solarPrice
-  }, 0)
 
   const blocksPerDay = 86400 / Number(AVERAGE_BLOCK_TIME[chainId])
 
@@ -141,14 +124,6 @@ export default function Farm(): JSX.Element {
 
   const FILTER = {
     my: (farm) => farm?.amount && !farm.amount.isZero(),
-    solar: (farm) => farm.pair.token0?.id == SOLAR_ADDRESS[chainId] || farm.pair.token1?.id == SOLAR_ADDRESS[chainId],
-    single: (farm) => !farm.pair.token1,
-    moonriver: (farm) => farm.pair.token0?.id == WNATIVE[chainId] || farm.pair.token1?.id == WNATIVE[chainId],
-    stables: (farm) =>
-      farm.pair.token0?.symbol == 'USDC' ||
-      farm.pair.token1?.symbol == 'USDC' ||
-      farm.pair.token0?.symbol == 'DAI' ||
-      farm.pair.token1?.symbol == 'DAI',
   }
 
   const data = farms.map(map).filter((farm) => {
@@ -165,18 +140,6 @@ export default function Farm(): JSX.Element {
     options,
   })
 
-  const allStaked = positions.reduce((previousValue, currentValue) => {
-    return previousValue + (currentValue.pendingSolar / 1e18) * solarPrice
-  }, 0)
-
-  const valueStaked = positions.reduce((previousValue, currentValue) => {
-    const pool = farmingPools.find((r) => parseInt(r.id.toString()) == parseInt(currentValue.id))
-    const poolTvl = tvlInfo.find((r) => getAddress(r.lpToken) == getAddress(pool?.lpToken))
-    return previousValue + (currentValue.amount / 1e18) * poolTvl?.lpPrice
-  }, 0)
-
-  const { harvest } = useMasterChef()
-
   return (
     <>
       <Head>
@@ -184,90 +147,27 @@ export default function Farm(): JSX.Element {
         <meta key="description" name="description" content="Farm SOLAR" />
       </Head>
 
-      <div className="container px-0 mx-auto sm:pb-16 sm:pt-16">
-        <DoubleGlowShadow maxWidth={false}>
-          <div className={`grid grid-cols-12 gap-2 min-h-1/2`}>
-            <div className={`col-span-12`}>
-              <Card className="bg-dark-900 z-4">
-                <div className={`grid grid-cols-12 md:space-x-4 space-y-4 md:space-y-0 `}>
-                  <div className={`col-span-12 md:col-span-3 space-y-4`}>
-                    <div className={`hidden md:block`}>
-                      <Menu
-                        term={term}
-                        onSearch={(value) => {
-                          search(value)
-                        }}
-                        positionsLength={positions.length}
-                      />
-                    </div>
-                    <div className={`flex flex-col items-center justify-between px-6 py-6 `}>
-                      <div className="flex items-center text-center justify-between py-2 text-emphasis">
-                        Total Value Locked: {formatNumberScale(summTvl + summTvlVaults, true, 2)}
-                      </div>
-                      <div className="flex items-center text-center justify-between py-2 text-emphasis">
-                        Farms TVL: {formatNumberScale(summTvl, true, 2)}
-                      </div>
-                      {positions.length > 0 && (
-                        <div className="flex items-center justify-between py-2 text-emphasis">
-                          My Holdings: {formatNumberScale(valueStaked, true, 2)}
-                        </div>
-                      )}
-                      {positions.length > 0 && (
-                        <Button
-                          color="gradient"
-                          className="text-emphasis"
-                          variant={'flexed'}
-                          size={'nobase'}
-                          disabled={pendingTx}
-                          onClick={async () => {
-                            setPendingTx(true)
-                            for (const pos of positions) {
-                              try {
-                                const tx = await harvest(parseInt(pos.id))
-                                addTransaction(tx, {
-                                  summary: `${i18n._(t`Harvest`)} SOLAR`,
-                                })
-                              } catch (error) {
-                                console.error(error)
-                              }
-                            }
-                            setPendingTx(false)
-                          }}
-                        >
-                          Harvest All (~ {formatNumberScale(allStaked, true, 2)})
-                        </Button>
-                      )}
-                    </div>
-                    <div className={`md:hidden`}>
-                      <Menu
-                        term={term}
-                        onSearch={(value) => {
-                          search(value)
-                        }}
-                        positionsLength={positions.length}
-                      />
-                    </div>
-                  </div>
-                  <div className={`col-span-12 md:col-span-9 py-4 md:px-6 md:py-4 rounded`}>
-                    <div className={'mb-8 px-1 md:px-0'}>
-                      <Search
-                        className={'bg-dark-800 rounded border border-dark-800'}
-                        placeholder={'Search by name, symbol or address'}
-                        term={term}
-                        search={(value: string): void => {
-                          search(value)
-                        }}
-                      />
-                    </div>
-
-                    <FarmList farms={result} term={term} filter={FILTER} />
-                  </div>
-                </div>
-              </Card>
-            </div>
+      <DoubleGlowShadow opacity="0.6" maxWidth={false} className={'container px-0 mx-auto '}>
+        <div className={`z-4 grid grid-cols-12 md:space-x-4 space-y-4 md:space-y-0 pb-12 sm:pt-12 sm:mt-16 mt-4 m-2 `}>
+          <div className={`col-span-12 md:col-span-3 space-y-4`}>
+            <Sidebar tvl={tvlInfo} vaults={vaults} />
           </div>
-        </DoubleGlowShadow>
-      </div>
+          <div className={`col-span-12 md:col-span-9 py-4 md:px-6 md:py-6 shadow bg-dark-900 rounded-xxl`}>
+            <div className={`flex flex-col md:flex-row space-y-4 md:space-x-5 md:space-y-0 mb-8`}>
+              <Menu positionsLength={positions.length} />
+              <Search
+                className={'flex flex-col flex-1 md:flex-row px-1 py-1 bg-dark-700 rounded-xxl'}
+                placeholder={'Search by name, symbol or address'}
+                term={term}
+                search={(value: string): void => {
+                  search(value)
+                }}
+              />
+            </div>
+            <FarmList farms={result} term={term} />
+          </div>
+        </div>
+      </DoubleGlowShadow>
     </>
   )
 }

@@ -1,6 +1,6 @@
 export const SolarEclipse = () => {
   return (
-    <div className="flex container px-0 z-0 mx-auto -mt-96 justify-end">
+    <div className="flex container px-0 z-0 mx-auto -mt-72 justify-end">
       <div className="flex w-full  justify-end space-x-4">
         <div className="flex flex-1 justify-end ">
           <div className={`force-gpu relative w-[600px]`}>

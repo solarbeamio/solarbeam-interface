@@ -345,9 +345,9 @@ export default function Add() {
           content="Add liquidity to the Solarbeam AMM to enable gas optimised and low slippage trades across countless networks"
         />
       </Head>
-      <Container id="remove-liquidity-page" maxWidth="2xl" className="space-y-4 sm:pb-16 sm:pt-16">
+      <Container id="remove-liquidity-page" maxWidth="2xl" className="space-y-4 sm:pb-16 sm:pt-28">
         <DoubleGlowShadow>
-          <div className="p-4 space-y-4 rounded bg-dark-900" style={{ zIndex: 1 }}>
+          <div className="p-4 space-y-4 rounded-xxl bg-dark-900" style={{ zIndex: 1 }}>
             <ExchangeHeader
               input={currencies[Field.CURRENCY_A]}
               output={currencies[Field.CURRENCY_B]}
@@ -509,14 +509,14 @@ export default function Add() {
               />
             )}
           </div>
+          <div className="flex items-center px-4 mt-4">
+            <NavLink href="/exchange/pool">
+              <a className="flex items-center space-x-2 font-medium text-center cursor-pointer text-base hover:text-high-emphesis">
+                <span>{i18n._(t`View Liquidity Positions`)}</span>
+              </a>
+            </NavLink>
+          </div>
         </DoubleGlowShadow>
-        <div className="flex items-center px-4">
-          <NavLink href="/exchange/pool">
-            <a className="flex items-center space-x-2 font-medium text-center cursor-pointer text-base hover:text-high-emphesis">
-              <span>{i18n._(t`View Liquidity Positions`)}</span>
-            </a>
-          </NavLink>
-        </div>
       </Container>
     </>
   )

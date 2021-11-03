@@ -135,57 +135,55 @@ export default function Vault(): JSX.Element {
         <meta key="description" name="description" content="Solar Vaults" />
       </Head>
 
-      <div className="container px-0 mx-auto sm:pb-16 sm:pt-16">
-        <DoubleGlowShadow maxWidth={false}>
-          <div className={`grid grid-cols-12 gap-2 min-h-1/2`}>
-            <div className={`col-span-12`}>
-              <Card className="bg-dark-900 z-4">
-                <div className={`grid grid-cols-12 md:space-x-4 space-y-4 md:space-y-0 `}>
-                  <div className={`col-span-12 md:col-span-3 space-y-4`}>
-                    <div className={`hidden md:block`}>
-                      <div className={`col-span-12 md:col-span-4 bg-dark-800 px-6 py-4 rounded`}>
-                        <div className="mb-2 text-2xl text-emphesis">{i18n._(t`Solar Vault`)}</div>
-                        <div className="mb-4 text-base text-secondary">
-                          <p>
-                            {i18n._(
-                              t`Solar Vault is a set of high incentivized pools. Long term supporters can choose to lock SOLAR for a determined period for higher rewards.`
-                            )}
-                          </p>
-                          <p className="mt-2">
-                            {i18n._(
-                              t`The participants receive various benefits such as higher rewards according to lock duration, higher allocations in Solar Launchpad and more.`
-                            )}
-                          </p>
-                        </div>
-                        <div className="mb-2 text-2xl text-emphesis">{i18n._(t`Considerations`)}</div>{' '}
-                        <div className="mb-4 text-base text-secondary">
-                          <p>{i18n._(t`Everytime you stake or claim rewards your lock time renews.`)}</p>
-                        </div>
+      <DoubleGlowShadow opacity="0.6" maxWidth={false} className={'container px-0 mx-auto '}>
+        <div className={`z-4 grid grid-cols-12 md:space-x-4 space-y-4 md:space-y-0 sm:pb-12 sm:pt-12 sm:mt-16 `}>
+          <div className={`col-span-12`}>
+            <Card className="bg-dark-900 z-4">
+              <div className={`grid grid-cols-12 md:space-x-4 space-y-4 md:space-y-0 `}>
+                <div className={`col-span-12 md:col-span-3 space-y-4`}>
+                  <div className={`hidden md:block`}>
+                    <div className={`col-span-12 md:col-span-4 bg-dark-800 px-6 py-4 rounded`}>
+                      <div className="mb-2 text-2xl text-emphesis">{i18n._(t`Solar Vault`)}</div>
+                      <div className="mb-4 text-base text-secondary">
+                        <p>
+                          {i18n._(
+                            t`Solar Vault is a set of high incentivized pools. Long term supporters can choose to lock SOLAR for a determined period for higher rewards.`
+                          )}
+                        </p>
+                        <p className="mt-2">
+                          {i18n._(
+                            t`The participants receive various benefits such as higher rewards according to lock duration, higher allocations in Solar Launchpad and more.`
+                          )}
+                        </p>
                       </div>
-                    </div>
-                    <div className={`flex flex-col items-center justify-between px-6 py-6 `}>
-                      <div className="flex items-center justify-between py-2 text-emphasis">
-                        Total Value Locked: {formatNumberScale(summTvl + summTvlVaults, true, 2)}
+                      <div className="mb-2 text-2xl text-emphesis">{i18n._(t`Considerations`)}</div>{' '}
+                      <div className="mb-4 text-base text-secondary">
+                        <p>{i18n._(t`Everytime you stake or claim rewards your lock time renews.`)}</p>
                       </div>
-                      <div className="flex items-center justify-between py-2 text-emphasis">
-                        Vaults TVL: {formatNumberScale(summTvlVaults, true, 2)}
-                      </div>
-                      {positions.length > 0 && (
-                        <div className="flex items-center justify-between py-2 text-emphasis">
-                          My Holdings: {formatNumberScale(valueStaked, true, 2)}
-                        </div>
-                      )}
                     </div>
                   </div>
-                  <div className={`col-span-12 md:col-span-9 bg-dark-800  py-4 md:px-6 md:py-4 rounded`}>
-                    <VaultList farms={data} />
+                  <div className={`flex flex-col items-center justify-between px-6 py-6 `}>
+                    <div className="flex items-center justify-between py-2 text-emphasis">
+                      Total Value Locked: {formatNumberScale(summTvl + summTvlVaults, true, 2)}
+                    </div>
+                    <div className="flex items-center justify-between py-2 text-emphasis">
+                      Vaults TVL: {formatNumberScale(summTvlVaults, true, 2)}
+                    </div>
+                    {positions.length > 0 && (
+                      <div className="flex items-center justify-between py-2 text-emphasis">
+                        My Holdings: {formatNumberScale(valueStaked, true, 2)}
+                      </div>
+                    )}
                   </div>
                 </div>
-              </Card>
-            </div>
+                <div className={`col-span-12 md:col-span-9 bg-dark-800  py-4 md:px-6 md:py-4 rounded`}>
+                  <VaultList farms={data} />
+                </div>
+              </div>
+            </Card>
           </div>
-        </DoubleGlowShadow>
-      </div>
+        </div>
+      </DoubleGlowShadow>
     </>
   )
 }

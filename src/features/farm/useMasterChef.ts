@@ -1,19 +1,18 @@
-import { useActiveWeb3React, useSolarDistributorContract } from '../../hooks'
+import { useSolarDistributorContract } from '../../hooks'
 
 import { BigNumber } from '@ethersproject/bignumber'
 import { Zero } from '@ethersproject/constants'
 import { useCallback } from 'react'
 
 export default function useMasterChef() {
-
   const contract = useSolarDistributorContract()
 
   // Deposit
   const deposit = useCallback(
     async (pid: number, amount: BigNumber) => {
       try {
-        debugger;
-        return await contract?.deposit(pid, amount.toString());
+        debugger
+        return await contract?.deposit(pid, amount.toString())
       } catch (e) {
         console.error(e)
         return e
@@ -26,7 +25,7 @@ export default function useMasterChef() {
   const withdraw = useCallback(
     async (pid: number, amount: BigNumber) => {
       try {
-        return await contract?.withdraw(pid, amount);
+        return await contract?.withdraw(pid, amount)
       } catch (e) {
         console.error(e)
         return e
@@ -38,7 +37,7 @@ export default function useMasterChef() {
   const harvest = useCallback(
     async (pid: number) => {
       try {
-        return await contract?.deposit(pid, Zero);
+        return await contract?.deposit(pid, Zero)
       } catch (e) {
         console.error(e)
         return e

@@ -6,36 +6,27 @@ export const TIMELOCK_ADDRESS = '0x1a9C8182C09F50C8318d769245beA52c32BE35BC'
 export const FAUCET_ADDRESS = '0x5aec27384DbE84d46C29A20DFeFF09493711CD15'
 
 export const LOCKER_ADDRESS: AddressMap = {
-  [ChainId.ROPSTEN]: '',
-  [ChainId.BSC]: '',
   [ChainId.MOONRIVER]: '0xA9Ead5d7C9D0B59A2900824A125F3913009fD638',
 }
 
 export const SOLAR_DISTRIBUTOR_ADDRESS: AddressMap = {
-  [ChainId.ROPSTEN]: '',
-  [ChainId.BSC]: '',
   [ChainId.MOONRIVER]: '0xf03b75831397D4695a6b9dDdEEA0E578faa30907',
 }
+
 
 export const SOLAR_VAULT_ADDRESS: AddressMap = {
   [ChainId.MOONRIVER]: '0x7e6E03822D0077F3C417D33caeAc900Fc2645679',
 }
 
 export const SOLAR_MOVR_PAIR: AddressMap = {
-  [ChainId.ROPSTEN]: '',
-  [ChainId.BSC]: '',
   [ChainId.MOONRIVER]: '0x7eDA899b3522683636746a2f3a7814e6fFca75e1',
 }
 
 export const MOVR_USDC_PAIR: AddressMap = {
-  [ChainId.ROPSTEN]: '',
-  [ChainId.BSC]: '',
   [ChainId.MOONRIVER]: '0xe537f70a8b62204832B8Ba91940B77d3f79AEb81',
 }
 
 export const RIB_MOVR_PAIR: AddressMap = {
-  [ChainId.ROPSTEN]: '',
-  [ChainId.BSC]: '',
   [ChainId.MOONRIVER]: '0x0acDB54E610dAbC82b8FA454b21AD425ae460DF9',
 }
 
