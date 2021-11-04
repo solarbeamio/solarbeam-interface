@@ -217,6 +217,14 @@
       "decimals": 18,
       "chainId": 1285,
       "logoURI": "https://app.solarbeam.io/images/tokens/rivrdoge.png"
+    },
+    {
+      "name": "Frax",
+      "address": "0x965f84d915a9efa2dd81b653e3ae736555d945f4",
+      "symbol": "FRAX",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://app.solarbeam.io/images/tokens/frax.png"
     }
   ]
 }
