@@ -84,13 +84,13 @@ async function isBlacklisted(addr, ip) {
   try {
     ref = await client.query(q.Get(q.Match(q.Index('address'), addr)))
   } catch (ex) {
-    // try {
-    //   ref = await client.query(q.Get(q.Match(q.Index('ip'), ip)))
-    //   const timeLimit = parseInt(serverRuntimeConfig.faucetTimeLimit) * 60 * 1000
-    //   if (ref && ref.data.timestamp < Date.now() - timeLimit) result = false
-    // } catch (ex) {
-    result = false
-    // }
+    try {
+      ref = await client.query(q.Get(q.Match(q.Index('ip'), ip)))
+      const timeLimit = parseInt(serverRuntimeConfig.faucetTimeLimit) * 60 * 1000
+      if (ref && ref.data.timestamp < Date.now() - timeLimit) result = false
+    } catch (ex) {
+      result = false
+    }
   }
   return result
 }
