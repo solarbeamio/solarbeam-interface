@@ -359,7 +359,7 @@ export const POOLS: AddressMap = {
     '0x56d095C15706e1199A2402373066700385DB5372': {
       id: 21,
       token0: {
-        id: '0x965f84d915a9efa2dd81b653e3ae736555d945f4',
+        id: '0x965f84D915a9eFa2dD81b653e3AE736555d945f4',
         name: 'Frax',
         symbol: 'FRAX',
         decimals: 18,
