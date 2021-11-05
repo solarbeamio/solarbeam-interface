@@ -217,6 +217,14 @@
       "decimals": 18,
       "chainId": 1285,
       "logoURI": "https://app.solarbeam.io/images/tokens/rivrdoge.png"
+    },
+    {
+      "name": "RivrShiba",
+      "address": "0x3d593056F3e34dB7A4720d7F171447C489CFa195",
+      "symbol": "RivrShib",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://app.solarbeam.io/images/tokens/rivrshiba.png"
     }
   ]
 }
