@@ -21,6 +21,8 @@ import { getAddress } from '@ethersproject/address'
 import VaultList from '../../features/vault/VaultList'
 import { Sidebar } from '../../features/vault/VaultSidebar'
 import Menu from '../../features/vault/VaultMenu'
+import { useFarms, usePairPrices } from '../../features/farm/hooks'
+import { POOLS } from '../../constants/farms'
 
 export default function Vault(): JSX.Element {
   const { i18n } = useLingui()
@@ -29,9 +31,38 @@ export default function Vault(): JSX.Element {
 
   const type = router.query.filter as string
 
+  const vaults = useVaults()
+  const farms = useFarms()
+  const pairPrices = usePairPrices()
   const positions = usePositions()
 
-  const vaults = useVaults()
+  const mapFarms = (pool) => {
+    const pair = POOLS[chainId][pool.lpToken]
+    const position = positions.find((position) => position.id === pool.id)
+    const pairPrice = pairPrices.find((item) => item.token == pool.lpToken)
+
+    const tvl = (pool?.totalLp / 10 ** pair?.decimals) * pairPrice?.price
+    const roiPerYear =
+      (pool?.rewards?.reduce((previousValue, currentValue) => {
+        return previousValue + currentValue.rewardPerDay * currentValue.rewardPrice
+      }, 0) /
+        tvl) *
+      365
+
+    return {
+      ...pool,
+      ...position,
+      tvl,
+      price: pairPrice?.price,
+      roiPerYear,
+      pair: {
+        ...pair,
+        decimals: 18,
+      },
+    }
+  }
+
+  const farmsData = farms.map(mapFarms)
 
   const distributorInfo = useSolarVaultInfo()
 
@@ -41,14 +72,6 @@ export default function Vault(): JSX.Element {
   const movrPrice = priceData?.['movr']
 
   const tvlInfo = useTVL()
-
-  const summTvl = tvlInfo.reduce((previousValue, currentValue) => {
-    return previousValue + currentValue.tvl
-  }, 0)
-
-  const summTvlVaults = vaults.reduce((previousValue, currentValue) => {
-    return previousValue + (currentValue.totalLp / 1e18) * solarPrice
-  }, 0)
 
   const blocksPerDay = 86400 / Number(AVERAGE_BLOCK_TIME[chainId])
 
@@ -149,7 +172,7 @@ export default function Vault(): JSX.Element {
       <DoubleGlowShadow opacity="0.6" maxWidth={false} className={'container px-0 mx-auto '}>
         <div className={`z-4 grid grid-cols-12 md:space-x-4 space-y-4 md:space-y-0 pb-12 sm:pt-12 sm:mt-16 mt-4 m-2 `}>
           <div className={`col-span-12 md:col-span-3 space-y-4`}>
-            <Sidebar tvl={tvlInfo} vaults={vaults} />
+            <Sidebar farms={farmsData} vaults={vaults} />
           </div>
           <div className={`col-span-12 md:col-span-9 py-4 md:px-6 md:py-6 shadow bg-dark-900 rounded-xxl`}>
             <div className={`flex flex-col md:flex-row space-y-4 md:space-x-5 md:space-y-0 mb-8`}>

@@ -6,7 +6,7 @@ import { usePositions } from './hooks'
 import { PriceContext } from '../../contexts/priceContext'
 import Typography from '../../components/Typography'
 
-export const Sidebar = ({ tvl, vaults }) => {
+export const Sidebar = ({ farms, vaults }) => {
   const { chainId } = useActiveWeb3React()
   const { i18n } = useLingui()
   const positions = usePositions()
@@ -15,7 +15,7 @@ export const Sidebar = ({ tvl, vaults }) => {
 
   const solarPrice = priceData?.solar
 
-  let summTvl = tvl.reduce((previousValue, currentValue) => {
+  let summTvl = farms.reduce((previousValue, currentValue) => {
     return previousValue + currentValue.tvl
   }, 0)
 
@@ -34,8 +34,8 @@ export const Sidebar = ({ tvl, vaults }) => {
           Vaults
         </Typography>
         <Typography variant="base" className={'text-emphasis'}>
-          Solar Vaults are high incentivized pools. Long term supporters can choose to lock SOLAR for a determined
-          period for higher rewards and increased multipliers for Eclipse.{' '}
+          Long term supporters can choose to lock SOLAR for a determined period for higher rewards and increased
+          multipliers for Eclipse.{' '}
           <a
             className="text-purple cursor-pointer"
             href="https://docs.solarbeam.io/getting-started/vaults"
