@@ -1,7 +1,7 @@
 import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
 import { Currency } from '../../sdk'
-import React from 'react'
+import React, { useContext } from 'react'
 import { formatNumberScale, formatPercent } from '../../functions'
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
@@ -12,40 +12,29 @@ import DoubleLogo from '../DoubleLogo'
 import Modal from '../Modal'
 import ModalHeader from '../ModalHeader'
 import Typography from '../Typography'
+import { PriceContext } from '../../contexts/priceContext'
 
 interface YieldDetailsProps {
   isOpen: boolean
   onDismiss: () => void
   token0: Currency
   token1?: Currency
-  roiPerDay: number
-  roiPerMonth: number
   roiPerYear: number
-  lpPrice: number
-  solarPrice: number
 }
 
-const YieldDetails: React.FC<YieldDetailsProps> = ({
-  isOpen,
-  onDismiss,
-  token0,
-  token1,
-  roiPerDay,
-  roiPerMonth,
-  roiPerYear,
-  lpPrice,
-  solarPrice,
-}) => {
-  const { chainId } = useActiveWeb3React()
+const YieldDetails: React.FC<YieldDetailsProps> = ({ isOpen, onDismiss, token0, token1, roiPerYear }) => {
+  const priceData = useContext(PriceContext)
 
   const { i18n } = useLingui()
 
+  const roiPerDay: number = roiPerYear / 365
   const roiPerWeek: number = roiPerDay * 7
+  const roiPerMonth: number = roiPerYear / 12
 
-  const perDay: number = Number((1000 * roiPerDay) / solarPrice)
-  const perWeek: number = Number((1000 * roiPerWeek) / solarPrice)
-  const perMonth: number = Number((1000 * roiPerMonth) / solarPrice)
-  const perYear: number = Number((1000 * roiPerYear) / solarPrice)
+  const perDay: number = Number((1000 * roiPerDay) / priceData?.solar)
+  const perWeek: number = Number((1000 * roiPerWeek) / priceData?.solar)
+  const perMonth: number = Number((1000 * roiPerMonth) / priceData?.solar)
+  const perYear: number = Number((1000 * roiPerYear) / priceData?.solar)
 
   const getRoiEntry = (period: string, percent: number, value: Number) => {
     return (

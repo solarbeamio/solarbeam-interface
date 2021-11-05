@@ -12,10 +12,9 @@ import Button from '../../components/Button'
 import useMasterChef from './useMasterChef'
 import Typography from '../../components/Typography'
 
-export const Sidebar = ({ tvl, vaults }) => {
+export const Sidebar = ({ positions, farms, vaults }) => {
   const { chainId } = useActiveWeb3React()
   const { i18n } = useLingui()
-  const positions = usePositions()
   const { harvest } = useMasterChef()
 
   const [pendingTx, setPendingTx] = useState(false)
@@ -25,8 +24,10 @@ export const Sidebar = ({ tvl, vaults }) => {
 
   const solarPrice = priceData?.solar
 
-  let summTvl = tvl.reduce((previousValue, currentValue) => {
-    return previousValue + currentValue.tvl
+  console.log(farms)
+
+  let summTvl = farms?.reduce((previousValue, currentValue) => {
+    return previousValue + (isNaN(currentValue?.tvl) ? 0 : currentValue?.tvl)
   }, 0)
 
   let summTvlVaults = vaults.reduce((previousValue, currentValue) => {
@@ -43,8 +44,8 @@ export const Sidebar = ({ tvl, vaults }) => {
 
   const valueStaked = positions.reduce((previousValue, currentValue) => {
     const pool = farmingPools.find((r) => parseInt(r.id.toString()) == parseInt(currentValue.id))
-    const poolTvl = tvl.find((r) => getAddress(r.lpToken) == getAddress(pool?.lpToken))
-    return previousValue + (currentValue.amount / 1e18) * poolTvl?.lpPrice
+    const poolTvl = farms.find((r) => getAddress(r.lpToken) == getAddress(pool?.lpToken))
+    return previousValue + (currentValue.amount / 1e18) * poolTvl?.price
   }, 0)
 
   return (

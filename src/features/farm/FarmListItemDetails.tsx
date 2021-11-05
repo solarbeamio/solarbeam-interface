@@ -1,14 +1,11 @@
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
-import { ChainId, MASTERCHEF_ADDRESS, Token, ZERO } from '../../sdk'
-import { Chef, PairType } from './enum'
+import { Token, ZERO } from '../../sdk'
 import { Disclosure, Transition } from '@headlessui/react'
 import React, { useState } from 'react'
 import { usePendingSolar, useUserInfo } from './hooks'
-
 import Button from '../../components/Button'
 import Dots from '../../components/Dots'
-import { MASTERCHEF_V2_ADDRESS } from '../../constants'
-import { SOLAR_DISTRIBUTOR_ADDRESS, MINICHEF_ADDRESS } from '../../constants/addresses'
+import { SOLAR_DISTRIBUTOR_ADDRESS } from '../../constants/addresses'
 import { Input as NumericalInput } from '../../components/NumericalInput'
 import { formatNumber, formatNumberScale, formatPercent } from '../../functions'
 import { getAddress } from '@ethersproject/address'
@@ -17,10 +14,8 @@ import { tryParseAmount } from '../../functions/parse'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { useLingui } from '@lingui/react'
 import useMasterChef from './useMasterChef'
-import usePendingReward from './usePendingReward'
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { useTransactionAdder } from '../../state/transactions/hooks'
-import { useToken } from '../../hooks/Tokens'
 import { isMobile } from 'react-device-detect'
 
 const FarmListItem = ({ farm }) => {
@@ -49,14 +44,14 @@ const FarmListItem = ({ farm }) => {
 
   const pendingSolar = usePendingSolar(farm)
 
-  const reward = usePendingReward(farm)
-
   const typedDepositValue = tryParseAmount(depositValue, liquidityToken)
   const typedWithdrawValue = tryParseAmount(withdrawValue, liquidityToken)
 
   const [approvalState, approve] = useApproveCallback(typedDepositValue, SOLAR_DISTRIBUTOR_ADDRESS[chainId])
 
   const { deposit, withdraw, harvest } = useMasterChef()
+
+  console.log(farm?.totalLp?.toString())
 
   return (
     <Transition
@@ -71,16 +66,16 @@ const FarmListItem = ({ farm }) => {
       <Disclosure.Panel className="flex flex-col w-full border-t-0 rounded rounded-t-none bg-dark-800" static>
         <div className="grid grid-cols-2 gap-4 p-4">
           <div className="col-span-2 text-center md:col-span-1">
-            {farm.depositFeeBP && (
-              <div className="pr-4 mb-2 text-left cursor-pointer text-red">{`${i18n._(t`Deposit Fee`)}: ${formatPercent(
+            {farm?.depositFeeBP > 0 ? (
+              <div className="pr-4 mb-2 text-left text-red">{`${i18n._(t`Deposit Fee`)}: ${formatPercent(
                 farm.depositFeeBP / 100
               )}`}</div>
-            )}
+            ) : null}
             {account && (
               <div className="pr-4 mb-2 text-left cursor-pointer text-secondary">
                 {i18n._(t`Wallet Balance`)}: {formatNumberScale(balance?.toSignificant(4, undefined, 2) ?? 0, false, 4)}
-                {farm.lpPrice && balance
-                  ? ` (` + formatNumberScale(farm.lpPrice * Number(balance?.toFixed(18) ?? 0), true, 2) + `)`
+                {farm.price && balance
+                  ? ` (` + formatNumberScale(farm.price * Number(balance?.toFixed(18) ?? 0), true, 2) + `)`
                   : ``}
               </div>
             )}
@@ -159,14 +154,12 @@ const FarmListItem = ({ farm }) => {
             )}
           </div>
           <div className="col-span-2 text-center md:col-span-1">
-            {farm.depositFeeBP && !isMobile && (
-              <div className="pr-4 mb-2 text-left cursor-pointer text-secondary" style={{ height: '24px' }} />
-            )}
+            {farm?.depositFeeBP > 0 && !isMobile ? <div className="pr-4 mb-2 " style={{ height: '24px' }} /> : null}
             {account && (
               <div className="pr-4 mb-2 text-left cursor-pointer text-secondary">
                 {i18n._(t`Your Staked`)}: {formatNumberScale(amount?.toSignificant(6)) ?? 0}
-                {farm.lpPrice && amount
-                  ? ` (` + formatNumberScale(farm.lpPrice * Number(amount?.toSignificant(18) ?? 0), true, 2) + `)`
+                {farm.price && amount
+                  ? ` (` + formatNumberScale(farm.price * Number(amount?.toSignificant(18) ?? 0), true, 2) + `)`
                   : ``}
               </div>
             )}

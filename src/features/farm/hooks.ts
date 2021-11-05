@@ -1,8 +1,20 @@
-import { CurrencyAmount, JSBI, MASTERCHEF_ADDRESS } from '../../sdk'
+import { ChainId, CurrencyAmount, JSBI, MASTERCHEF_ADDRESS } from '../../sdk'
 import { Chef } from './enum'
-import { SOLAR, MASTERCHEF_V2_ADDRESS, MINICHEF_ADDRESS } from '../../constants'
-import { NEVER_RELOAD, useSingleCallResult, useSingleContractMultipleData } from '../../state/multicall/hooks'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import {
+  SOLAR,
+  MASTERCHEF_V2_ADDRESS,
+  MINICHEF_ADDRESS,
+  SOLAR_ADDRESS,
+  SOLAR_DISTRIBUTOR_ADDRESS,
+  AVERAGE_BLOCK_TIME,
+} from '../../constants'
+import {
+  NEVER_RELOAD,
+  useMultipleContractSingleData,
+  useSingleCallResult,
+  useSingleContractMultipleData,
+} from '../../state/multicall/hooks'
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import {
   useSolarDistributorContract,
   useBNBPairContract,
@@ -12,13 +24,25 @@ import {
   useRibMovrContract,
 } from '../../hooks'
 
+import IUniswapV2PairABI from '@sushiswap/core/abi/IUniswapV2Pair.json'
 import { Contract } from '@ethersproject/contracts'
 import { Zero } from '@ethersproject/constants'
+import { Interface } from '@ethersproject/abi'
 import { useActiveWeb3React } from '../../hooks/useActiveWeb3React'
 import zip from 'lodash/zip'
 import { useToken } from '../../hooks/Tokens'
 import { useVaultInfo, useVaults } from '../vault/hooks'
+import { POOLS, TokenInfo } from '../../constants/farms'
+import { PriceContext } from '../../contexts/priceContext'
+import { concat } from 'lodash'
 const { default: axios } = require('axios')
+
+const PAIR_INTERFACE = new Interface(IUniswapV2PairABI)
+
+export interface PairPrices {
+  token: string
+  price: number
+}
 
 export function useChefContract(chef: Chef) {
   const solarDistributorContract = useSolarDistributorContract()
@@ -152,7 +176,16 @@ export function usePositions() {
 }
 
 export function useSolarFarms(contract?: Contract | null) {
-  const { account } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
+  const priceData = useContext(PriceContext)
+
+  const blocksPerDay = 86400 / Number(AVERAGE_BLOCK_TIME[chainId])
+
+  const solarPerBlock = useSingleCallResult(contract ? contract : null, 'solarPerBlock', undefined, NEVER_RELOAD)
+    ?.result?.[0]
+
+  const totalAllocPoint = useSingleCallResult(contract ? contract : null, 'totalAllocPoint', undefined, NEVER_RELOAD)
+    ?.result?.[0]
 
   const numberOfPools = useSingleCallResult(contract ? contract : null, 'poolLength', undefined, NEVER_RELOAD)
     ?.result?.[0]
@@ -170,17 +203,28 @@ export function useSolarFarms(contract?: Contract | null) {
     if (!poolInfo) {
       return []
     }
-    return zip(poolInfo).map((data, i) => ({
-      id: args[i][0],
-      lpToken: data[0].result?.['lpToken'] || '',
-      allocPoint: data[0].result?.['allocPoint'] || '',
-      lastRewardBlock: data[0].result?.['lastRewardBlock'] || '',
-      accSolarPerShare: data[0].result?.['accSolarPerShare'] || '',
-      depositFeeBP: data[0].result?.['depositFeeBP'] || '',
-      harvestInterval: data[0].result?.['harvestInterval'] || '',
-      totalLp: data[0].result?.['totalLp'] || '',
-    }))
-  }, [args, poolInfo])
+    return zip(poolInfo).map((data, i) => {
+      const pool = data[0].result
+      return {
+        id: args[i][0],
+        lpToken: pool?.lpToken,
+        allocPoint: pool?.allocPoint,
+        lastRewardBlock: pool?.lastRewardBlock,
+        accSolarPerShare: pool?.accSolarPerShare,
+        depositFeeBP: pool?.depositFeeBP,
+        harvestInterval: pool?.harvestInterval,
+        totalLp: pool?.totalLp,
+        rewards: [
+          {
+            token: 'SOLAR',
+            icon: '/images/token/solar.png',
+            rewardPerDay: (((pool?.allocPoint / totalAllocPoint) * solarPerBlock) / 1e18) * blocksPerDay,
+            rewardPrice: priceData?.solar,
+          },
+        ],
+      }
+    })
+  }, [args, blocksPerDay, poolInfo, priceData?.solar, solarPerBlock, totalAllocPoint])
 }
 
 const useAsync = (asyncFunction, immediate = true) => {
@@ -339,4 +383,109 @@ export function useSolarDistributorInfo(contract) {
 
 export function useDistributorInfo() {
   return useSolarDistributorInfo(useSolarDistributorContract())
+}
+
+export function usePairPrices(): PairPrices[] {
+  const { chainId } = useActiveWeb3React()
+  const priceData = useContext(PriceContext)
+
+  const solarPrice = priceData?.solar
+  const movrPrice = priceData?.movr
+  const ribPrice = priceData?.rib
+
+  const farmingPools = Object.keys(POOLS[ChainId.MOONRIVER]).map((key) => {
+    return { ...POOLS[ChainId.MOONRIVER][key], lpToken: key }
+  })
+
+  const singlePools = farmingPools.filter((r) => !r.token1)
+  const lpPools = farmingPools.filter((r) => !!r.token1)
+  const pairAddresses = lpPools.map((r) => r.lpToken)
+
+  const results = useMultipleContractSingleData(pairAddresses, PAIR_INTERFACE, 'getReserves')
+  const totalSupply = useMultipleContractSingleData(pairAddresses, PAIR_INTERFACE, 'totalSupply')
+
+  return useMemo(() => {
+    function isKnownToken(token: TokenInfo) {
+      return (
+        token.id.toLowerCase() == SOLAR_ADDRESS[chainId].toLowerCase() ||
+        token.symbol == 'WMOVR' ||
+        token.symbol == 'MOVR' ||
+        token.symbol == 'RIB' ||
+        token.symbol == 'USDC' ||
+        token.symbol == 'BUSD'
+      )
+    }
+
+    function getPrice(token: TokenInfo) {
+      if (token.id.toLowerCase() == SOLAR_ADDRESS[chainId].toLowerCase()) {
+        return solarPrice
+      }
+      if (token.symbol == 'WMOVR' || token.symbol == 'MOVR') {
+        return movrPrice
+      }
+      if (token.symbol == 'RIB' || token.symbol == 'RIB') {
+        return ribPrice
+      }
+      if (token.symbol == 'USDC' || token.symbol == 'BUSD') {
+        return 1
+      }
+      return 0
+    }
+
+    const lpTVL = results.map((result, i) => {
+      const { result: reserves, loading } = result
+
+      let { token0, token1, lpToken } = lpPools[i]
+
+      token0 = token0.id.toLowerCase() < token1.id.toLowerCase() ? token0 : token1
+      token1 = token0.id.toLowerCase() < token1.id.toLowerCase() ? token1 : token0
+
+      if (loading) return { token: lpToken, price: 0 }
+      if (!reserves) return { token: lpToken, price: 0 }
+
+      const { reserve0, reserve1 } = reserves
+
+      const lpTotalSupply = totalSupply[i]?.result?.[0]
+
+      const token0price = getPrice(token0)
+      const token1price = getPrice(token1)
+
+      const token0total = Number(Number(token0price * (Number(reserve0) / 10 ** token0?.decimals)).toString())
+      const token1total = Number(Number(token1price * (Number(reserve1) / 10 ** token1?.decimals)).toString())
+
+      let lpTotalPrice = Number(token0total + token1total)
+
+      if (isKnownToken(token0)) {
+        lpTotalPrice = token0total * 2
+      } else if (isKnownToken(token1)) {
+        lpTotalPrice = token1total * 2
+      }
+      let price = lpTotalPrice / (lpTotalSupply / 10 ** 18)
+
+      if (isNaN(price)) {
+        price = 0
+      }
+
+      return {
+        token: lpToken,
+        price,
+      }
+    })
+
+    const singleTVL = singlePools.map((result, i) => {
+      const { token0, lpToken } = singlePools[i]
+
+      if (!result) return { token: lpToken, price: 0 }
+
+      const token0price = getPrice(token0)
+      const price = token0price
+
+      return {
+        token: lpToken,
+        price,
+      }
+    })
+
+    return concat(singleTVL, lpTVL)
+  }, [results, chainId, solarPrice, movrPrice, ribPrice, totalSupply, lpPools, singlePools])
 }

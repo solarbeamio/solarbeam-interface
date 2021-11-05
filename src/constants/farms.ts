@@ -13,6 +13,7 @@ type PairInfo = {
   token1?: TokenInfo
   name?: string
   symbol?: string
+  decimals?: number
 }
 
 type AddressMap = {
@@ -39,6 +40,7 @@ export const POOLS: AddressMap = {
       },
       name: 'Solarbeam LP',
       symbol: 'SLP',
+      decimals: 18,
     },
     '0x6bD193Ee6D2104F14F94E2cA6efefae561A4334B': {
       id: 1,
@@ -48,6 +50,7 @@ export const POOLS: AddressMap = {
         symbol: 'SOLAR',
         decimals: 18,
       },
+      decimals: 18,
     },
     '0x98878B06940aE243284CA214f92Bb71a2b032B8A': {
       id: 2,
@@ -57,6 +60,7 @@ export const POOLS: AddressMap = {
         symbol: 'WMOVR',
         decimals: 18,
       },
+      decimals: 18,
     },
     '0xf9b7495b833804e4d894fC5f7B39c10016e0a911': {
       id: 3,
@@ -74,6 +78,7 @@ export const POOLS: AddressMap = {
       },
       name: 'Solarbeam LP',
       symbol: 'SLP',
+      decimals: 18,
     },
     '0x0acDB54E610dAbC82b8FA454b21AD425ae460DF9': {
       id: 4,
@@ -91,6 +96,7 @@ export const POOLS: AddressMap = {
       },
       name: 'Solarbeam LP',
       symbol: 'SLP',
+      decimals: 18,
     },
     '0xbD90A6125a84E5C512129D622a75CDDE176aDE5E': {
       id: 5,
@@ -100,6 +106,7 @@ export const POOLS: AddressMap = {
         symbol: 'RIB',
         decimals: 18,
       },
+      decimals: 18,
     },
     '0xe537f70a8b62204832B8Ba91940B77d3f79AEb81': {
       id: 6,
@@ -117,6 +124,7 @@ export const POOLS: AddressMap = {
       },
       name: 'Solarbeam LP',
       symbol: 'SLP',
+      decimals: 18,
     },
     '0xdb66BE1005f5Fe1d2f486E75cE3C50B52535F886': {
       id: 7,
@@ -134,6 +142,7 @@ export const POOLS: AddressMap = {
       },
       name: 'Solarbeam LP',
       symbol: 'SLP',
+      decimals: 18,
     },
     '0xFE1b71BDAEE495dCA331D28F5779E87bd32FbE53': {
       id: 8,
@@ -151,6 +160,7 @@ export const POOLS: AddressMap = {
       },
       name: 'Solarbeam LP',
       symbol: 'SLP',
+      decimals: 18,
     },
     '0x384704557F73fBFAE6e9297FD1E6075FC340dbe5': {
       id: 9,
@@ -168,6 +178,7 @@ export const POOLS: AddressMap = {
       },
       name: 'Solarbeam LP',
       symbol: 'SLP',
+      decimals: 18,
     },
     '0xA0D8DFB2CC9dFe6905eDd5B71c56BA92AD09A3dC': {
       id: 10,
@@ -185,6 +196,7 @@ export const POOLS: AddressMap = {
       },
       name: 'Solarbeam LP',
       symbol: 'SLP',
+      decimals: 18,
     },
     '0xfb1d0D6141Fc3305C63f189E39Cc2f2F7E58f4c2': {
       id: 11,
@@ -202,6 +214,7 @@ export const POOLS: AddressMap = {
       },
       name: 'Solarbeam LP',
       symbol: 'SLP',
+      decimals: 18,
     },
     '0x83d7a3fc841038E8c8F46e6192BBcCA8b19Ee4e7': {
       id: 12,
@@ -219,6 +232,7 @@ export const POOLS: AddressMap = {
       },
       name: 'Solarbeam LP',
       symbol: 'SLP',
+      decimals: 18,
     },
     '0x2a44696DDc050f14429bd8a4A05c750C6582bF3b': {
       id: 13,
@@ -236,6 +250,7 @@ export const POOLS: AddressMap = {
       },
       name: 'Solarbeam LP',
       symbol: 'SLP',
+      decimals: 18,
     },
     '0x29633cc367AbD9b16d327Adaf6c3538b6e97f6C0': {
       id: 14,
@@ -253,6 +268,7 @@ export const POOLS: AddressMap = {
       },
       name: 'Solarbeam LP',
       symbol: 'SLP',
+      decimals: 18,
     },
     '0xb9a61ac826196AbC69A3C66ad77c563D6C5bdD7b': {
       id: 15,
@@ -270,6 +286,7 @@ export const POOLS: AddressMap = {
       },
       name: 'Solarbeam LP',
       symbol: 'SLP',
+      decimals: 18,
     },
     '0x9e0d90ebB44c22303Ee3d331c0e4a19667012433': {
       id: 16,
@@ -287,6 +304,7 @@ export const POOLS: AddressMap = {
       },
       name: 'Solarbeam LP',
       symbol: 'SLP',
+      decimals: 18,
     },
     '0x55Ee073B38BF1069D5F1Ed0AA6858062bA42F5A9': {
       id: 17,
@@ -304,6 +322,7 @@ export const POOLS: AddressMap = {
       },
       name: 'Solarbeam LP',
       symbol: 'SLP',
+      decimals: 18,
     },
     '0x1eebed8F28A6865a76D91189FD6FC45F4F774d67': {
       id: 18,
@@ -321,6 +340,7 @@ export const POOLS: AddressMap = {
       },
       name: 'Solarbeam LP',
       symbol: 'SLP',
+      decimals: 18,
     },
     '0x9051fB701d6D880800e397e5B5d46FdDfAdc7056': {
       id: 19,
@@ -338,6 +358,7 @@ export const POOLS: AddressMap = {
       },
       name: 'Solarbeam LP',
       symbol: 'SLP',
+      decimals: 18,
     },
     '0x9f9a7a3f8F56AFB1a2059daE1E978165816cea44': {
       id: 20,
@@ -355,6 +376,7 @@ export const POOLS: AddressMap = {
       },
       name: 'Solarbeam LP',
       symbol: 'SLP',
+      decimals: 18,
     },
     '0x56d095C15706e1199A2402373066700385DB5372': {
       id: 21,
@@ -372,6 +394,7 @@ export const POOLS: AddressMap = {
       },
       name: 'Solarbeam LP',
       symbol: 'SLP',
+      decimals: 18,
     },
   },
 }

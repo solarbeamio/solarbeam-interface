@@ -1,164 +1,118 @@
-import { classNames, formatNumber, formatPercent } from '../../functions'
-
+import { classNames, formatNumber, formatNumberScale, formatPercent } from '../../functions'
 import { Disclosure } from '@headlessui/react'
-import { t } from '@lingui/macro'
-import { useLingui } from '@lingui/react'
 import DoubleLogo from '../../components/DoubleLogo'
 import FarmListItemDetails from './FarmListItemDetails'
 import Image from '../../components/Image'
-import { PairType } from './enum'
-import React from 'react'
+import React, { useState } from 'react'
 import { useCurrency } from '../../hooks/Tokens'
-import Button from '../../components/Button'
+import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react'
+import CurrencyLogo from '../../components/CurrencyLogo'
+import { isMobile } from 'react-device-detect'
+import YieldDetails from '../../components/YieldDetails'
+import IconWrapper from '../../components/IconWrapper'
+import { Info } from 'react-feather'
+import Link from 'next/link'
 
 const FarmListItem = ({ farm, ...rest }) => {
-  const token0 = useCurrency(farm.pair.token0.id)
-  const token1 = useCurrency(farm.pair.token1.id)
   const { i18n } = useLingui()
 
+  const [selectedFarm, setSelectedFarm] = useState<string>(null)
+
+  let token0 = useCurrency(farm.pair.token0?.id)
+  let token1 = useCurrency(farm.pair.token1?.id)
+
   return (
-    <Disclosure {...rest}>
-      {({ open }) => (
-        <>
-          <Disclosure.Panel
-            className={classNames(
-              open && 'rounded-b-none',
-              'px-6 py-6 flex flex-col w-full text-left rounded bg-dark-900 text-primary text-sm md:text-lg'
-            )}
-            static
-          >
-            <div className="grid grid-cols-1 space-y-3">
-              <div className="flex items-center justify-between	space-x-4">
-                <DoubleLogo currency0={token0} currency1={token1} size={50} />
-                <div className="flex text-right flex-col justify-end">
-                  <div>
-                    <span className="font-bold">{farm?.pair?.token0?.symbol}</span>/
-                    <span className={farm?.pair?.type === PairType.KASHI ? 'font-thin' : 'font-bold'}>
-                      {farm?.pair?.token1?.symbol}
-                    </span>
-                  </div>
-                  {farm?.pair?.type === PairType.SWAP && (
-                    <div className="text-xs md:text-base text-secondary">Solarbeam LP</div>
+    <React.Fragment>
+      <Disclosure {...rest}>
+        {({ open }) => (
+          <div className="mb-4">
+            <Disclosure.Button
+              className={classNames(
+                open && 'rounded-b-none',
+                'w-full px-4 py-6 text-left rounded-xxl cursor-pointer select-none bg-dark-700  text-primary text-sm md:text-lg'
+              )}
+            >
+              <div className="grid grid-cols-4 ">
+                <div className="flex col-span-2 space-x-4 md:col-span-1">
+                  {token1 ? (
+                    <DoubleLogo currency0={token0} currency1={token1} size={isMobile ? 24 : 40} />
+                  ) : (
+                    <div className="flex items-center">
+                      <CurrencyLogo currency={token0} size={isMobile ? 32 : 50} />
+                    </div>
                   )}
-                  {farm?.pair?.type === PairType.KASHI && (
-                    <div className="text-xs md:text-base text-secondary">Kashi Farm</div>
-                  )}
-                </div>
-              </div>
-              <div className="space-y-1">
-                <div className="flex items-center justify-between	col-span-2 space-x-4 ">
-                  <div className="text-xs text-right md:text-base text-secondary">Earn</div>
-                  <div className="flex flex-col justify-center">
-                    <div className="font-bold text-righttext-high-emphesis">SOLAR</div>
-                  </div>
-                </div>
-                <div className="flex items-center justify-between	col-span-2 space-x-4">
-                  <div className="text-xs text-right md:text-base text-secondary">APY</div>
-                  <div className="flex flex-col justify-center">
-                    <div className="font-bold text-righttext-high-emphesis">
-                      {formatPercent(farm?.roiPerYear * 100)}
+
+                  <div className={`flex flex-col justify-center ${token1 ? 'md:flex-row' : ''}`}>
+                    <div>
+                      <span className="flex font-bold">{farm?.pair?.token0?.symbol}</span>
+                      {token1 && <span className="flex font-bold">{farm?.pair?.token1?.symbol}</span>}
+                      {!token1 && token0?.symbol == 'SOLAR' && (
+                        <div className="flex flex-col">
+                          <Link passHref href="/vaults">
+                            <span className="text-emphasis underline hover:text-yellow">Use Vaults</span>
+                          </Link>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center justify-between	col-span-2 space-x-4">
-                  <div className="text-xs text-right md:text-base text-secondary">TVL</div>
-                  <div className="flex flex-col justify-center">
-                    <div className="font-bold text-righttext-high-emphesis">{formatNumber(farm.tvl, true)}</div>
+                <div className="flex flex-col justify-center font-bold">{formatNumberScale(farm.tvl, true, 2)}</div>
+                <div className="flex-row items-center hidden space-x-4 md:flex">
+                  <div className="flex items-center space-x-2">
+                    {farm?.rewards?.map((reward, i) => (
+                      <div key={i} className="flex items-center">
+                        <Image
+                          src={`https://app.solarbeam.io/images/tokens/solar.png`}
+                          width="50px"
+                          height="50px"
+                          className="rounded-md"
+                          layout="fixed"
+                          alt={reward.token}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex flex-col space-y-1">
+                    {farm?.rewards?.map((reward, i) => (
+                      <div key={i} className="text-xs md:text-sm whitespace-nowrap">
+                        {formatNumber(reward.rewardPerDay)} {reward.token} {i18n._(t`/ DAY`)}
+                      </div>
+                    ))}
                   </div>
                 </div>
-              </div>
-              <div className="space-y-1">
-                <div className="text-xs md:text-base text-transparent bg-clip-text bg-gradient-to-r from-yellow to-yellow">
-                  SOLAR earned
-                </div>
-                <div className="flex items-center justify-between	 col-span-2 space-x-4">
-                  <div className="flex flex-col justify-center">
-                    <div className="font-bold text-righttext-high-emphesis">0.0</div>
-                  </div>
-                  <div className="flex text-right flex-col justify-end">
-                    <Button
-                      size="sm"
-                      variant="outlined"
-                      color="gradient"
-                      disabled
-                      onClick={async () => {
-                        // setPendingTx(true)
-                        // try {
-                        //   const tx = await harvest(farm.id)
-                        //   addTransaction(tx, {
-                        //     summary: `Harvest ${farm.pair.name}`,
-                        //   })
-                        // } catch (error) {
-                        //   console.error(error)
-                        // }
-                        // setPendingTx(false)
-                      }}
-                    >
-                      {i18n._(t`Harvest`)}
-                    </Button>
-                  </div>
-                </div>
-              </div>
-              <div className="space-y-1">
-                <div className="text-xs md:text-base text-transparent bg-clip-text bg-gradient-to-r from-yellow to-yellow">
-                  {farm?.pair?.token0?.symbol}/{farm?.pair?.token1?.symbol} LP Staked
-                </div>
-                <div className="flex items-center justify-between">
-                  <Button
-                    className="w-full"
-                    variant="filled"
-                    color="gray"
-                    disabled
-                    onClick={async () => {
-                      // setPendingTx(true)
-                      // try {
-                      //   const tx = await harvest(farm.id)
-                      //   addTransaction(tx, {
-                      //     summary: `Harvest ${farm.pair.name}`,
-                      //   })
-                      // } catch (error) {
-                      //   console.error(error)
-                      // }
-                      // setPendingTx(false)
+                <div className="flex flex-col items-end justify-center">
+                  <div
+                    className="font-bold flex justify items-center text-righttext-high-emphesis"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setSelectedFarm(farm.id)
                     }}
                   >
-                    {i18n._(t`Connect Wallet`)}
-                  </Button>
+                    <IconWrapper size="16px" marginRight={'10px'}>
+                      <Info />
+                    </IconWrapper>
+                    {farm.royPerYear > 1000000 ? '100000000%+' : formatPercent(farm.roiPerYear * 100)}
+                  </div>
+                  <div className="text-xs text-right md:text-base text-secondary">{i18n._(t`annualized`)}</div>
                 </div>
               </div>
-
-              {/* <div className="flex-row items-center hidden space-x-4 md:flex">
-                <div className="flex items-center space-x-2">
-                  {farm?.rewards?.map((reward, i) => (
-                    <div key={i} className="flex items-center">
-                      <Image
-                        src={reward.icon}
-                        width="30px"
-                        height="30px"
-                        className="rounded-md"
-                        layout="fixed"
-                        alt={reward.token}
-                      />
-                    </div>
-                  ))}
-                </div>
-                <div className="flex flex-col space-y-1">
-                  {farm?.rewards?.map((reward, i) => (
-                    <div key={i} className="text-xs md:text-sm whitespace-nowrap">
-                      {formatNumber(reward.rewardPerDay)} {reward.token} / DAY
-                    </div>
-                  ))}
-                </div>
-              </div> */}
-
-              {/* <div className="flex flex-col items-center font-bold">{`TVL ${formatNumber(farm.tvl, true)}`}</div> */}
-            </div>
-          </Disclosure.Panel>
-
-          {open && <FarmListItemDetails farm={farm} />}
-        </>
+            </Disclosure.Button>
+            {open && <FarmListItemDetails farm={farm} />}
+          </div>
+        )}
+      </Disclosure>
+      {!!selectedFarm && (
+        <YieldDetails
+          key={farm.id}
+          isOpen={selectedFarm == farm.id}
+          onDismiss={() => setSelectedFarm(null)}
+          token0={token0}
+          token1={token1}
+          roiPerYear={farm.roiPerYear}
+        />
       )}
-    </Disclosure>
+    </React.Fragment>
   )
 }
 
