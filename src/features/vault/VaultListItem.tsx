@@ -151,13 +151,9 @@ const VaultListItem = ({ farm, ...rest }) => {
           key={farm.id}
           isOpen={selectedFarm == farm.id}
           onDismiss={() => setSelectedFarm(null)}
-          roiPerDay={roiPerDay}
-          roiPerMonth={roiPerMonth}
           roiPerYear={roiPerYear}
           token0={token0}
           token1={token1}
-          lpPrice={farm.lpPrice}
-          solarPrice={solarPrice}
         />
       )}
     </React.Fragment>
