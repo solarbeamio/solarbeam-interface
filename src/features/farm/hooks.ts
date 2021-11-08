@@ -1,27 +1,19 @@
-import { ChainId, CurrencyAmount, JSBI, MASTERCHEF_ADDRESS } from '../../sdk'
+import { ChainId, CurrencyAmount, JSBI } from '../../sdk'
 import { Chef } from './enum'
-import {
-  SOLAR,
-  MASTERCHEF_V2_ADDRESS,
-  MINICHEF_ADDRESS,
-  SOLAR_ADDRESS,
-  SOLAR_DISTRIBUTOR_ADDRESS,
-  AVERAGE_BLOCK_TIME,
-} from '../../constants'
+import { SOLAR, SOLAR_ADDRESS, AVERAGE_BLOCK_TIME } from '../../constants'
 import {
   NEVER_RELOAD,
   useMultipleContractSingleData,
   useSingleCallResult,
   useSingleContractMultipleData,
 } from '../../state/multicall/hooks'
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { useContext, useMemo } from 'react'
 import {
   useSolarDistributorContract,
-  useBNBPairContract,
   useSolarMovrContract,
-  useSolarVaultContract,
   useMovrUsdcContract,
   useRibMovrContract,
+  useSolarDistributorV2Contract,
 } from '../../hooks'
 
 import IUniswapV2PairABI from '@sushiswap/core/abi/IUniswapV2Pair.json'
@@ -31,11 +23,11 @@ import { Interface } from '@ethersproject/abi'
 import { useActiveWeb3React } from '../../hooks/useActiveWeb3React'
 import zip from 'lodash/zip'
 import { useToken } from '../../hooks/Tokens'
-import { useVaultInfo, useVaults } from '../vault/hooks'
-import { POOLS, TokenInfo } from '../../constants/farms'
+import { useVaults } from '../vault/hooks'
+import { AddressMap, POOLS, TokenInfo } from '../../constants/farms'
 import { PriceContext } from '../../contexts/priceContext'
 import { concat } from 'lodash'
-const { default: axios } = require('axios')
+import { getTokenLogoURL } from '../../components/CurrencyLogo'
 
 const PAIR_INTERFACE = new Interface(IUniswapV2PairABI)
 
@@ -57,19 +49,6 @@ export function useChefContract(chef: Chef) {
   return useMemo(() => {
     return contracts[chef]
   }, [contracts, chef])
-}
-
-export function useChefContracts(chefs: Chef[]) {
-  const solarDistributorContract = useSolarDistributorContract()
-  const contracts = useMemo(
-    () => ({
-      [Chef.MASTERCHEF]: solarDistributorContract,
-      [Chef.MASTERCHEF_V2]: solarDistributorContract,
-      [Chef.MINICHEF]: solarDistributorContract,
-    }),
-    [solarDistributorContract]
-  )
-  return chefs.map((chef) => contracts[chef])
 }
 
 export function useUserInfo(farm, token) {
@@ -139,7 +118,7 @@ export function usePendingToken(farm, contract) {
 }
 
 export function useSolarPositions(contract?: Contract | null) {
-  const { account } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
 
   const numberOfPools = useSingleCallResult(contract ? contract : null, 'poolLength', undefined, NEVER_RELOAD)
     ?.result?.[0]
@@ -162,17 +141,77 @@ export function useSolarPositions(contract?: Contract | null) {
     return zip(pendingSolar, userInfo)
       .map((data, i) => ({
         id: args[i][0],
-        pendingSolar: data[0].result?.[0] || Zero,
-        amount: data[1].result?.[0] || Zero,
+        pendingRewards: [
+          {
+            token: SOLAR_ADDRESS[chainId],
+            symbol: 'SOLAR',
+            amount: data[0].result?.[0] || Zero,
+            decimals: 18,
+          },
+        ],
+        amount: data?.[1].result?.amount || Zero,
+        nextHarvestUntil: data?.[1].result?.nextHarvestUntil || Zero,
       }))
-      .filter(({ pendingSolar, amount }) => {
-        return (pendingSolar && !pendingSolar.isZero()) || (amount && !amount.isZero())
+      .filter(({ pendingRewards, amount }) => {
+        return (
+          (pendingRewards && !pendingRewards?.find((item) => !item.amount.isZero())) || (amount && !amount.isZero())
+        )
       })
-  }, [args, pendingSolar, userInfo])
+  }, [args, chainId, pendingSolar, userInfo])
 }
 
 export function usePositions() {
   return useSolarPositions(useSolarDistributorContract())
+}
+
+export function useSolarPositionsV2(contract?: Contract | null) {
+  const { account } = useActiveWeb3React()
+
+  const numberOfPools = useSingleCallResult(contract ? contract : null, 'poolLength', undefined, NEVER_RELOAD)
+    ?.result?.[0]
+
+  const args = useMemo(() => {
+    if (!account || !numberOfPools) {
+      return
+    }
+    return [...Array(numberOfPools.toNumber()).keys()].map((pid) => [String(pid), String(account)])
+  }, [numberOfPools, account])
+
+  const pendingTokens = useSingleContractMultipleData(args ? contract : null, 'pendingTokens', args)
+
+  const userInfo = useSingleContractMultipleData(args ? contract : null, 'userInfo', args)
+
+  return useMemo(() => {
+    if (!pendingTokens || !userInfo) {
+      return []
+    }
+    return zip(pendingTokens, userInfo)
+      .map((data, i) => ({
+        id: args[i][0],
+        pendingRewards: data?.[0].result?.addresses?.map((item, j) => {
+          let symbol = data?.[0].result?.symbols?.[j]
+          let amount = data?.[0].result?.amounts?.[j]
+          const decimals = data?.[0].result?.decimals?.[j]
+          return {
+            token: item,
+            symbol,
+            amount,
+            decimals,
+          }
+        }),
+        amount: data?.[1].result?.amount || Zero,
+        nextHarvestUntil: data?.[1].result?.nextHarvestUntil || Zero,
+      }))
+      .filter(({ pendingRewards, amount }) => {
+        return (
+          (pendingRewards && !pendingRewards?.find((item) => !item.amount.isZero())) || (amount && !amount.isZero())
+        )
+      })
+  }, [args, pendingTokens, userInfo])
+}
+
+export function usePositionsV2() {
+  return useSolarPositionsV2(useSolarDistributorV2Contract())
 }
 
 export function useSolarFarms(contract?: Contract | null) {
@@ -217,7 +256,7 @@ export function useSolarFarms(contract?: Contract | null) {
         rewards: [
           {
             token: 'SOLAR',
-            icon: '/images/token/solar.png',
+            icon: '/images/tokens/solar.png',
             rewardPerDay: (((pool?.allocPoint / totalAllocPoint) * solarPerBlock) / 1e18) * blocksPerDay,
             rewardPrice: priceData?.solar,
           },
@@ -227,43 +266,58 @@ export function useSolarFarms(contract?: Contract | null) {
   }, [args, blocksPerDay, poolInfo, priceData?.solar, solarPerBlock, totalAllocPoint])
 }
 
-const useAsync = (asyncFunction, immediate = true) => {
-  const [value, setValue] = useState(null)
+export function useSolarFarmsV2(contract?: Contract | null) {
+  const { account, chainId } = useActiveWeb3React()
+  const priceData = useContext(PriceContext)
 
-  // The execute function wraps asyncFunction and
-  // handles setting state for pending, value, and error.
-  // useCallback ensures the below useEffect is not called
-  // on every render, but only if asyncFunction changes.
-  const execute = useCallback(() => {
-    return asyncFunction().then((response) => {
-      let [prices] = response
-      setValue({ data: { ...prices?.data } })
-    })
-  }, [asyncFunction])
-  // Call execute if we want to fire it right away.
-  // Otherwise execute can be called later, such as
-  // in an onClick handler.
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      execute()
-    }, 60000)
+  const numberOfPools = useSingleCallResult(contract ? contract : null, 'poolLength', undefined, NEVER_RELOAD)
+    ?.result?.[0]
 
-    if (immediate) {
-      execute()
+  const args = useMemo(() => {
+    if (!numberOfPools) {
+      return
     }
+    return [...Array(numberOfPools.toNumber()).keys()].map((pid) => [String(pid)])
+  }, [numberOfPools])
 
-    return () => {
-      clearInterval(intervalId) //This is important
-    }
-  }, [execute, immediate])
+  const poolInfo = useSingleContractMultipleData(args ? contract : null, 'poolInfo', args)
+
+  const poolRewardsPerSec = useSingleContractMultipleData(args ? contract : null, 'poolRewardsPerSec', args)
+
+  const secondsPerDay = 60 * 60 * 24
 
   return useMemo(() => {
-    return value
-  }, [value])
-}
-
-export function usePriceApi() {
-  return Promise.all([axios.get('/api/prices')])
+    if (!poolInfo) {
+      return []
+    }
+    return zip(poolInfo).map((data, i) => {
+      const pool = data[0].result
+      return {
+        id: args[i][0],
+        lpToken: pool?.lpToken,
+        allocPoint: pool?.allocPoint,
+        lastRewardTimestamp: pool?.lastRewardTimestamp,
+        accSolarPerShare: pool?.accSolarPerShare,
+        depositFeeBP: pool?.depositFeeBP,
+        harvestInterval: pool?.harvestInterval,
+        totalLp: pool?.totalLp,
+        rewards: poolRewardsPerSec?.[i].result?.[0].map((item, j) => {
+          const decimals = poolRewardsPerSec?.[i].result?.decimals?.[j]
+          const rewardsPerSec = poolRewardsPerSec?.[i].result?.rewardsPerSec?.[j]
+          let symbol = poolRewardsPerSec?.[i].result?.symbols?.[j]
+          if (symbol == 'MOCK') {
+            symbol = 'SOLAR'
+          }
+          return {
+            token: symbol,
+            icon: `/images/tokens/${symbol?.toLowerCase()}.png`,
+            rewardPerDay: (rewardsPerSec / 10 ** decimals?.toString()) * secondsPerDay,
+            rewardPrice: priceData?.[symbol?.toLowerCase()],
+          }
+        }),
+      }
+    })
+  }, [args, poolInfo, poolRewardsPerSec, priceData, secondsPerDay])
 }
 
 export function usePrice(pairContract?: Contract | null, pairDecimals?: number | null, invert: boolean = false) {
@@ -331,6 +385,10 @@ export function useFarms() {
   return useSolarFarms(useSolarDistributorContract())
 }
 
+export function useFarmsV2() {
+  return useSolarFarmsV2(useSolarDistributorV2Contract())
+}
+
 export function usePricesApi() {
   const movrPrice = useMovrPrice()
   const solarPrice = useSolarPrice()
@@ -341,14 +399,10 @@ export function usePricesApi() {
       movr: movrPrice,
       solar: solarPrice * movrPrice,
       rib: ribPrice * movrPrice,
+      mock: 1,
       usdc: 1,
     }
   }, [movrPrice, ribPrice, solarPrice])
-}
-
-export function useFarmsApi() {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  return useAsync(usePriceApi, true)
 }
 
 export function useMovrPrice() {
@@ -366,26 +420,7 @@ export function useRibPrice() {
   return usePrice(useRibMovrContract(), 0, true)
 }
 
-export function useBNBPrice() {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  return usePrice(useBNBPairContract())
-}
-
-export function useSolarDistributorInfo(contract) {
-  const solarPerBlock = useSingleCallResult(contract ? contract : null, 'solarPerBlock', undefined, NEVER_RELOAD)
-    ?.result?.[0]
-
-  const totalAllocPoint = useSingleCallResult(contract ? contract : null, 'totalAllocPoint', undefined, NEVER_RELOAD)
-    ?.result?.[0]
-
-  return useMemo(() => ({ solarPerBlock, totalAllocPoint }), [solarPerBlock, totalAllocPoint])
-}
-
-export function useDistributorInfo() {
-  return useSolarDistributorInfo(useSolarDistributorContract())
-}
-
-export function usePairPrices(): PairPrices[] {
+export function usePairPrices(poolVersion: AddressMap): PairPrices[] {
   const { chainId } = useActiveWeb3React()
   const priceData = useContext(PriceContext)
 
@@ -393,8 +428,8 @@ export function usePairPrices(): PairPrices[] {
   const movrPrice = priceData?.movr
   const ribPrice = priceData?.rib
 
-  const farmingPools = Object.keys(POOLS[ChainId.MOONRIVER]).map((key) => {
-    return { ...POOLS[ChainId.MOONRIVER][key], lpToken: key }
+  const farmingPools = Object.keys(poolVersion[ChainId.MOONRIVER]).map((key) => {
+    return { ...poolVersion[ChainId.MOONRIVER][key], lpToken: key }
   })
 
   const singlePools = farmingPools.filter((r) => !r.token1)

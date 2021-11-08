@@ -1,17 +1,11 @@
-import {
-  Currency,
-  CurrencyAmount,
-  Percent,
-  TradeType,
-  Trade as V2Trade,
-} from '../sdk'
+import { Currency, CurrencyAmount, Percent, TradeType, Trade as V2Trade } from '../sdk'
 import { useCallback, useMemo } from 'react'
 import { useHasPendingApproval, useTransactionAdder } from '../state/transactions/hooks'
 
 import { ARCHER_ROUTER_ADDRESS, ROUTER_ADDRESS } from '../constants'
 import { MaxUint256 } from '@ethersproject/constants'
 import { TransactionResponse } from '@ethersproject/providers'
-import { calculateGasMargin } from '../functions/trade'
+import { calculateGasMargin, calculateGasPrice } from '../functions/trade'
 import { useActiveWeb3React } from './useActiveWeb3React'
 import { useTokenAllowance } from './useTokenAllowance'
 import { useTokenContract } from './useContract'
@@ -28,7 +22,7 @@ export function useApproveCallback(
   amountToApprove?: CurrencyAmount<Currency>,
   spender?: string
 ): [ApprovalState, () => Promise<void>] {
-  const { account } = useActiveWeb3React()
+  const { account, library } = useActiveWeb3React()
   const token = amountToApprove?.currency?.isToken ? amountToApprove.currency : undefined
   const currentAllowance = useTokenAllowance(token, account ?? undefined, spender)
   const pendingApproval = useHasPendingApproval(token?.address, spender)
@@ -83,9 +77,18 @@ export function useApproveCallback(
       return tokenContract.estimateGas.approve(spender, amountToApprove.quotient.toString())
     })
 
+    let gasPrice = undefined
+    try {
+      gasPrice = await library.getGasPrice()
+      if (gasPrice) {
+        gasPrice = calculateGasPrice(gasPrice)
+      }
+    } catch (ex) {}
+
     return tokenContract
       .approve(spender, useExact ? amountToApprove.quotient.toString() : MaxUint256, {
         gasLimit: calculateGasMargin(estimatedGas),
+        gasPrice,
       })
       .then((response: TransactionResponse) => {
         addTransaction(response, {
@@ -97,7 +100,7 @@ export function useApproveCallback(
         console.debug('Failed to approve token', error)
         throw error
       })
-  }, [approvalState, token, tokenContract, amountToApprove, spender, addTransaction])
+  }, [approvalState, token, tokenContract, amountToApprove, spender, library, addTransaction])
 
   return [approvalState, approve]
 }

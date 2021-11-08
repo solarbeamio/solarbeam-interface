@@ -15,7 +15,7 @@ import Typography from '../../components/Typography'
 export const Sidebar = ({ positions, farms, vaults }) => {
   const { chainId } = useActiveWeb3React()
   const { i18n } = useLingui()
-  const { harvest } = useMasterChef()
+  const { harvest } = useMasterChef(1)
 
   const [pendingTx, setPendingTx] = useState(false)
   const addTransaction = useTransactionAdder()
@@ -23,8 +23,6 @@ export const Sidebar = ({ positions, farms, vaults }) => {
   const priceData = useContext(PriceContext)
 
   const solarPrice = priceData?.solar
-
-  console.log(farms)
 
   let summTvl = farms?.reduce((previousValue, currentValue) => {
     return previousValue + (isNaN(currentValue?.tvl) ? 0 : currentValue?.tvl)
@@ -38,13 +36,19 @@ export const Sidebar = ({ positions, farms, vaults }) => {
     return { ...POOLS[chainId][key], lpToken: key }
   })
 
+
   const allStaked = positions.reduce((previousValue, currentValue) => {
-    return previousValue + (currentValue.pendingSolar / 1e18) * solarPrice
+    const rewardsValue = currentValue?.pendingRewards?.reduce((p, c) => {
+      const reward = (c?.amount / 10 ** c?.decimals) * priceData?.[c?.symbol?.toLowerCase()]
+      return p + reward
+    }, 0)
+    return previousValue + rewardsValue
   }, 0)
+
 
   const valueStaked = positions.reduce((previousValue, currentValue) => {
     const pool = farmingPools.find((r) => parseInt(r.id.toString()) == parseInt(currentValue.id))
-    const poolTvl = farms.find((r) => getAddress(r.lpToken) == getAddress(pool?.lpToken))
+    const poolTvl = farms.filter((r) => r.lpToken).find((r) => getAddress(r.lpToken) == getAddress(pool?.lpToken))
     return previousValue + (currentValue.amount / 1e18) * poolTvl?.price
   }, 0)
 

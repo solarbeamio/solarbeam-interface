@@ -5,6 +5,8 @@ export const PriceContext = React.createContext({
   movr: 0,
   solar: 0,
   rib: 0,
+  mock: 1,
+  usdc: 1,
 })
 
 export function PriceProvider({ children }) {

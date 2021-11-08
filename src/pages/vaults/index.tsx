@@ -33,7 +33,7 @@ export default function Vault(): JSX.Element {
 
   const vaults = useVaults()
   const farms = useFarms()
-  const pairPrices = usePairPrices()
+  const pairPrices = usePairPrices(POOLS)
   const positions = usePositions()
 
   const mapFarms = (pool) => {

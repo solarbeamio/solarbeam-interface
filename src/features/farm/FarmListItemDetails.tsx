@@ -1,11 +1,11 @@
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
-import { Token, ZERO } from '../../sdk'
+import { CurrencyAmount, JSBI, Token, ZERO } from '../../sdk'
 import { Disclosure, Transition } from '@headlessui/react'
 import React, { useState } from 'react'
 import { usePendingSolar, useUserInfo } from './hooks'
 import Button from '../../components/Button'
 import Dots from '../../components/Dots'
-import { SOLAR_DISTRIBUTOR_ADDRESS } from '../../constants/addresses'
+import { SOLAR_DISTRIBUTOR_ADDRESS, SOLAR_DISTRIBUTOR_V2_ADDRESS } from '../../constants/addresses'
 import { Input as NumericalInput } from '../../components/NumericalInput'
 import { formatNumber, formatNumberScale, formatPercent } from '../../functions'
 import { getAddress } from '@ethersproject/address'
@@ -17,6 +17,7 @@ import useMasterChef from './useMasterChef'
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import { isMobile } from 'react-device-detect'
+import { Zero } from '@ethersproject/constants'
 
 const FarmListItem = ({ farm }) => {
   const { i18n } = useLingui()
@@ -39,19 +40,22 @@ const FarmListItem = ({ farm }) => {
   // User liquidity token balance
   const balance = useTokenBalance(account, liquidityToken)
 
-  // TODO: Replace these
-  const { amount, nextHarvestUntil } = useUserInfo(farm, liquidityToken)
+  const nextHarvestUntil = (farm?.nextHarvestUntil || Zero) * 1000
 
-  const pendingSolar = usePendingSolar(farm)
+  const amount = farm?.amount ? CurrencyAmount.fromRawAmount(liquidityToken, farm?.amount) : undefined
+
+  const pendingRewards = farm?.pendingRewards?.filter((r) => r.amount > 0)
+  const hasRewards = pendingRewards?.length > 0
 
   const typedDepositValue = tryParseAmount(depositValue, liquidityToken)
   const typedWithdrawValue = tryParseAmount(withdrawValue, liquidityToken)
 
-  const [approvalState, approve] = useApproveCallback(typedDepositValue, SOLAR_DISTRIBUTOR_ADDRESS[chainId])
+  const [approvalState, approve] = useApproveCallback(
+    typedDepositValue,
+    farm.version == 1 ? SOLAR_DISTRIBUTOR_ADDRESS[chainId] : SOLAR_DISTRIBUTOR_V2_ADDRESS[chainId]
+  )
 
-  const { deposit, withdraw, harvest } = useMasterChef()
-
-  console.log(farm?.totalLp?.toString())
+  const { deposit, withdraw, harvest } = useMasterChef(farm.version)
 
   return (
     <Transition
@@ -214,7 +218,7 @@ const FarmListItem = ({ farm }) => {
             </Button>
           </div>
         </div>
-        {pendingSolar && pendingSolar.greaterThan(ZERO) && (
+        {hasRewards && (
           <div className="px-4 pb-4">
             <Button
               color="gradient"
@@ -238,7 +242,9 @@ const FarmListItem = ({ farm }) => {
                 setPendingTx(false)
               }}
             >
-              {i18n._(t`Harvest ${formatNumber(pendingSolar.toFixed(18))} SOLAR`)}
+              {`Harvest ${pendingRewards
+                .map((reward) => `${formatNumber(reward?.amount / 10 ** reward?.decimals)}  ${reward.symbol}`)
+                .join(' & ')}`}
             </Button>
           </div>
         )}

@@ -179,16 +179,3 @@ export function useEclipse(contractAddress?: string) {
 
   return { deposit, withdraw, harvest }
 }
-
-// const fn = contract?.interface?.getFunction('depositPool')
-// const data = contract.interface.encodeFunctionData(fn, [amount.toString(), pid])
-
-// const tx = await library.getSigner().sendTransaction({
-//   value: 0x0,
-//   from: account,
-//   to: contractAddress,
-//   data,
-//   gasLimit: 1500000,
-//   gasPrice: 1000000000,
-// })
-// console.log(tx)

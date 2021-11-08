@@ -16,7 +16,7 @@ type PairInfo = {
   decimals?: number
 }
 
-type AddressMap = {
+export type AddressMap = {
   [chainId: number]: {
     [address: string]: PairInfo
   }
@@ -394,6 +394,21 @@ export const POOLS: AddressMap = {
       },
       name: 'Solarbeam LP',
       symbol: 'SLP',
+      decimals: 18,
+    },
+  },
+}
+
+export const POOLS_V2: AddressMap = {
+  [ChainId.MOONRIVER]: {
+    '0x46F79Cca5350E95F30e3F17b6D35CE360bd4EAAB': {
+      id: 0,
+      token0: {
+        id: '0x46F79Cca5350E95F30e3F17b6D35CE360bd4EAAB',
+        name: 'Solarbeam',
+        symbol: 'SOLAR',
+        decimals: 18,
+      },
       decimals: 18,
     },
   },

@@ -63,12 +63,12 @@ const FarmListItem = ({ farm, ...rest }) => {
                     {farm?.rewards?.map((reward, i) => (
                       <div key={i} className="flex items-center">
                         <Image
-                          src={`https://app.solarbeam.io/images/tokens/solar.png`}
-                          width="50px"
-                          height="50px"
+                          src={reward?.icon}
+                          width={farm?.rewards?.length > 1 ? 40 : 50}
+                          height={farm?.rewards?.length > 1 ? 40 : 50}
                           className="rounded-md"
                           layout="fixed"
-                          alt={reward.token}
+                          alt={reward?.token}
                         />
                       </div>
                     ))}

@@ -6,9 +6,9 @@ import Head from 'next/head'
 import { useActiveWeb3React, useFuse } from '../../hooks'
 import FarmList from '../../features/farm/FarmList'
 import Menu from '../../features/farm/FarmMenu'
-import { usePositions, useFarms, usePairPrices } from '../../features/farm/hooks'
+import { usePositions, useFarms, usePairPrices, useFarmsV2, usePositionsV2 } from '../../features/farm/hooks'
 import DoubleGlowShadow from '../../components/DoubleGlowShadow'
-import { POOLS } from '../../constants/farms'
+import { POOLS, POOLS_V2 } from '../../constants/farms'
 import { useVaults } from '../../features/vault/hooks'
 import Search from '../../components/Search'
 import { Sidebar } from '../../features/farm/FarmSidebar'
@@ -20,13 +20,21 @@ export default function Farm(): JSX.Element {
 
   const type = router.query.filter as string
 
-  const farms = useFarms()
   const vaults = useVaults()
-  const pairPrices = usePairPrices()
-  const positions = usePositions()
 
-  const map = (pool) => {
-    const pair = POOLS[chainId][pool.lpToken]
+  const farms = useFarms()
+  // const farmsV2 = useFarmsV2()
+
+  console.log(farms)
+
+  const pairPrices = usePairPrices(POOLS)
+  // const pairPricesV2 = usePairPrices(POOLS_V2)
+
+  const positions = usePositions()
+  // const positionsV2 = usePositionsV2()
+
+  const map = (pool, poolVersion, positions, pairPrices, version) => {
+    const pair = poolVersion[chainId][pool.lpToken]
     const position = positions.find((position) => position.id === pool.id)
     const pairPrice = pairPrices.find((item) => item.token == pool.lpToken)
 
@@ -48,6 +56,7 @@ export default function Farm(): JSX.Element {
         ...pair,
         decimals: 18,
       },
+      version,
     }
   }
 
@@ -55,7 +64,9 @@ export default function Farm(): JSX.Element {
     my: (farm) => farm?.amount && !farm.amount.isZero(),
   }
 
-  const items = farms.map(map);
+  const items = farms.map((item) => map(item, POOLS, positions, pairPrices, 1))
+
+  // const itemsV2 = farmsV2.map((item) => map(item, POOLS_V2, positionsV2, pairPricesV2, 2))
 
   const data = items.filter((farm) => {
     return type in FILTER ? FILTER[type](farm) : true
@@ -93,7 +104,10 @@ export default function Farm(): JSX.Element {
                 }}
               />
             </div>
-            <FarmList farms={result} term={term} />
+            <>
+              {/* <FarmList farms={itemsV2} term={term} /> */}
+              <FarmList farms={result} term={term} />
+            </>
           </div>
         </div>
       </DoubleGlowShadow>

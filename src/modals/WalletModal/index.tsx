@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core'
-import { fortmatic, injected, portis } from '../../connectors'
+import { injected } from '../../connectors'
 import { useModalOpen, useWalletModalToggle } from '../../state/application/hooks'
-
 import { AbstractConnector } from '@web3-react/abstract-connector'
 import AccountDetails from '../../components/AccountDetails'
 import { ApplicationModal } from '../../state/application/actions'
@@ -11,7 +10,6 @@ import ExternalLink from '../../components/ExternalLink'
 import Image from 'next/image'
 import Modal from '../../components/Modal'
 import ModalHeader from '../../components/ModalHeader'
-import { OVERLAY_READY } from '../../connectors/Fortmatic'
 import Option from './Option'
 import PendingView from './PendingView'
 import ReactGA from 'react-ga'
@@ -161,13 +159,6 @@ export default function WalletModal({
       })
   }
 
-  // close wallet modal if fortmatic modal is active
-  useEffect(() => {
-    fortmatic.on(OVERLAY_READY, () => {
-      toggleWalletModal()
-    })
-  }, [toggleWalletModal])
-
   // get wallets user can switch too, depending on device/browser
   function getOptions() {
     const isMetamask = window.ethereum && window.ethereum.isMetaMask
@@ -176,11 +167,6 @@ export default function WalletModal({
 
       // check for mobile options
       if (isMobile) {
-        // disable portis on mobile for now
-        if (option.connector === portis) {
-          return null
-        }
-
         if (!window.web3 && !window.ethereum && option.mobile) {
           return (
             <Option

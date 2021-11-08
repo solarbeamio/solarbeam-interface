@@ -1,15 +1,5 @@
 import { ARCHER_RELAY_URI, BIPS_BASE, EIP_1559_ACTIVATION_BLOCK } from '../constants'
-import {
-  ChainId,
-  Currency,
-  CurrencyAmount,
-  Ether,
-  JSBI,
-  Percent,
-  Router,
-  TradeType,
-  Trade as V2Trade,
-} from '../sdk'
+import { ChainId, Currency, CurrencyAmount, Ether, JSBI, Percent, Router, TradeType, Trade as V2Trade } from '../sdk'
 import { isAddress, isZero } from '../functions/validate'
 import { useFactoryContract, useRouterContract } from './useContract'
 
@@ -20,7 +10,7 @@ import { SignatureData } from './useERC20Permit'
 import { TransactionFactory } from '@ethereumjs/tx'
 import { TransactionRequest } from '@ethersproject/abstract-provider'
 import approveAmountCalldata from '../functions/approveAmountCalldata'
-import { calculateGasMargin } from '../functions/trade'
+import { calculateGasMargin, calculateGasPrice } from '../functions/trade'
 import { ethers } from 'ethers'
 import { shortenAddress } from '../functions/format'
 import { t } from '@lingui/macro'
@@ -268,6 +258,14 @@ export function useSwapCallback(
     return {
       state: SwapCallbackState.VALID,
       callback: async function onSwap(): Promise<string> {
+        let gasPrice = undefined
+        try {
+          gasPrice = await library.getGasPrice()
+          if (gasPrice) {
+            gasPrice = calculateGasPrice(gasPrice)
+          }
+        } catch (ex) {}
+
         const estimatedCalls: SwapCallEstimate[] = await Promise.all(
           swapCalls.map((call) => {
             const { address, calldata, value } = call
@@ -283,8 +281,6 @@ export function useSwapCallback(
                   }
 
             // console.log('Estimate gas for valid swap')
-
-            // library.getGasPrice().then((gasPrice) => console.log({ gasPrice }))
 
             return library
               .estimateGas(tx)
@@ -341,10 +337,6 @@ export function useSwapCallback(
         // console.log({ bestCallOption })
 
         if (!useArcher) {
-          console.log('SWAP WITHOUT ARCHER')
-          console.log(
-            'gasEstimate' in bestCallOption ? { gasLimit: calculateGasMargin(bestCallOption.gasEstimate) } : {}
-          )
           return library
             .getSigner()
             .sendTransaction({
@@ -353,7 +345,7 @@ export function useSwapCallback(
               data: calldata,
               // let the wallet try if we can't estimate the gas
               ...('gasEstimate' in bestCallOption ? { gasLimit: calculateGasMargin(bestCallOption.gasEstimate) } : {}),
-              gasPrice: !eip1559 && chainId === ChainId.HARMONY ? BigNumber.from('2000000000') : undefined,
+              gasPrice: !eip1559 && chainId === ChainId.HARMONY ? BigNumber.from('2000000000') : gasPrice,
               ...(value && !isZero(value) ? { value } : {}),
             })
             .then((response) => {

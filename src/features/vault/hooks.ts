@@ -189,10 +189,6 @@ const useAsync = (asyncFunction, immediate = true) => {
   return value
 }
 
-export function usePriceApi() {
-  return Promise.all([axios.get('/api/prices')])
-}
-
 export function usePrice(pairContract?: Contract | null, pairDecimals?: number | null) {
   const { account, chainId } = useActiveWeb3React()
 
@@ -247,24 +243,9 @@ export function useVaults() {
   return useSolarVaults(useSolarVaultContract())
 }
 
-export function usePricesApi() {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  return useAsync(usePriceApi, true)
-}
-
-export function useFarmsApi() {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  return useAsync(usePriceApi, true)
-}
-
 export function useSolarPrice() {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   return usePrice(useSolarMovrContract())
-}
-
-export function useBNBPrice() {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  return usePrice(useBNBPairContract())
 }
 
 export function useVaultInfo(contract) {
