@@ -36,7 +36,6 @@ export const Sidebar = ({ positions, farms, vaults }) => {
     return { ...POOLS[chainId][key], lpToken: key }
   })
 
-
   const allStaked = positions.reduce((previousValue, currentValue) => {
     const rewardsValue = currentValue?.pendingRewards?.reduce((p, c) => {
       const reward = (c?.amount / 10 ** c?.decimals) * priceData?.[c?.symbol?.toLowerCase()]
@@ -44,7 +43,6 @@ export const Sidebar = ({ positions, farms, vaults }) => {
     }, 0)
     return previousValue + rewardsValue
   }, 0)
-
 
   const valueStaked = positions.reduce((previousValue, currentValue) => {
     const pool = farmingPools.find((r) => parseInt(r.id.toString()) == parseInt(currentValue.id))
@@ -113,7 +111,7 @@ export const Sidebar = ({ positions, farms, vaults }) => {
                 disabled={pendingTx}
                 onClick={async () => {
                   setPendingTx(true)
-                  for (const pos of positions) {
+                  for (const pos of positions?.filter((p) => p.amount > 0)) {
                     try {
                       const tx = await harvest(parseInt(pos.id))
                       addTransaction(tx, {
