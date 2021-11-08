@@ -3,6 +3,7 @@ import { useActiveWeb3React, useEclipseContract } from '../../hooks'
 import { NEVER_RELOAD, useSingleCallResult, useSingleContractMultipleData } from '../../state/multicall/hooks'
 import { zip, chunk } from 'lodash'
 import { BigNumber } from 'ethers'
+import { calculateGasPrice } from '../../functions'
 
 export function useEclipseUserInfo(contractAddress?: string) {
   const { account } = useActiveWeb3React()
@@ -167,8 +168,19 @@ export function useEclipse(contractAddress?: string) {
 
   const harvest = useCallback(
     async (pid: number, period: number) => {
+      const getGasPrice = async () => {
+        let gasPrice = undefined
+        try {
+          gasPrice = await library.getGasPrice()
+          if (gasPrice) {
+            gasPrice = calculateGasPrice(gasPrice)
+          }
+        } catch (ex) {}
+        return gasPrice
+      }
       try {
-        return await contract?.harvestPool(pid, period)
+        const gasPrice = await getGasPrice()
+        return await contract?.harvestPool(pid, period, { gasPrice })
       } catch (e) {
         console.error(e)
         return e
