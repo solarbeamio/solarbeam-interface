@@ -31,12 +31,12 @@ export function isTradeBetter(
 }
 
 export function calculateGasMargin(value: BigNumber): BigNumber {
-  const addMargin = 500 //500% margin
+  const addMargin = 100 //100% margin
   return value.mul(BigNumber.from(10000 + 100 * addMargin)).div(BigNumber.from(10000))
 }
 
 export function calculateGasPrice(value: BigNumber): BigNumber {
-  const addMargin = 300 //300% margin
+  const addMargin = 200 //200% margin
   return value.mul(BigNumber.from(10000 + 100 * addMargin)).div(BigNumber.from(10000))
 }
 
