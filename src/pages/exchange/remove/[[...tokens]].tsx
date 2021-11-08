@@ -5,7 +5,7 @@ import { ButtonConfirmed, ButtonError } from '../../../components/Button'
 import { ChainId, Currency, NATIVE, Percent, WNATIVE } from '../../../sdk'
 import React, { useCallback, useMemo, useState } from 'react'
 import TransactionConfirmationModal, { ConfirmationModalContent } from '../../../modals/TransactionConfirmationModal'
-import { calculateGasMargin, calculateSlippageAmount } from '../../../functions/trade'
+import { calculateGasMargin, calculateGasPrice, calculateSlippageAmount } from '../../../functions/trade'
 import { useBurnActionHandlers, useBurnState, useDerivedBurnInfo } from '../../../state/burn/hooks'
 import { usePairContract, useRouterContract } from '../../../hooks/useContract'
 
@@ -259,6 +259,14 @@ export default function Remove() {
       BigNumber.isBigNumber(safeGasEstimate)
     )
 
+    let gasPrice = undefined
+    try {
+      gasPrice = await library.getGasPrice()
+      if (gasPrice) {
+        gasPrice = calculateGasPrice(gasPrice)
+      }
+    } catch (ex) {}
+    
     // all estimations failed...
     if (indexOfSuccessfulEstimation === -1) {
       console.error('This transaction would fail. Please contact support.')
@@ -269,6 +277,7 @@ export default function Remove() {
       setAttemptingTxn(true)
       await routerContract[methodName](...args, {
         gasLimit: safeGasEstimate,
+        gasPrice
       })
         .then((response: TransactionResponse) => {
           setAttemptingTxn(false)

@@ -5,7 +5,7 @@ import { Currency, CurrencyAmount, Percent, WNATIVE, currencyEquals } from '../.
 import { ZERO_PERCENT } from '../../../constants'
 import React, { useCallback, useState } from 'react'
 import TransactionConfirmationModal, { ConfirmationModalContent } from '../../../modals/TransactionConfirmationModal'
-import { calculateGasMargin, calculateSlippageAmount } from '../../../functions/trade'
+import { calculateGasMargin, calculateGasPrice, calculateSlippageAmount } from '../../../functions/trade'
 import { currencyId, maxAmountSpend } from '../../../functions/currency'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../../state/mint/hooks'
 import { useExpertModeManager, useUserSlippageToleranceWithDefault } from '../../../state/user/hooks'
@@ -179,12 +179,21 @@ export default function Add() {
       value = null
     }
 
+    let gasPrice = undefined
+    try {
+      gasPrice = await library.getGasPrice()
+      if (gasPrice) {
+        gasPrice = calculateGasPrice(gasPrice)
+      }
+    } catch (ex) {}
+
     setAttemptingTxn(true)
     await estimate(...args, value ? { value } : {})
       .then((estimatedGasLimit) => {
         return method(...args, {
           ...(value ? { value } : {}),
           gasLimit: calculateGasMargin(estimatedGasLimit),
+          gasPrice,
         }).then((response) => {
           setAttemptingTxn(false)
 
@@ -210,6 +219,7 @@ export default function Add() {
         method(...args, {
           ...(value ? { value } : {}),
           gasLimit: '1000000',
+          gasPrice
         })
           .then((response) => {
             setAttemptingTxn(false)
