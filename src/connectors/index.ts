@@ -41,7 +41,6 @@ export const bridgeInjected = new InjectedConnector({
 export const walletconnect = new WalletConnectConnector({
   rpc: { [ChainId.MOONRIVER]: RPC[ChainId.MOONRIVER] },
   bridge: 'https://bridge.walletconnect.org',
-  qrcode: true,
-  pollingInterval: 15000,
+  qrcode: true
 })
 
