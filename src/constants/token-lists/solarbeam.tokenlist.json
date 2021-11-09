@@ -217,6 +217,14 @@
       "decimals": 18,
       "chainId": 1285,
       "logoURI": "https://app.solarbeam.io/images/tokens/rivrdoge.png"
+    },
+    {
+      "name": "RivrKitty",
+      "address": "0xC2b0435276139731d82Ae2Fa8928c9b9De0761c1",
+      "symbol": "RKITTY",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://app.solarbeam.io/images/tokens/rkitty-square.jpg"
     }
   ]
 }
