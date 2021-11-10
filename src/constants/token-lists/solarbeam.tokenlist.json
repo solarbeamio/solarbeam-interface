@@ -83,6 +83,14 @@
       "logoURI": "https://app.solarbeam.io/images/tokens/bnb.png"
     },
     {
+      "name": "RivrFloki",
+      "address": "0xae762762d5e40669af789c8c996451449ef40c71",
+      "symbol": "RIVRFLOKI",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://app.solarbeam.io/images/tokens/rivrfloki.png"
+    },
+    {
       "name": "MoonBeans",
       "address": "0xC2392DD3e3fED2c8Ed9f7f0bDf6026fcd1348453",
       "symbol": "BEANS",
