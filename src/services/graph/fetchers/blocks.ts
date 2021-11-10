@@ -2,7 +2,7 @@ import { getUnixTime, startOfHour, startOfMinute, startOfSecond, subDays, subHou
 
 import { ChainId } from '../../../sdk'
 import { GRAPH_HOST } from '../constants'
-import { blocksQuery } from '../queries'
+import { blockQuery, blocksQuery } from '../queries'
 import { request } from 'graphql-request'
 
 export const BLOCKS = {
@@ -14,6 +14,7 @@ export const BLOCKS = {
   [ChainId.HARMONY]: 'sushiswap/harmony-blocks',
   [ChainId.AVALANCHE]: 'matthewlilley/avalanche-blocks',
   [ChainId.CELO]: 'sushiswap/celo-blocks',
+  [ChainId.MOONRIVER]: '',
 }
 
 export const fetcher = async (chainId = ChainId.MAINNET, query, variables) =>
@@ -27,12 +28,25 @@ export const getBlocks = async (chainId = ChainId.MAINNET, start, end) => {
   return blocks
 }
 
-export const getOneDayBlock = async (chainId = ChainId.MAINNET) => {
-  const date = startOfHour(subDays(Date.now(), 1))
-  const start = Math.floor(Number(date) / 1000)
-  const end = Math.floor(Number(date) / 1000) + 600
-  const { blocks } = await fetcher(chainId, blocksQuery, { start, end })
-  return blocks?.[0]?.number
+export async function getOneDayBlock(client) {
+  const date = startOfMinute(subDays(Date.now(), 1))
+  // @ts-ignore
+  const start = Math.floor(date / 1000)
+  // @ts-ignore
+  const end = Math.floor(date / 1000) + 600
+
+  const { data: blocksData } = await client.query({
+    query: blockQuery,
+    variables: {
+      start,
+      end,
+    },
+    context: {
+      clientName: 'blocklytics',
+    },
+    fetchPolicy: 'network-only',
+  })
+  return { number: Number(blocksData?.blocks[0].number) }
 }
 
 export const getOneWeekBlock = async (chainId = ChainId.MAINNET) => {

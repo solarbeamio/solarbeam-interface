@@ -408,3 +408,15 @@ export const transactionsQuery = gql`
     }
   }
 `
+
+export const pairsQuery2 = gql`
+  query pairsQuery($first: Int! = 1000, $ids: [Bytes]!) {
+    pairs(first: $first, orderBy: $orderBy, orderDirection: $orderDirection, where: { id_in: $ids }) {
+      id
+      volumeUSD
+      untrackedVolumeUSD
+      reserveUSD
+      oneDay @client
+    }
+  }
+`

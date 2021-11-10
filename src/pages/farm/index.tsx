@@ -12,6 +12,7 @@ import { POOLS, POOLS_V2 } from '../../constants/farms'
 import { useVaults } from '../../features/vault/hooks'
 import Search from '../../components/Search'
 import { Sidebar } from '../../features/farm/FarmSidebar'
+import useFeeAPR from '../../hooks/useFeeAPR'
 
 export default function Farm(): JSX.Element {
   const { chainId } = useActiveWeb3React()
@@ -31,18 +32,27 @@ export default function Farm(): JSX.Element {
   const positions = usePositions()
   const positionsV2 = usePositionsV2()
 
-  const map = (pool, poolVersion, positions, pairPrices, version) => {
+  const feeAPR = useFeeAPR(POOLS)
+  const feeAPRV2 = useFeeAPR(POOLS_V2)
+
+  const map = (pool, poolVersion, positions, pairPrices, feeAPR, version) => {
     const pair = poolVersion[chainId][pool.lpToken]
     const position = positions.find((position) => position.id === pool.id)
     const pairPrice = pairPrices.find((item) => item.token == pool.lpToken)
-
+    const fee = feeAPR.find((item) => item.id === pool.lpToken?.toLowerCase())
     const tvl = (pool?.totalLp / 10 ** pair?.decimals) * pairPrice?.price
-    const roiPerYear =
-      (pool?.rewards?.reduce((previousValue, currentValue) => {
-        return previousValue + currentValue.rewardPerDay * currentValue.rewardPrice
-      }, 0) /
-        tvl) *
-      365
+    const roiPerYear = fee?.apr
+      ? (pool?.rewards?.reduce((previousValue, currentValue) => {
+          return previousValue + currentValue.rewardPerDay * currentValue.rewardPrice
+        }, 0) /
+          tvl) *
+          365 +
+        fee?.apr / 100
+      : (pool?.rewards?.reduce((previousValue, currentValue) => {
+          return previousValue + currentValue.rewardPerDay * currentValue.rewardPrice
+        }, 0) /
+          tvl) *
+        365
 
     const rewardsTotal = pool?.rewards?.reduce((previousValue, currentValue) => {
       return previousValue + currentValue.rewardPerDay * currentValue.rewardPrice
@@ -59,18 +69,18 @@ export default function Farm(): JSX.Element {
         ...pair,
         decimals: 18,
       },
+      feeAPR: fee?.apr,
       version,
     }
   }
-
   const FILTER = {
     '': (farm) => farm?.rewardsTotal > 0,
     my: (farm) => farm?.amount && !farm.amount.isZero(),
     inactive: (farm) => farm?.rewardsTotal == 0,
   }
 
-  const itemsV1 = farms.map((item) => map(item, POOLS, positions, pairPrices, 1))
-  const itemsV2 = farmsV2.map((item) => map(item, POOLS_V2, positionsV2, pairPricesV2, 2))
+  const itemsV1 = farms.map((item) => map(item, POOLS, positions, pairPrices, feeAPR, 1))
+  const itemsV2 = farmsV2.map((item) => map(item, POOLS_V2, positionsV2, pairPricesV2, feeAPRV2, 2))
 
   const items = itemsV1.concat(itemsV2)
 
