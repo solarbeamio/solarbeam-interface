@@ -35,10 +35,10 @@ const FarmList = ({ farms, term }) => {
         </div>
         <div
           className="items-center justify-start hidden px-2 cursor-pointer  md:flex hover:text-white space-x-2"
-          onClick={() => requestSort('allocPoint')}
+          onClick={() => requestSort('rewardsTotal')}
         >
           <div>{i18n._(t`Allocation`)}</div>
-          <SortDirection sortConfig={sortConfig} sortKey="allocPoint" />
+          <SortDirection sortConfig={sortConfig} sortKey="rewardsTotal" />
         </div>
         <div
           className="flex items-center justify-end px-4 cursor-pointer hover:text-white space-x-2"

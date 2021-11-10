@@ -10,12 +10,13 @@ const MenuItem = ({ href, title }) => {
     </NavLink>
   )
 }
-const Menu = () => {
+const Menu = ({ hasPosition }) => {
   const { i18n } = useLingui()
   return (
     <div className={`col-span-6 p-2  rounded-xxl flex bg-dark-700 flex-col md:flex-row md:space-x-2`}>
       <MenuItem href="/farm" title={i18n._(t`All farms`)} />
-      <MenuItem href={`/farm?filter=my`} title={i18n._(t`My farms`)} />
+      {hasPosition && <MenuItem href={`/farm?filter=my`} title={i18n._(t`My farms`)} />}
+      <MenuItem href={`/farm?filter=inactive`} title={i18n._(t`Inactive farms`)} />
     </div>
   )
 }

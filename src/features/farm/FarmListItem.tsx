@@ -85,13 +85,13 @@ const FarmListItem = ({ farm, ...rest }) => {
                   <div
                     className="font-bold flex justify items-center text-righttext-high-emphesis"
                     onClick={(e) => {
-                      e.stopPropagation()
-                      setSelectedFarm(farm.id)
+                      // e.stopPropagation()
+                      // setSelectedFarm(farm.id)
                     }}
                   >
-                    <IconWrapper size="16px" marginRight={'10px'}>
+                    {/* <IconWrapper size="16px" marginRight={'10px'}>
                       <Info />
-                    </IconWrapper>
+                    </IconWrapper> */}
                     {farm.royPerYear > 1000000 ? '100000000%+' : formatPercent(farm.roiPerYear * 100)}
                   </div>
                   <div className="text-xs text-right md:text-base text-secondary">{i18n._(t`annualized`)}</div>
@@ -102,7 +102,7 @@ const FarmListItem = ({ farm, ...rest }) => {
           </div>
         )}
       </Disclosure>
-      {!!selectedFarm && (
+      {/* {!!selectedFarm && (
         <YieldDetails
           key={farm.id}
           isOpen={selectedFarm == farm.id}
@@ -111,7 +111,7 @@ const FarmListItem = ({ farm, ...rest }) => {
           token1={token1}
           roiPerYear={farm.roiPerYear}
         />
-      )}
+      )} */}
     </React.Fragment>
   )
 }

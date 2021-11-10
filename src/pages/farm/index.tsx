@@ -18,20 +18,18 @@ export default function Farm(): JSX.Element {
   const { i18n } = useLingui()
   const router = useRouter()
 
-  const type = router.query.filter as string
+  const type = (router.query.filter as string) || ''
 
   const vaults = useVaults()
 
   const farms = useFarms()
-  // const farmsV2 = useFarmsV2()
-
-  console.log(farms)
+  const farmsV2 = useFarmsV2()
 
   const pairPrices = usePairPrices(POOLS)
-  // const pairPricesV2 = usePairPrices(POOLS_V2)
+  const pairPricesV2 = usePairPrices(POOLS_V2)
 
   const positions = usePositions()
-  // const positionsV2 = usePositionsV2()
+  const positionsV2 = usePositionsV2()
 
   const map = (pool, poolVersion, positions, pairPrices, version) => {
     const pair = poolVersion[chainId][pool.lpToken]
@@ -46,12 +44,17 @@ export default function Farm(): JSX.Element {
         tvl) *
       365
 
+    const rewardsTotal = pool?.rewards?.reduce((previousValue, currentValue) => {
+      return previousValue + currentValue.rewardPerDay * currentValue.rewardPrice
+    }, 0)
+
     return {
       ...pool,
       ...position,
       tvl,
       price: pairPrice?.price,
       roiPerYear,
+      rewardsTotal,
       pair: {
         ...pair,
         decimals: 18,
@@ -61,15 +64,22 @@ export default function Farm(): JSX.Element {
   }
 
   const FILTER = {
+    '': (farm) => farm?.rewardsTotal > 0,
     my: (farm) => farm?.amount && !farm.amount.isZero(),
+    inactive: (farm) => farm?.rewardsTotal == 0,
   }
 
-  const items = farms.map((item) => map(item, POOLS, positions, pairPrices, 1))
+  const itemsV1 = farms.map((item) => map(item, POOLS, positions, pairPrices, 1))
+  const itemsV2 = farmsV2.map((item) => map(item, POOLS_V2, positionsV2, pairPricesV2, 2))
 
-  // const itemsV2 = farmsV2.map((item) => map(item, POOLS_V2, positionsV2, pairPricesV2, 2))
+  const items = itemsV1.concat(itemsV2)
 
   const data = items.filter((farm) => {
     return type in FILTER ? FILTER[type](farm) : true
+  })
+
+  const hasPositions = items.find((farm) => {
+    return farm?.amount && !farm.amount.isZero()
   })
 
   const { result, term, search } = useFuse({
@@ -94,7 +104,7 @@ export default function Farm(): JSX.Element {
           </div>
           <div className={`col-span-12 md:col-span-9 py-4 md:px-6 md:py-6 shadow bg-dark-900 rounded-xxl`}>
             <div className={`flex flex-col md:flex-row space-y-4 md:space-x-5 md:space-y-0 mb-8`}>
-              <Menu />
+              <Menu hasPosition={hasPositions} />
               <Search
                 className={'flex flex-col flex-1 md:flex-row px-1 py-1 bg-dark-700 rounded-xxl'}
                 placeholder={'Search by name, symbol or address'}
@@ -105,7 +115,6 @@ export default function Farm(): JSX.Element {
               />
             </div>
             <>
-              {/* <FarmList farms={itemsV2} term={term} /> */}
               <FarmList farms={result} term={term} />
             </>
           </div>

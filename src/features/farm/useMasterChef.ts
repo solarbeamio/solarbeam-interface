@@ -8,10 +8,10 @@ import { calculateGasPrice } from '../../functions'
 export default function useMasterChef(version) {
   const { library } = useActiveWeb3React()
   const distributor = useSolarDistributorContract()
-  // const distributorV2 = useSolarDistributorV2Contract()
+  const distributorV2 = useSolarDistributorV2Contract()
 
-  // const contract = version == 1 ? distributor : distributorV2
-  const contract = distributor
+  const contract = version == 1 ? distributor : distributorV2
+  // const contract = distributor
 
   // Deposit
   const deposit = useCallback(
