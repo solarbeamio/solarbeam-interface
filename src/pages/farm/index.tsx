@@ -44,10 +44,11 @@ export default function Farm(): JSX.Element {
     const rewardsTotal = pool?.rewards?.reduce((previousValue, currentValue) => {
       return previousValue + currentValue.rewardPerDay * currentValue.rewardPrice
     }, 0)
-    const rewardAprPerYear = (pool?.rewards?.reduce((previousValue, currentValue) => {
+    const rewardAprPerYear =
+      (pool?.rewards?.reduce((previousValue, currentValue) => {
         return previousValue + currentValue.rewardPerDay * currentValue.rewardPrice
       }, 0) /
-      tvl) *
+        tvl) *
       365
     const roiPerYear = feeAprPerYear ? feeAprPerYear + rewardAprPerYear : rewardAprPerYear
 
@@ -118,9 +119,7 @@ export default function Farm(): JSX.Element {
                 }}
               />
             </div>
-            <>
-              <FarmList farms={result} term={term} />
-            </>
+            <FarmList farms={result} term={term} />
           </div>
         </div>
       </DoubleGlowShadow>

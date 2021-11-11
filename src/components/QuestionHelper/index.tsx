@@ -24,7 +24,7 @@ const QuestionHelper: FC<{ text: any }> = ({ children, text }) => {
   }
 
   return (
-    <span className="ml-1">
+    <div className="ml-1 flex">
       <RewardTooltip text={text} show={show}>
         <div
           className="flex items-center justify-center outline-none cursor-help hover:text-primary"
@@ -35,7 +35,7 @@ const QuestionHelper: FC<{ text: any }> = ({ children, text }) => {
           <SolidQuestionMarkCircleIcon width={16} height={16} />
         </div>
       </RewardTooltip>
-    </span>
+    </div>
   )
 }
 

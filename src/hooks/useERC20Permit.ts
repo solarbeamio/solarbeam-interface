@@ -1,12 +1,4 @@
-import {
-  Currency,
-  CurrencyAmount,
-  JSBI,
-  Percent,
-  Token,
-  TradeType,
-  Trade as V2Trade,
-} from '../sdk'
+import { Currency, CurrencyAmount, JSBI, Percent, Token, TradeType, Trade as V2Trade } from '../sdk'
 import { DAI, USDC } from '../constants/tokens'
 import { useMemo, useState } from 'react'
 
@@ -59,7 +51,7 @@ const PERMITTABLE_TOKENS: {
       name: 'USD Coin',
       version: '2',
     },
-  }
+  },
 }
 
 export enum UseERC20PermitState {
@@ -267,7 +259,7 @@ export function useERC20Permit(
 
 const REMOVE_V2_LIQUIDITY_PERMIT_INFO: PermitInfo = {
   version: '1',
-  name: 'Solarbeam LP Token',
+  name: 'SolarBeam LP Token',
   type: PermitType.AMOUNT,
 }
 

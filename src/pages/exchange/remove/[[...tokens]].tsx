@@ -117,7 +117,7 @@ export default function Remove() {
     const liquidityAmount = parsedAmounts[Field.LIQUIDITY]
     if (!liquidityAmount) throw new Error('missing liquidity amount')
 
-    if (false && chainId !== ChainId.HARMONY && gatherPermitSignature) {
+    if (gatherPermitSignature) {
       try {
         await gatherPermitSignature()
       } catch (error) {
@@ -266,7 +266,7 @@ export default function Remove() {
         gasPrice = calculateGasPrice(gasPrice)
       }
     } catch (ex) {}
-    
+
     // all estimations failed...
     if (indexOfSuccessfulEstimation === -1) {
       console.error('This transaction would fail. Please contact support.')
@@ -277,7 +277,7 @@ export default function Remove() {
       setAttemptingTxn(true)
       await routerContract[methodName](...args, {
         gasLimit: safeGasEstimate,
-        gasPrice
+        gasPrice,
       })
         .then((response: TransactionResponse) => {
           setAttemptingTxn(false)
