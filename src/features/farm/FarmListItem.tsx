@@ -97,7 +97,7 @@ const FarmListItem = ({ farm, ...rest }) => {
                       <IconWrapper size='16px' marginRight={'10px'}>
                         <QuestionHelper
                           text={
-                            <div className='flex flex-col'>
+                            <div className='flex flex-col right-align'>
                               <div>
                                 Reward APR:{' '}
                                 {farm?.tvl !== 0

@@ -50,7 +50,7 @@ export default function Farm(): JSX.Element {
       tvl) *
       365
     const roiPerYear = feeAprPerYear ? feeAprPerYear + rewardAprPerYear : rewardAprPerYear
-    console.log(roiPerYear, feeAprPerYear, rewardAprPerYear)
+
     return {
       ...pool,
       ...position,

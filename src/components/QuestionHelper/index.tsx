@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useState } from 'react'
 import { QuestionMarkCircleIcon as SolidQuestionMarkCircleIcon } from '@heroicons/react/solid'
-import Tooltip from '../Tooltip'
+import { RewardTooltip } from '../Tooltip'
 
 const QuestionHelper: FC<{ text: any }> = ({ children, text }) => {
   const [show, setShow] = useState<boolean>(false)
@@ -10,7 +10,7 @@ const QuestionHelper: FC<{ text: any }> = ({ children, text }) => {
 
   if (children) {
     return (
-      <Tooltip text={text} show={show}>
+      <RewardTooltip text={text} show={show}>
         <div
           className="flex items-center justify-center outline-none"
           onClick={open}
@@ -19,13 +19,13 @@ const QuestionHelper: FC<{ text: any }> = ({ children, text }) => {
         >
           {children}
         </div>
-      </Tooltip>
+      </RewardTooltip>
     )
   }
 
   return (
     <span className="ml-1">
-      <Tooltip text={text} show={show}>
+      <RewardTooltip text={text} show={show}>
         <div
           className="flex items-center justify-center outline-none cursor-help hover:text-primary"
           onClick={open}
@@ -34,7 +34,7 @@ const QuestionHelper: FC<{ text: any }> = ({ children, text }) => {
         >
           <SolidQuestionMarkCircleIcon width={16} height={16} />
         </div>
-      </Tooltip>
+      </RewardTooltip>
     </span>
   )
 }
