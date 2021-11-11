@@ -21,6 +21,9 @@ import styled from 'styled-components'
 import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
 import usePrevious from '../../hooks/usePrevious'
+import { SUPPORTED_NETWORKS } from '../NetworkModal'
+import { ChainId } from '../../sdk'
+import { useActiveWeb3React } from '../../hooks'
 
 const CloseIcon = styled.div`
   position: absolute;
@@ -263,15 +266,35 @@ export default function WalletModal({
           <HeaderRow style={{ paddingLeft: 0, paddingRight: 0 }}>
             {error instanceof UnsupportedChainIdError ? i18n._(t`Wrong Network`) : i18n._(t`Error connecting`)}
           </HeaderRow>
-          <div>
+          <div className="mt-4">
             {error instanceof UnsupportedChainIdError ? (
-              <h5>{i18n._(t`Please connect to the appropriate Ethereum network.`)}</h5>
+              <h5>{i18n._(t`Please connect to Moonriver Network.`)}</h5>
             ) : (
               i18n._(t`Error connecting. Try refreshing the page.`)
             )}
             <div style={{ marginTop: '1rem' }} />
-            <ButtonError error={true} size="sm" onClick={deactivate}>
-              {i18n._(t`Disconnect`)}
+            <ButtonError
+              error={false}
+              size="lg"
+              onClick={() => {
+                const provider: any = window.ethereum
+                const params = SUPPORTED_NETWORKS[ChainId.MOONRIVER]
+
+                if (provider) {
+                  try {
+                    provider
+                      .request({
+                        method: 'wallet_addEthereumChain',
+                        params: [params],
+                      })
+                      .then((r) => {})
+                  } catch (error) {
+                    console.error('Failed to setup the network in Metamask:', error)
+                  }
+                }
+              }}
+            >
+              {i18n._(t`Switch to Moonriver Network`)}
             </ButtonError>
           </div>
         </UpperSection>
