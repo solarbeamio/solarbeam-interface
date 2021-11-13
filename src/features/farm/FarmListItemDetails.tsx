@@ -65,7 +65,7 @@ const FarmListItem = ({ farm }) => {
   )
 
   const pendingApproval = gatherPermitSignature
-    ? !signatureData
+    ? approvalState === ApprovalState.NOT_APPROVED && !signatureData
     : approvalState === ApprovalState.NOT_APPROVED || approvalState === ApprovalState.PENDING
 
   async function onAttemptToApprove() {

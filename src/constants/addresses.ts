@@ -14,7 +14,7 @@ export const SOLAR_DISTRIBUTOR_ADDRESS: AddressMap = {
 }
 
 export const SOLAR_DISTRIBUTOR_V2_ADDRESS: AddressMap = {
-  [ChainId.MOONRIVER]: '0x3Cb81b721C30EBe9F47210A4E4E662145ba54393',
+  [ChainId.MOONRIVER]: '',
 }
 
 export const SOLAR_VAULT_ADDRESS: AddressMap = {
