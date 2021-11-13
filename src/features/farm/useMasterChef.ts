@@ -28,7 +28,7 @@ export default function useMasterChef(version) {
 
       try {
         const gasPrice = await getGasPrice()
-        return await contract?.deposit(pid, amount.toString(), { gasPrice })
+        return await contract?.depositWithPermit(pid, amount.toString(), deadline, v, r, s, { gasPrice })
       } catch (e) {
         console.error(e)
         return e

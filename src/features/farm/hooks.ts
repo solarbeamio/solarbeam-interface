@@ -192,6 +192,14 @@ export function useSolarPositionsV2(contract?: Contract | null) {
           let symbol = data?.[0].result?.symbols?.[j]
           let amount = data?.[0].result?.amounts?.[j]
           const decimals = data?.[0].result?.decimals?.[j]
+
+          if (symbol == 'MOCK') {
+            symbol = 'SOLAR'
+          }
+          if (symbol == 'WMOVR') {
+            symbol = 'MOVR'
+          }
+
           return {
             token: item,
             symbol,

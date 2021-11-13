@@ -64,6 +64,10 @@ const FarmListItem = ({ farm }) => {
     farm.version == 1 ? SOLAR_DISTRIBUTOR_ADDRESS[chainId] : SOLAR_DISTRIBUTOR_V2_ADDRESS[chainId]
   )
 
+  const pendingApproval = gatherPermitSignature
+    ? !signatureData
+    : approvalState === ApprovalState.NOT_APPROVED || approvalState === ApprovalState.PENDING
+
   async function onAttemptToApprove() {
     if (!liquidityToken || !library || !deadline) throw new Error('missing dependencies')
     const liquidityAmount = typedDepositValue
@@ -144,7 +148,7 @@ const FarmListItem = ({ farm }) => {
                 </Button>
               )}
             </div>
-            {approvalState === ApprovalState.NOT_APPROVED || approvalState === ApprovalState.PENDING ? (
+            {pendingApproval ? (
               <Button
                 className="w-full"
                 size="sm"
@@ -166,7 +170,7 @@ const FarmListItem = ({ farm }) => {
                   setPendingTx(true)
                   try {
                     let tx
-                    if (signatureData !== null) {
+                    if (gatherPermitSignature && signatureData) {
                       tx = await depositWithPermit(
                         farm?.id,
                         depositValue.toBigNumber(liquidityToken?.decimals),
