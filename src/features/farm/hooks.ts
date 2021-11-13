@@ -308,6 +308,9 @@ export function useSolarFarmsV2(contract?: Contract | null) {
           if (symbol == 'MOCK') {
             symbol = 'SOLAR'
           }
+          if (symbol == 'WMOVR') {
+            symbol = 'MOVR'
+          }
           return {
             token: symbol,
             icon: `/images/tokens/${symbol?.toLowerCase()}.png`,
@@ -397,6 +400,7 @@ export function usePricesApi() {
   return useMemo(() => {
     return {
       movr: movrPrice,
+      wmovr: movrPrice,
       solar: solarPrice * movrPrice,
       rib: ribPrice * movrPrice,
       mock: 1,

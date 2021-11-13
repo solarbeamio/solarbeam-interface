@@ -23,7 +23,7 @@ function getNested(theObject: any, path: string, separator = '.') {
 
 const useSortableData = (
   items: any,
-  config: any = { key: 'tvl', direction: 'descending', value: SortableOptions.tvl }
+  config: any = { key: 'rewardsTotal', direction: 'descending', value: SortableOptions.tvl }
 ) => {
   const [sortConfig, setSortConfig] = useState(config)
 

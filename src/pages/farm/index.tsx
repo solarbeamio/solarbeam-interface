@@ -13,6 +13,7 @@ import { useVaults } from '../../features/vault/hooks'
 import Search from '../../components/Search'
 import { Sidebar } from '../../features/farm/FarmSidebar'
 import useFeesAprPerYear from '../../hooks/useFeeAPR'
+import Typography from '../../components/Typography'
 
 export default function Farm(): JSX.Element {
   const { chainId } = useActiveWeb3React()
@@ -41,6 +42,7 @@ export default function Farm(): JSX.Element {
     const pairPrice = pairPrices.find((item) => item.token == pool.lpToken)
     const feeAprPerYear = feesAprPerYear.find((item) => item.id === pool.lpToken?.toLowerCase())?.apr / 100
     const tvl = (pool?.totalLp / 10 ** pair?.decimals) * pairPrice?.price
+    const doubleRewards = pool?.rewards?.lenght > 1
     const rewardsTotal = pool?.rewards?.reduce((previousValue, currentValue) => {
       return previousValue + currentValue.rewardPerDay * currentValue.rewardPrice
     }, 0)
@@ -65,12 +67,14 @@ export default function Farm(): JSX.Element {
         ...pair,
         decimals: 18,
       },
+      doubleRewards,
       version,
     }
   }
   const FILTER = {
     '': (farm) => farm?.rewardsTotal > 0,
     my: (farm) => farm?.amount && !farm.amount.isZero(),
+    double: (farm) => farm?.doubleRewards,
     inactive: (farm) => farm?.rewardsTotal == 0,
   }
 

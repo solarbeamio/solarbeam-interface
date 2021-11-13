@@ -11,7 +11,31 @@ export default function useMasterChef(version) {
   const distributorV2 = useSolarDistributorV2Contract()
 
   const contract = version == 1 ? distributor : distributorV2
-  // const contract = distributor
+
+  // DepositWithPermit - Distributor V2
+  const depositWithPermit = useCallback(
+    async (pid: number, amount: BigNumber, deadline: number, v: number, r: string, s: string) => {
+      const getGasPrice = async () => {
+        let gasPrice = undefined
+        try {
+          gasPrice = await library.getGasPrice()
+          if (gasPrice) {
+            gasPrice = calculateGasPrice(gasPrice)
+          }
+        } catch (ex) {}
+        return gasPrice
+      }
+
+      try {
+        const gasPrice = await getGasPrice()
+        return await contract?.deposit(pid, amount.toString(), { gasPrice })
+      } catch (e) {
+        console.error(e)
+        return e
+      }
+    },
+    [contract, library]
+  )
 
   // Deposit
   const deposit = useCallback(
@@ -87,5 +111,5 @@ export default function useMasterChef(version) {
     [contract, library]
   )
 
-  return { deposit, withdraw, harvest }
+  return { deposit, depositWithPermit, withdraw, harvest }
 }

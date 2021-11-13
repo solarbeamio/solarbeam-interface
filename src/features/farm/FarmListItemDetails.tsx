@@ -18,11 +18,13 @@ import { useTokenBalance } from '../../state/wallet/hooks'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import { isMobile } from 'react-device-detect'
 import { Zero } from '@ethersproject/constants'
+import { useV2LiquidityTokenPermit } from '../../hooks/useERC20Permit'
+import useTransactionDeadline from '../../hooks/useTransactionDeadline'
 
 const FarmListItem = ({ farm }) => {
   const { i18n } = useLingui()
 
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId, library } = useActiveWeb3React()
   const [pendingTx, setPendingTx] = useState(false)
   const [depositValue, setDepositValue] = useState('')
   const [withdrawValue, setWithdrawValue] = useState('')
@@ -39,6 +41,7 @@ const FarmListItem = ({ farm }) => {
 
   // User liquidity token balance
   const balance = useTokenBalance(account, liquidityToken)
+  const deadline = useTransactionDeadline()
 
   const nextHarvestUntil = (farm?.nextHarvestUntil || Zero) * 1000
 
@@ -50,12 +53,37 @@ const FarmListItem = ({ farm }) => {
   const typedDepositValue = tryParseAmount(depositValue, liquidityToken)
   const typedWithdrawValue = tryParseAmount(withdrawValue, liquidityToken)
 
+  // allowance handling
+  const { gatherPermitSignature, signatureData } = useV2LiquidityTokenPermit(
+    typedDepositValue,
+    farm.version == 1 ? undefined : SOLAR_DISTRIBUTOR_V2_ADDRESS[chainId]
+  )
+
   const [approvalState, approve] = useApproveCallback(
     typedDepositValue,
     farm.version == 1 ? SOLAR_DISTRIBUTOR_ADDRESS[chainId] : SOLAR_DISTRIBUTOR_V2_ADDRESS[chainId]
   )
 
-  const { deposit, withdraw, harvest } = useMasterChef(farm.version)
+  async function onAttemptToApprove() {
+    if (!liquidityToken || !library || !deadline) throw new Error('missing dependencies')
+    const liquidityAmount = typedDepositValue
+    if (!liquidityAmount) throw new Error('missing liquidity amount')
+
+    if (gatherPermitSignature) {
+      try {
+        await gatherPermitSignature()
+      } catch (error) {
+        // try to approve if gatherPermitSignature failed for any reason other than the user rejecting it
+        if (error?.code !== 4001) {
+          await approve()
+        }
+      }
+    } else {
+      await approve()
+    }
+  }
+
+  const { deposit, depositWithPermit, withdraw, harvest } = useMasterChef(farm.version)
 
   return (
     <Transition
@@ -123,7 +151,7 @@ const FarmListItem = ({ farm }) => {
                 variant="outlined"
                 color="gradient"
                 disabled={approvalState === ApprovalState.PENDING}
-                onClick={approve}
+                onClick={onAttemptToApprove}
               >
                 {approvalState === ApprovalState.PENDING ? <Dots>Approving </Dots> : i18n._(t`Approve`)}
               </Button>
@@ -137,8 +165,19 @@ const FarmListItem = ({ farm }) => {
                 onClick={async () => {
                   setPendingTx(true)
                   try {
-                    // KMP decimals depend on asset, SLP is always 18
-                    const tx = await deposit(farm?.id, depositValue.toBigNumber(liquidityToken?.decimals))
+                    let tx
+                    if (signatureData !== null) {
+                      tx = await depositWithPermit(
+                        farm?.id,
+                        depositValue.toBigNumber(liquidityToken?.decimals),
+                        signatureData.deadline,
+                        signatureData.v,
+                        signatureData.r,
+                        signatureData.s
+                      )
+                    } else {
+                      tx = await deposit(farm?.id, depositValue.toBigNumber(liquidityToken?.decimals))
+                    }
 
                     addTransaction(tx, {
                       summary: `${i18n._(t`Deposit`)} ${
