@@ -275,7 +275,6 @@ export function useSolarFarms(contract?: Contract | null) {
 }
 
 export function useSolarFarmsV2(contract?: Contract | null) {
-  const { account, chainId } = useActiveWeb3React()
   const priceData = useContext(PriceContext)
 
   const numberOfPools = useSingleCallResult(contract ? contract : null, 'poolLength', undefined, NEVER_RELOAD)
@@ -293,6 +292,7 @@ export function useSolarFarmsV2(contract?: Contract | null) {
   const poolRewardsPerSec = useSingleContractMultipleData(args ? contract : null, 'poolRewardsPerSec', args)
 
   const secondsPerDay = 60 * 60 * 24
+  const teamInvestorTreasuryPercent = 30 //30%
 
   return useMemo(() => {
     if (!poolInfo) {
@@ -310,24 +310,20 @@ export function useSolarFarmsV2(contract?: Contract | null) {
         harvestInterval: pool?.harvestInterval,
         totalLp: pool?.totalLp,
         rewards: poolRewardsPerSec?.[i].result?.[0].map((item, j) => {
-          console.log(poolRewardsPerSec)
           const decimals = poolRewardsPerSec?.[i].result?.decimals?.[j]
           const rewardsPerSec = poolRewardsPerSec?.[i].result?.rewardsPerSec?.[j]
           let symbol = poolRewardsPerSec?.[i].result?.symbols?.[j]
-          if (symbol == 'MOCK') {
-            symbol = 'SOLAR'
-          }
           if (symbol == 'WMOVR') {
-            symbol = 'MOVR'
-          }
-          if (symbol == 'TOKEN') {
             symbol = 'MOVR'
           }
           const rewardPrice = priceData?.[symbol?.toLowerCase()] || 0
           return {
             token: symbol,
             icon: `/images/tokens/${symbol?.toLowerCase()}.png`,
-            rewardPerDay: (rewardsPerSec / 10 ** decimals?.toString()) * secondsPerDay,
+            rewardPerDay:
+              (rewardsPerSec / 10 ** decimals?.toString()) *
+              secondsPerDay *
+              ((100 - teamInvestorTreasuryPercent) / 100),
             rewardPrice,
           }
         }),

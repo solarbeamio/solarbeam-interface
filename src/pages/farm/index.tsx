@@ -27,8 +27,6 @@ export default function Farm(): JSX.Element {
   const farms = useFarms()
   const farmsV2 = useFarmsV2()
 
-  // console.log(farmsV2)
-
   const pairPrices = usePairPrices(POOLS)
   const pairPricesV2 = usePairPrices(POOLS_V2)
 
@@ -84,8 +82,6 @@ export default function Farm(): JSX.Element {
   const itemsV2 = farmsV2.map((item) => map(item, POOLS_V2, positionsV2, pairPricesV2, feesAprPerYearV2, 2))
 
   const items = itemsV1.concat(itemsV2)
-
-  const allPositions = positions.concat(positionsV2)
 
   const data = items.filter((farm) => {
     return type in FILTER ? FILTER[type](farm) : true
