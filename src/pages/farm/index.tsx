@@ -113,7 +113,13 @@ export default function Farm(): JSX.Element {
       <DoubleGlowShadow opacity="0.6" maxWidth={false} className={'container px-0 mx-auto '}>
         <div className={`z-4 grid grid-cols-12 md:space-x-4 space-y-4 md:space-y-0 pb-12 sm:pt-12 sm:mt-16 mt-4 m-2 `}>
           <div className={`col-span-12 md:col-span-3 space-y-4`}>
-            <Sidebar positions={allPositions} farms={items} vaults={vaults} />
+            <Sidebar
+              positionsv1={positions}
+              positionsv2={positionsV2}
+              farmsv1={itemsV1}
+              farmsv2={itemsV2}
+              vaults={vaults}
+            />
           </div>
           <div className={`col-span-12 md:col-span-9 py-4 md:px-6 md:py-6 shadow bg-dark-900 rounded-xxl`}>
             <div className={`flex flex-col md:flex-row space-y-4 md:space-x-5 md:space-y-0 mb-8`}>
