@@ -53,6 +53,14 @@ export const Sidebar = ({ positionsv1, positionsv2, farmsv1, farmsv2, vaults }) 
     return previousValue + rewardsValue
   }, 0)
 
+  const allStakedv2 = positionsv2.reduce((previousValue, currentValue) => {
+    const rewardsValue = currentValue?.pendingRewards?.reduce((p, c) => {
+      const reward = (c?.amount / 10 ** c?.decimals) * priceData?.[c?.symbol?.toLowerCase()]
+      return p + reward
+    }, 0)
+    return previousValue + rewardsValue
+  }, 0)
+
   const valueStaked = positionsv1.reduce((previousValue, currentValue) => {
     const pool = farmingPools.find((r) => parseInt(r.id.toString()) == parseInt(currentValue.id))
     const poolTvl = farmsv1.filter((r) => r.lpToken).find((r) => getAddress(r.lpToken) == getAddress(pool?.lpToken))
@@ -115,7 +123,7 @@ export const Sidebar = ({ positionsv1, positionsv2, farmsv1, farmsv2, vaults }) 
           </Typography>
           <div className="flex justify-between space-x-6">
             <Typography variant="h3" className={'text-high-emphesis'}>
-              {formatNumber(allStaked, true)}{' '}
+              {formatNumber(allStaked + allStakedv2, true)}{' '}
             </Typography>
             <div className="py-1">
               <Button
