@@ -219,12 +219,20 @@
       "logoURI": "https://app.solarbeam.io/images/tokens/rivrdoge.png"
     },
     {
-      "name": "Frax",
+      "name": "Anyswap Frax",
       "address": "0x965f84D915a9eFa2dD81b653e3AE736555d945f4",
-      "symbol": "FRAX",
+      "symbol": "anyFRAX",
       "decimals": 18,
       "chainId": 1285,
       "logoURI": "https://app.solarbeam.io/images/tokens/frax.png"
+    },
+    {
+      "name": "Frax",
+      "address": "0x1A93B23281CC1CDE4C4741353F3064709A16197d",
+      "symbol": "FRAX",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://app.solarbeam.io/images/tokens/frax-canonical.png"
     }
   ]
 }
