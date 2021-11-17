@@ -27,6 +27,8 @@ export default function Farm(): JSX.Element {
   const farms = useFarms()
   const farmsV2 = useFarmsV2()
 
+  // console.log(farmsV2)
+
   const pairPrices = usePairPrices(POOLS)
   const pairPricesV2 = usePairPrices(POOLS_V2)
 

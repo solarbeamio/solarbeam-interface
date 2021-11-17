@@ -121,7 +121,7 @@ export function useERC20Permit(
 ): {
   signatureData: SignatureData | null
   state: UseERC20PermitState
-  gatherPermitSignature: null | (() => Promise<void>)
+  gatherPermitSignature: null | ((callback?) => Promise<void>)
 } {
   const { account, chainId, library } = useActiveWeb3React()
   const transactionDeadline = useTransactionDeadline()
@@ -177,7 +177,7 @@ export function useERC20Permit(
     return {
       state: isSignatureDataValid ? UseERC20PermitState.SIGNED : UseERC20PermitState.NOT_SIGNED,
       signatureData: isSignatureDataValid ? signatureData : null,
-      gatherPermitSignature: async function gatherPermitSignature() {
+      gatherPermitSignature: async function gatherPermitSignature(callback) {
         const allowed = permitInfo.type === PermitType.ALLOWED
         const signatureDeadline = transactionDeadline.toNumber() + PERMIT_VALIDITY_BUFFER
         const value = currencyAmount.quotient.toString()
@@ -223,7 +223,7 @@ export function useERC20Permit(
           .send('eth_signTypedData_v4', [account, data])
           .then(splitSignature)
           .then((signature) => {
-            setSignatureData({
+            const signatureData = {
               v: signature.v,
               r: signature.r,
               s: signature.s,
@@ -235,7 +235,12 @@ export function useERC20Permit(
               spender,
               tokenAddress,
               permitType: permitInfo.type,
-            })
+            }
+
+            setSignatureData(signatureData)
+            if (callback) {
+              callback(signatureData)
+            }
           })
       },
     }

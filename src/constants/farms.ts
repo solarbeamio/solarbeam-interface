@@ -419,5 +419,23 @@ export const POOLS_V2: AddressMap = {
       symbol: 'SLP',
       decimals: 18,
     },
+    '0xe537f70a8b62204832B8Ba91940B77d3f79AEb81': {
+      id: 1,
+      token0: {
+        id: '0xE3F5a90F9cb311505cd691a46596599aA1A0AD7D',
+        name: 'USDC Coin',
+        symbol: 'USDC',
+        decimals: 6,
+      },
+      token1: {
+        id: '0x98878B06940aE243284CA214f92Bb71a2b032B8A',
+        name: 'Moonriver',
+        symbol: 'MOVR',
+        decimals: 18,
+      },
+      name: 'Solarbeam LP',
+      symbol: 'SLP',
+      decimals: 18,
+    },
   },
 }

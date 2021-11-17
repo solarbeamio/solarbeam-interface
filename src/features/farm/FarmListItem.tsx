@@ -20,8 +20,10 @@ const FarmListItem = ({ farm, ...rest }) => {
 
   const [selectedFarm, setSelectedFarm] = useState<string>(null)
 
-  let token0 = useCurrency(farm.pair.token0?.id)
-  let token1 = useCurrency(farm.pair.token1?.id)
+  const token0 = useCurrency(farm.pair.token0?.id)
+  const token1 = useCurrency(farm.pair.token1?.id)
+
+  const rewardsWithAmount = farm?.rewards?.filter((r) => r.rewardPerDay > 0)
 
   return (
     <React.Fragment>
@@ -61,12 +63,12 @@ const FarmListItem = ({ farm, ...rest }) => {
                 <div className="flex flex-col justify-center font-bold">{formatNumberScale(farm.tvl, true, 2)}</div>
                 <div className="flex-row items-center hidden space-x-4 md:flex">
                   <div className="flex items-center space-x-2">
-                    {farm?.rewards?.map((reward, i) => (
+                    {rewardsWithAmount?.map((reward, i) => (
                       <div key={i} className="flex items-center">
                         <Image
                           src={reward?.icon}
-                          width={farm?.rewards?.length > 1 ? 40 : 50}
-                          height={farm?.rewards?.length > 1 ? 40 : 50}
+                          width={rewardsWithAmount?.length > 1 ? 40 : 50}
+                          height={rewardsWithAmount?.length > 1 ? 40 : 50}
                           className="rounded-md"
                           layout="fixed"
                           alt={reward?.token}
@@ -75,7 +77,7 @@ const FarmListItem = ({ farm, ...rest }) => {
                     ))}
                   </div>
                   <div className="flex flex-col space-y-1">
-                    {farm?.rewards?.map((reward, i) => (
+                    {rewardsWithAmount?.map((reward, i) => (
                       <div key={i} className="text-xs md:text-sm whitespace-nowrap">
                         {formatNumber(reward.rewardPerDay)} {reward.token} {i18n._(t`/ DAY`)}
                       </div>
@@ -88,17 +90,17 @@ const FarmListItem = ({ farm, ...rest }) => {
                       <IconWrapper size="16px" marginRight={'0.5rem'}>
                         <QuestionHelper
                           text={
-                            <div className="flex flex-col right-align items-center">
-                              <div>
-                                Reward APR:{' '}
+                            <div className="flex flex-col right-align justify-end items-end">
+                              <div className="flex right-align">
+                                Rewards APR:{' '}
                                 {farm?.tvl !== 0
                                   ? farm?.rewardAprPerYear > 10000
                                     ? '>10,000%'
                                     : formatPercent(farm?.rewardAprPerYear * 100)
                                   : 'Infinite'}
                               </div>
-                              <div>
-                                Fee APR:{' '}
+                              <div className="flex right-align">
+                                Fees APR:{' '}
                                 {farm?.feeAprPerYear < 10000 ? formatPercent(farm?.feeAprPerYear * 100) : '>10,000%'}
                               </div>
                             </div>

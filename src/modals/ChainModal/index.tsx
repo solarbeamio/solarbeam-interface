@@ -91,6 +91,12 @@ export default function ChainModal({
     window.open('https://bridge.wanchain.org/', '_blank').focus()
   }
 
+  const goToSynapse = () => {
+    window
+      .open('https://synapseprotocol.com/?inputCurrency=FRAX&outputCurrency=FRAX&outputChain=1285', '_blank')
+      .focus()
+  }
+
   return (
     <Modal isOpen={isOpen} onDismiss={onDismiss} maxWidth={400}>
       <ModalHeader onClose={onDismiss} title={title} />
@@ -176,16 +182,16 @@ export default function ChainModal({
             <ExternalLinkIcon style={{ width: '26px', height: '26px', marginLeft: 'auto' }} />
           </div>
         </button>
-        <button className="w-full col-span-1 p-px rounded bg-dark-800 hover:bg-dark-900" onClick={() => goToWan()}>
+        <button className="w-full col-span-1 p-px rounded bg-dark-800 hover:bg-dark-900" onClick={() => goToSynapse()}>
           <div className="flex items-center w-full h-full p-3 space-x-3 rounded">
             <Image
-              src={`/images/networks/polkadot.jpg`}
-              alt={`Select Polkadot Network`}
+              src={`/images/tokens/frax-canonical.png`}
+              alt={`Select Canonical FRAX`}
               className="rounded-md"
               width="32px"
               height="32px"
             />
-            <div className="font-bold text-primary">{`Polkadot`}</div>
+            <div className="font-bold text-primary">{`FRAX`}</div>
             <ExternalLinkIcon style={{ width: '26px', height: '26px', marginLeft: 'auto' }} />
           </div>
         </button>

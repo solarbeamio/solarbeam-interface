@@ -310,6 +310,7 @@ export function useSolarFarmsV2(contract?: Contract | null) {
         harvestInterval: pool?.harvestInterval,
         totalLp: pool?.totalLp,
         rewards: poolRewardsPerSec?.[i].result?.[0].map((item, j) => {
+          console.log(poolRewardsPerSec)
           const decimals = poolRewardsPerSec?.[i].result?.decimals?.[j]
           const rewardsPerSec = poolRewardsPerSec?.[i].result?.rewardsPerSec?.[j]
           let symbol = poolRewardsPerSec?.[i].result?.symbols?.[j]
@@ -319,11 +320,15 @@ export function useSolarFarmsV2(contract?: Contract | null) {
           if (symbol == 'WMOVR') {
             symbol = 'MOVR'
           }
+          if (symbol == 'TOKEN') {
+            symbol = 'MOVR'
+          }
+          const rewardPrice = priceData?.[symbol?.toLowerCase()] || 0
           return {
             token: symbol,
             icon: `/images/tokens/${symbol?.toLowerCase()}.png`,
             rewardPerDay: (rewardsPerSec / 10 ** decimals?.toString()) * secondsPerDay,
-            rewardPrice: priceData?.[symbol?.toLowerCase()],
+            rewardPrice,
           }
         }),
       }

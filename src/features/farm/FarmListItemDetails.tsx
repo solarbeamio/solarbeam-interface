@@ -1,7 +1,7 @@
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 import { CurrencyAmount, JSBI, Token, ZERO } from '../../sdk'
 import { Disclosure, Transition } from '@headlessui/react'
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { usePendingSolar, useUserInfo } from './hooks'
 import Button from '../../components/Button'
 import Dots from '../../components/Dots'
@@ -26,6 +26,10 @@ const FarmListItem = ({ farm }) => {
 
   const { account, chainId, library } = useActiveWeb3React()
   const [pendingTx, setPendingTx] = useState(false)
+  const [pendingDepositTx, setPendingDepositTx] = useState(false)
+  const [pendingApproveTx, setPendingApproveTx] = useState(false)
+  const [pendingWithdrawTx, setPendingWithdrawTx] = useState(false)
+  const [pendingHarvestTx, setPendingHarvestTx] = useState(false)
   const [depositValue, setDepositValue] = useState('')
   const [withdrawValue, setWithdrawValue] = useState('')
 
@@ -73,21 +77,76 @@ const FarmListItem = ({ farm }) => {
     const liquidityAmount = typedDepositValue
     if (!liquidityAmount) throw new Error('missing liquidity amount')
 
+    setPendingTx(true)
+    setPendingApproveTx(true)
     if (gatherPermitSignature) {
       try {
-        await gatherPermitSignature()
+        await gatherPermitSignature(async (_signatureData) => {
+          await handleDeposit(_signatureData)
+          setPendingTx(false)
+        })
       } catch (error) {
         // try to approve if gatherPermitSignature failed for any reason other than the user rejecting it
         if (error?.code !== 4001) {
           await approve()
         }
+
+        setPendingTx(false)
       }
     } else {
       await approve()
+      setPendingTx(false)
     }
+    setPendingApproveTx(false)
   }
 
   const { deposit, depositWithPermit, withdraw, harvest } = useMasterChef(farm.version)
+
+  const handleDeposit = useCallback(
+    async (_signatureData?) => {
+      setPendingTx(true)
+      setPendingDepositTx(true)
+      try {
+        let tx
+        if (gatherPermitSignature && (_signatureData || signatureData)) {
+          const signData = _signatureData || signatureData
+          tx = await depositWithPermit(
+            farm?.id,
+            depositValue.toBigNumber(liquidityToken?.decimals),
+            signData.deadline,
+            signData.v,
+            signData.r,
+            signData.s
+          )
+        } else {
+          tx = await deposit(farm?.id, depositValue.toBigNumber(liquidityToken?.decimals))
+        }
+
+        addTransaction(tx, {
+          summary: `${i18n._(t`Deposit`)} ${
+            farm.pair.token1 ? `${farm.pair.token0.symbol}/${farm.pair.token1.symbol}` : farm.pair.token0.symbol
+          }`,
+        })
+      } catch (error) {
+        console.error(error)
+      }
+      setPendingTx(false)
+      setPendingDepositTx(false)
+    },
+    [
+      addTransaction,
+      deposit,
+      depositValue,
+      depositWithPermit,
+      farm?.id,
+      farm.pair.token0.symbol,
+      farm.pair.token1,
+      gatherPermitSignature,
+      i18n,
+      liquidityToken?.decimals,
+      signatureData,
+    ]
+  )
 
   return (
     <Transition
@@ -126,7 +185,7 @@ const FarmListItem = ({ farm }) => {
                   variant="outlined"
                   color="light-green"
                   size="xs"
-                  disabled={farm?.id === '1'}
+                  disabled={farm?.version == 1 && farm?.id === '1'}
                   onClick={() => {
                     if (!balance.equalTo(ZERO)) {
                       if (liquidityToken?.symbol == 'SOLAR') {
@@ -154,10 +213,14 @@ const FarmListItem = ({ farm }) => {
                 size="sm"
                 variant="outlined"
                 color="gradient"
-                disabled={approvalState === ApprovalState.PENDING}
+                disabled={pendingTx || approvalState === ApprovalState.PENDING}
                 onClick={onAttemptToApprove}
               >
-                {approvalState === ApprovalState.PENDING ? <Dots>Approving </Dots> : i18n._(t`Approve`)}
+                {pendingApproveTx || approvalState === ApprovalState.PENDING ? (
+                  <Dots>{i18n._(t`${gatherPermitSignature ? 'Waiting Approval Signature' : 'Approving'}`)} </Dots>
+                ) : (
+                  i18n._(t`Approve${gatherPermitSignature ? ' & Stake' : ''}`)
+                )}
               </Button>
             ) : (
               <Button
@@ -166,37 +229,11 @@ const FarmListItem = ({ farm }) => {
                 variant="outlined"
                 color="gradient"
                 disabled={pendingTx || !typedDepositValue || balance.lessThan(typedDepositValue) || farm?.id === '1'}
-                onClick={async () => {
-                  setPendingTx(true)
-                  try {
-                    let tx
-                    if (gatherPermitSignature && signatureData) {
-                      tx = await depositWithPermit(
-                        farm?.id,
-                        depositValue.toBigNumber(liquidityToken?.decimals),
-                        signatureData.deadline,
-                        signatureData.v,
-                        signatureData.r,
-                        signatureData.s
-                      )
-                    } else {
-                      tx = await deposit(farm?.id, depositValue.toBigNumber(liquidityToken?.decimals))
-                    }
-
-                    addTransaction(tx, {
-                      summary: `${i18n._(t`Deposit`)} ${
-                        farm.pair.token1
-                          ? `${farm.pair.token0.symbol}/${farm.pair.token1.symbol}`
-                          : farm.pair.token0.symbol
-                      }`,
-                    })
-                  } catch (error) {
-                    console.error(error)
-                  }
-                  setPendingTx(false)
+                onClick={() => {
+                  handleDeposit()
                 }}
               >
-                {i18n._(t`Stake`)}
+                {pendingDepositTx ? <Dots>Staking </Dots> : i18n._(t`Stake`)}
               </Button>
             )}
           </div>
@@ -240,6 +277,7 @@ const FarmListItem = ({ farm }) => {
               disabled={pendingTx || !typedWithdrawValue || amount.lessThan(typedWithdrawValue)}
               onClick={async () => {
                 setPendingTx(true)
+                setPendingWithdrawTx(true)
                 try {
                   // KMP decimals depend on asset, SLP is always 18
                   const tx = await withdraw(farm?.id, withdrawValue.toBigNumber(liquidityToken?.decimals))
@@ -250,14 +288,15 @@ const FarmListItem = ({ farm }) => {
                         : farm.pair.token0.symbol
                     }`,
                   })
+                  await tx.wait(6)
                 } catch (error) {
                   console.error(error)
                 }
-
+                setPendingWithdrawTx(false)
                 setPendingTx(false)
               }}
             >
-              {i18n._(t`Unstake`)}
+              {pendingWithdrawTx ? <Dots>Unstaking </Dots> : i18n._(t`Unstake`)}
             </Button>
           </div>
         </div>
@@ -266,10 +305,11 @@ const FarmListItem = ({ farm }) => {
             <Button
               color="gradient"
               className="w-full"
-              variant={!!nextHarvestUntil && nextHarvestUntil > Date.now() ? 'outlined' : 'filled'}
-              disabled={!!nextHarvestUntil && nextHarvestUntil > Date.now()}
+              variant={pendingTx || (!!nextHarvestUntil && nextHarvestUntil > Date.now()) ? 'outlined' : 'filled'}
+              disabled={pendingTx || (!!nextHarvestUntil && nextHarvestUntil > Date.now())}
               onClick={async () => {
                 setPendingTx(true)
+                setPendingHarvestTx(true)
                 try {
                   const tx = await harvest(farm.id)
                   addTransaction(tx, {
@@ -282,12 +322,23 @@ const FarmListItem = ({ farm }) => {
                 } catch (error) {
                   console.error(error)
                 }
+                setPendingHarvestTx(false)
                 setPendingTx(false)
               }}
             >
-              {`Harvest ${pendingRewards
-                .map((reward) => `${formatNumber(reward?.amount / 10 ** reward?.decimals)}  ${reward.symbol}`)
-                .join(' & ')}`}
+              {pendingHarvestTx ? (
+                <Dots>
+                  {`Harvesting ${pendingRewards
+                    .map((reward) => `${formatNumber(reward?.amount / 10 ** reward?.decimals)}  ${reward.symbol}`)
+                    .join(' & ')}`}{' '}
+                </Dots>
+              ) : (
+                i18n._(
+                  t`Harvest ${pendingRewards
+                    .map((reward) => `${formatNumber(reward?.amount / 10 ** reward?.decimals)}  ${reward.symbol}`)
+                    .join(' & ')}`
+                )
+              )}
             </Button>
           </div>
         )}
