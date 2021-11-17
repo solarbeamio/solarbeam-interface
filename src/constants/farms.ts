@@ -401,12 +401,30 @@ export const POOLS: AddressMap = {
 
 export const POOLS_V2: AddressMap = {
   [ChainId.MOONRIVER]: {
-    '0x7eDA899b3522683636746a2f3a7814e6fFca75e1': {
+    '0x32E33B774372c700da12F2D0F7A834045F5651B2': {
       id: 0,
       token0: {
-        id: '0x6bD193Ee6D2104F14F94E2cA6efefae561A4334B',
-        name: 'Solarbeam',
-        symbol: 'SOLAR',
+        id: '0x6aB6d61428fde76768D7b45D8BFeec19c6eF91A8',
+        name: 'Wrapped Bitcoin',
+        symbol: 'WBTC',
+        decimals: 8,
+      },
+      token1: {
+        id: '0x98878B06940aE243284CA214f92Bb71a2b032B8A',
+        name: 'Moonriver',
+        symbol: 'MOVR',
+        decimals: 18,
+      },
+      name: 'Solarbeam LP',
+      symbol: 'SLP',
+      decimals: 18,
+    },
+    '0x0d171b55fC8d3BDDF17E376FdB2d90485f900888': {
+      id: 1,
+      token0: {
+        id: '0x639A647fbe20b6c8ac19E48E2de44ea792c62c5C',
+        name: 'Ethereum',
+        symbol: 'ETH',
         decimals: 18,
       },
       token1: {
@@ -419,13 +437,49 @@ export const POOLS_V2: AddressMap = {
       symbol: 'SLP',
       decimals: 18,
     },
-    '0xe537f70a8b62204832B8Ba91940B77d3f79AEb81': {
-      id: 1,
+    '0xBe2aBe58eDAae96B4303F194d2fAD5233BaD3d87': {
+      id: 2,
       token0: {
-        id: '0xE3F5a90F9cb311505cd691a46596599aA1A0AD7D',
-        name: 'USDC Coin',
-        symbol: 'USDC',
-        decimals: 6,
+        id: '0x2bF9b864cdc97b08B6D79ad4663e71B8aB65c45c',
+        name: 'Binance Coin',
+        symbol: 'BNB',
+        decimals: 18,
+      },
+      token1: {
+        id: '0x98878B06940aE243284CA214f92Bb71a2b032B8A',
+        name: 'Moonriver',
+        symbol: 'MOVR',
+        decimals: 18,
+      },
+      name: 'Solarbeam LP',
+      symbol: 'SLP',
+      decimals: 18,
+    },
+    '0x9432B25fBD8a37e5A1300e36a96BD14E1E6f5c90': {
+      id: 3,
+      token0: {
+        id: '0x0caE51e1032e8461f4806e26332c030E34De3aDb',
+        name: 'Magic Internet Money',
+        symbol: 'MIM',
+        decimals: 18,
+      },
+      token1: {
+        id: '0x98878B06940aE243284CA214f92Bb71a2b032B8A',
+        name: 'Moonriver',
+        symbol: 'MOVR',
+        decimals: 18,
+      },
+      name: 'Solarbeam LP',
+      symbol: 'SLP',
+      decimals: 18,
+    },
+    '0x2cc54b4A3878e36E1C754871438113C1117a3ad7': {
+      id: 4,
+      token0: {
+        id: '0x1A93B23281CC1CDE4C4741353F3064709A16197d',
+        name: 'Frax',
+        symbol: 'FRAX',
+        decimals: 18,
       },
       token1: {
         id: '0x98878B06940aE243284CA214f92Bb71a2b032B8A',
