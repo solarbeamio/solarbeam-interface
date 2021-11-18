@@ -142,6 +142,7 @@ export function useSolarVaults(contract?: Contract | null) {
     if (!poolInfo) {
       return []
     }
+
     return zip(poolInfo).map((data, i) => ({
       id: args[i][0],
       lpToken: data[0].result?.['lpToken'] || '',
