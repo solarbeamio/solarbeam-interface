@@ -58,7 +58,7 @@ const FarmListItem = ({ farm }) => {
   const typedWithdrawValue = tryParseAmount(withdrawValue, liquidityToken)
 
   // allowance handling
-  const { gatherPermitSignature, signatureData } = useV2LiquidityTokenPermit(
+  const { gatherPermitSignature, signatureData, state } = useV2LiquidityTokenPermit(
     typedDepositValue,
     farm.version == 1 ? undefined : SOLAR_DISTRIBUTOR_V2_ADDRESS[chainId]
   )
@@ -68,9 +68,7 @@ const FarmListItem = ({ farm }) => {
     farm.version == 1 ? SOLAR_DISTRIBUTOR_ADDRESS[chainId] : SOLAR_DISTRIBUTOR_V2_ADDRESS[chainId]
   )
 
-  const pendingApproval = gatherPermitSignature
-    ? approvalState === ApprovalState.NOT_APPROVED && !signatureData
-    : approvalState === ApprovalState.NOT_APPROVED || approvalState === ApprovalState.PENDING
+  const approved = approvalState === ApprovalState.APPROVED || signatureData !== null
 
   async function onAttemptToApprove() {
     if (!liquidityToken || !library || !deadline) throw new Error('missing dependencies')
@@ -84,6 +82,7 @@ const FarmListItem = ({ farm }) => {
         await gatherPermitSignature(async (_signatureData) => {
           await handleDeposit(_signatureData)
           setPendingTx(false)
+          setPendingDepositTx(false)
         })
       } catch (error) {
         // try to approve if gatherPermitSignature failed for any reason other than the user rejecting it
@@ -207,7 +206,7 @@ const FarmListItem = ({ farm }) => {
                 </Button>
               )}
             </div>
-            {pendingApproval ? (
+            {!approved ? (
               <Button
                 className="w-full"
                 size="sm"
@@ -228,7 +227,12 @@ const FarmListItem = ({ farm }) => {
                 size="sm"
                 variant="outlined"
                 color="gradient"
-                disabled={pendingTx || !typedDepositValue || balance.lessThan(typedDepositValue) || farm?.id === '1'}
+                disabled={
+                  pendingTx ||
+                  !typedDepositValue ||
+                  balance.lessThan(typedDepositValue) ||
+                  (farm?.version == 1 && farm?.id === '1')
+                }
                 onClick={() => {
                   handleDeposit()
                 }}
