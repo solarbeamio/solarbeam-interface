@@ -75,7 +75,7 @@ export default function Vault(): JSX.Element {
 
   const blocksPerDay = 86400 / Number(AVERAGE_BLOCK_TIME[chainId])
 
-  const map = (pool) => {
+  const map = (pool, index) => {
     pool.owner = 'Solarbeam'
     pool.balance = 0
 
@@ -83,9 +83,12 @@ export default function Vault(): JSX.Element {
 
     const blocksPerHour = 3600 / AVERAGE_BLOCK_TIME[chainId]
 
+    const correctAllocpoints = [10, 20, 100]
+    pool.allocPoint = correctAllocpoints[index]
+
     function getRewards() {
       const rewardPerBlock =
-        ((pool.allocPoint / distributorInfo.totalAllocPoint) * distributorInfo.solarPerBlock) / 1e18
+        ((correctAllocpoints[index] / distributorInfo.totalAllocPoint) * distributorInfo.solarPerBlock) / 1e18
 
       const defaultReward = {
         token: 'SOLAR',
