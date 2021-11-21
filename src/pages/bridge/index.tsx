@@ -1,37 +1,21 @@
-import {
-  AbstractCurrency,
-  Binance,
-  ChainId,
-  Currency,
-  CurrencyAmount,
-  Ether,
-  JSBI,
-  Moonriver,
-  NATIVE,
-  Token,
-  WNATIVE,
-} from '../../sdk'
-import React, { useCallback, useEffect, useState } from 'react'
-
+import { Binance, ChainId, Currency, Ether, Moonriver, Token, WNATIVE } from '../../sdk'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { AutoRow } from '../../components/Row'
 import Container from '../../components/Container'
 import Head from 'next/head'
-import { ArrowDown, ArrowRight, Clock, Settings } from 'react-feather'
+import { ArrowRight } from 'react-feather'
 import Typography from '../../components/Typography'
 import Web3Connect from '../../components/Web3Connect'
 import { t } from '@lingui/macro'
 import { useActiveWeb3React } from '../../hooks/useActiveWeb3React'
 import { useLingui } from '@lingui/react'
-import { useMultichainCurrencyBalance, useTokenBalance } from '../../state/wallet/hooks'
+import { useMultichainCurrencyBalance } from '../../state/wallet/hooks'
 import DoubleGlowShadow from '../../components/DoubleGlowShadow'
-import SolarbeamLogo from '../../components/SolarbeamLogo'
 import { BottomGrouping } from '../../features/swap/styleds'
 import Button from '../../components/Button'
 import DualChainCurrencyInputPanel from '../../components/DualChainCurrencyInputPanel'
 import ChainSelect from '../../components/ChainSelect'
 import { Chain, DEFAULT_CHAIN_FROM, DEFAULT_CHAIN_TO } from '../../sdk/entities/Chain'
-import { useBridgeInfo } from '../../features/bridge/hooks'
-import useSWR, { SWRResponse } from 'swr'
 import { getAddress } from 'ethers/lib/utils'
 import { formatNumber } from '../../functions'
 import { SUPPORTED_NETWORKS } from '../../modals/ChainModal'
@@ -39,7 +23,7 @@ import { NETWORK_ICON, NETWORK_LABEL } from '../../constants/networks'
 import { ethers } from 'ethers'
 import { useAnyswapTokenContract, useTokenContract } from '../../hooks'
 import Loader from '../../components/Loader'
-import { getWeb3ReactContext, useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@web3-react/core'
 import { BridgeContextName } from '../../constants'
 import { bridgeInjected } from '../../connectors'
 import NavLink from '../../components/NavLink'
@@ -47,50 +31,10 @@ import { useTransactionAdder } from '../../state/bridgeTransactions/hooks'
 import { useRouter } from 'next/router'
 import Modal from '../../components/Modal'
 import ModalHeader from '../../components/ModalHeader'
-
-type AnyswapTokenInfo = {
-  ID: string
-  Name: string
-  Symbol: string
-  Decimals: number
-  Description: string
-  BaseFeePercent: number
-  BigValueThreshold: number
-  DepositAddress: string
-  ContractAddress: string
-  DcrmAddress: string
-  DisableSwap: boolean
-  IsDelegateContract: boolean
-  MaximumSwap: number
-  MaximumSwapFee: number
-  MinimumSwap: number
-  MinimumSwapFee: number
-  PlusGasPricePercentage: number
-  SwapFeeRate: number
-}
-
-type AnyswapResultPairInfo = {
-  DestToken: AnyswapTokenInfo
-  PairID: string
-  SrcToken: AnyswapTokenInfo
-  destChainID: string
-  logoUrl: string
-  name: string
-  srcChainID: string
-  symbol: string
-}
-
-type AvailableChainsInfo = {
-  id: string
-  token: AnyswapTokenInfo
-  other: AnyswapTokenInfo
-  logoUrl: string
-  name: string
-  symbol: string
-  destChainID: string
-}
-
-export type AnyswapTokensMap = { [chainId: number]: { [contract: string]: AvailableChainsInfo } }
+import { AvailableChainsInfo, TokensMap } from '../../features/bridge/interface'
+import { useAnyswapTokens } from '../../features/bridge/providers/anyswap'
+import { useRelayTokens } from '../../features/bridge/providers/relayChain'
+import { useTokenList } from '../../features/bridge/hooks'
 
 export default function Bridge() {
   const { i18n } = useLingui()
@@ -120,7 +64,6 @@ export default function Bridge() {
     chainId == ChainId.MOONRIVER ? DEFAULT_CHAIN_FROM : DEFAULT_CHAIN_TO
   )
 
-  const [tokenList, setTokenList] = useState<Currency[] | null>([])
   const [currency0, setCurrency0] = useState<Currency | null>(null)
   const [currencyAmount, setCurrencyAmount] = useState<string | null>('')
   const [tokenToBridge, setTokenToBridge] = useState<AvailableChainsInfo | null>(null)
@@ -138,109 +81,12 @@ export default function Bridge() {
     currency0 ?? undefined
   )
 
-  const { data: anyswapInfo, error }: SWRResponse<AnyswapTokensMap, Error> = useSWR(
-    'https://bridgeapi.anyswap.exchange/v2/serverInfo/1285',
-    (url) =>
-      fetch(url)
-        .then((result) => result.json())
-        .then((data) => {
-          let result: AnyswapTokensMap = {}
-
-          Object.keys(data || {}).map((key) => {
-            const info: AnyswapResultPairInfo = data[key]
-
-            let sourceContractAddress = info.SrcToken.ContractAddress
-            if (!sourceContractAddress) {
-              sourceContractAddress = WNATIVE[parseInt(info.srcChainID)].address
-            }
-
-            sourceContractAddress = sourceContractAddress.toLowerCase()
-
-            let existingSource = result[parseInt(info.srcChainID)]
-            if (!existingSource) {
-              result[parseInt(info.srcChainID)] = {
-                [sourceContractAddress]: {
-                  destChainID: info.destChainID,
-                  id: info.PairID,
-                  logoUrl: info.logoUrl,
-                  name: info.name,
-                  symbol: info.symbol,
-                  token: info.DestToken,
-                  other: info.SrcToken,
-                },
-              }
-            } else {
-              result[parseInt(info.srcChainID)][sourceContractAddress] = {
-                destChainID: info.destChainID,
-                id: info.PairID,
-                logoUrl: info.logoUrl,
-                name: info.name,
-                symbol: info.symbol,
-                token: info.DestToken,
-                other: info.SrcToken,
-              }
-            }
-
-            let destContractAddress = info.DestToken.ContractAddress
-            if (!destContractAddress) {
-              destContractAddress = WNATIVE[parseInt(info.destChainID)].address
-            }
-
-            destContractAddress = destContractAddress.toLowerCase()
-
-            let existingDestination = result[parseInt(info.destChainID)]
-            if (!existingDestination) {
-              result[parseInt(info.destChainID)] = {
-                [destContractAddress]: {
-                  destChainID: info.srcChainID,
-                  id: info.PairID,
-                  logoUrl: info.logoUrl,
-                  name: info.name,
-                  symbol: info.symbol,
-                  token: info.SrcToken,
-                  other: info.DestToken,
-                },
-              }
-            } else {
-              result[parseInt(info.destChainID)][destContractAddress] = {
-                destChainID: info.srcChainID,
-                id: info.PairID,
-                logoUrl: info.logoUrl,
-                name: info.name,
-                symbol: info.symbol,
-                token: info.SrcToken,
-                other: info.DestToken,
-              }
-            }
-          })
-
-          return result
-        })
-  )
+  const [tokenMap, tokenList] = useTokenList(chainFrom?.id, chainTo?.id)
 
   useEffect(() => {
-    let tokens: Currency[] = Object.keys((anyswapInfo && anyswapInfo[chainFrom.id]) || {})
-      .filter((r) => anyswapInfo[chainFrom.id][r].destChainID == chainTo.id.toString())
-      .map((r) => {
-        const info: AvailableChainsInfo = anyswapInfo[chainFrom.id][r]
-        if (r.toLowerCase() == WNATIVE[chainFrom.id].address.toLowerCase()) {
-          if (chainFrom.id == ChainId.MOONRIVER) {
-            return Moonriver.onChain(chainFrom.id)
-          }
-          if (chainFrom.id == ChainId.BSC) {
-            return Binance.onChain(chainFrom.id)
-          }
-          if (chainFrom.id == ChainId.MAINNET) {
-            return Ether.onChain(chainFrom.id)
-          }
-        }
-        return new Token(chainFrom.id, getAddress(r), info.token.Decimals, info.token.Symbol, info.name)
-      })
-
-    setTokenList(tokens)
     setCurrency0(null)
     setCurrencyAmount('')
-  }, [chainFrom, anyswapInfo, chainTo.id])
+  }, [chainFrom?.id, chainTo?.id])
 
   const handleChainFrom = useCallback(
     (chain: Chain) => {
@@ -287,13 +133,13 @@ export default function Bridge() {
       handleTypeInput('')
       if (currency) {
         const tokenTo =
-          anyswapInfo[chainFrom.id][
+          tokenMap[chainFrom.id][
             currency.isToken ? currency?.address?.toLowerCase() : currency?.wrapped?.address?.toLowerCase()
           ]
         setTokenToBridge(tokenTo)
       }
     },
-    [anyswapInfo, chainFrom.id, handleTypeInput]
+    [chainFrom.id, handleTypeInput, tokenMap]
   )
 
   const insufficientBalance = () => {
@@ -432,10 +278,7 @@ export default function Bridge() {
     }
   }
 
-  const anyswapChains = [ChainId.MOONRIVER, ChainId.BSC, ChainId.MAINNET]
-  const availableChains = Object.keys(anyswapInfo || {})
-    .map((r) => parseInt(r))
-    .filter((r) => anyswapChains.includes(r))
+  const availableChains = [...new Set([...Object.keys(tokenMap).map((k) => parseInt(k))])]
 
   return (
     <>

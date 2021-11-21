@@ -1,39 +1,66 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
-const { default: axios } = require('axios')
+import { getAddress } from '@ethersproject/address'
+import { useMemo } from 'react'
+import { Binance, ChainId, Currency, Ether, Moonriver, Token, WNATIVE } from '../../sdk'
+import { AvailableChainsInfo, TokensMap } from './interface'
+import { useAnyswapTokens } from './providers/anyswap'
+import { useRelayTokens } from './providers/relayChain'
 
-const useAsync = (asyncFunction, immediate = true) => {
-  const [status, setStatus] = useState('idle')
-  const [value, setValue] = useState(null)
-  const [error, setError] = useState(null)
-  // The execute function wraps asyncFunction and
-  // handles setting state for pending, value, and error.
-  // useCallback ensures the below useEffect is not called
-  // on every render, but only if asyncFunction changes.
-  const execute = useCallback(() => {
-    setStatus('pending')
-    setValue(null)
-    setError(null)
-    return asyncFunction()
-      .then((response) => {
-        setValue(response)
-        setStatus('success')
-      })
-      .catch((error) => {
-        setError(error)
-        setStatus('error')
-      })
-  }, [asyncFunction])
-  // Call execute if we want to fire it right away.
-  // Otherwise execute can be called later, such as
-  // in an onClick handler.
-  useEffect(() => {
-    if (immediate) {
-      execute()
+export const useTokenList = (chainFrom?: number, chainTo?: number) => {
+  const { data: anyswapInfo } = useAnyswapTokens()
+  const { data: relayInfo } = useRelayTokens()
+
+  return useMemo(() => {
+    const result: TokensMap = {}
+
+    if (!chainFrom || !chainTo) {
+      return [result, []]
     }
-  }, [execute, immediate])
-  return { execute, status, value, error }
-}
 
-export function useBridgeInfo() {
-  return useAsync(() => Promise.all([axios.get('https://bridgeapi.anyswap.exchange/v2/serverInfo/1285')]))
+    const mergeTokenMap = (
+      list: {
+        [x: string]: { [contract: string]: AvailableChainsInfo }
+        [x: number]: { [contract: string]: AvailableChainsInfo }
+      },
+      key: string
+    ) => {
+      const existing = result[key]
+      if (existing) {
+        result[key] = {
+          ...existing,
+          ...list[key],
+        }
+      } else {
+        result[key] = list[key]
+      }
+    }
+    Object.keys(anyswapInfo || {}).map((key) => {
+      mergeTokenMap(anyswapInfo, key)
+    })
+
+    Object.keys(relayInfo || {}).map((key) => {
+      mergeTokenMap(relayInfo, key)
+    })
+
+    const tokens: Currency[] = Object.keys((result && result[chainFrom]) || {})
+      .filter((chainId) => result[chainFrom][chainId].destChainID == chainTo)
+      .map((chainId) => {
+        const info: AvailableChainsInfo = result[chainFrom][chainId]
+        if (info.poweredBy == 'Anyswap') {
+          if (chainId.toLowerCase() == WNATIVE[chainFrom].address.toLowerCase()) {
+            if (chainFrom == ChainId.MOONRIVER) {
+              return Moonriver.onChain(chainFrom)
+            }
+            if (chainFrom == ChainId.BSC) {
+              return Binance.onChain(chainFrom)
+            }
+            if (chainFrom == ChainId.MAINNET) {
+              return Ether.onChain(chainFrom)
+            }
+          }
+        }
+        return new Token(chainFrom, getAddress(chainId), info.token.Decimals, info.token.Symbol, info.name)
+      })
+
+    return [result, tokens]
+  }, [anyswapInfo, chainFrom, chainTo, relayInfo])
 }

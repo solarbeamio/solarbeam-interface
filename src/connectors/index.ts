@@ -8,6 +8,9 @@ export const RPC = {
   [ChainId.MAINNET]: 'https://mainnet.infura.io/v3/249b95cec9c541bf94a4333cc77e9b71',
   [ChainId.BSC]: 'https://bsc-dataseed.binance.org/',
   [ChainId.MOONRIVER]: 'https://moonriver.api.onfinality.io/public',
+  [ChainId.AVALANCHE]: 'https://api.avax.network/ext/bc/C/rpc',
+  [ChainId.FANTOM]: 'https://rpcapi.fantom.network',
+  [ChainId.MATIC]: 'https://rpc-mainnet.maticvigil.com/',
 }
 
 export const network = new NetworkConnector({
@@ -22,25 +25,25 @@ export function getNetworkLibrary(): Web3Provider {
 }
 
 export const injected = new InjectedConnector({
-  supportedChainIds: [
-    1285,
-  ],
+  supportedChainIds: [ChainId.MOONRIVER],
 })
-
 
 export const bridgeInjected = new InjectedConnector({
   supportedChainIds: [
-    1, // mainnet
-    56, // binance smart chain
-    1285, // moonriver
+    ChainId.MAINNET,
+    ChainId.BSC,
+    ChainId.MOONRIVER,
+    ChainId.HECO,
+    ChainId.ARBITRUM,
+    ChainId.AVALANCHE,
+    ChainId.FANTOM,
+    ChainId.MATIC,
   ],
 })
-
 
 // mainnet only
 export const walletconnect = new WalletConnectConnector({
   rpc: { [ChainId.MOONRIVER]: RPC[ChainId.MOONRIVER] },
   bridge: 'https://bridge.walletconnect.org',
-  qrcode: true
+  qrcode: true,
 })
-

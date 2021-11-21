@@ -1,0 +1,137 @@
+{
+  "name": "Solarbeam - Supported Tokens Bridge List",
+  "timestamp": "2021-07-15T12:15:29.993Z",
+  "version": {
+    "major": 1,
+    "minor": 0,
+    "patch": 0
+  },
+  "tokens": [
+    {
+      "name": "USDC Coin",
+      "address": "0xE3F5a90F9cb311505cd691a46596599aA1A0AD7D",
+      "symbol": "USDC",
+      "decimals": 6,
+      "chainId": 1285,
+      "logoURI": "https://app.solarbeam.io/images/tokens/usdc.png",
+      "provider": "Anyswap"
+    },
+    {
+      "name": "Dai Stablecoin",
+      "address": "0x80A16016cC4A2E6a2CACA8a4a498b1699fF0f844",
+      "symbol": "DAI",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://app.solarbeam.io/images/tokens/dai.png",
+      "provider": "Anyswap"
+    },
+    {
+      "name": "Binance-Peg BUSD Token",
+      "address": "0x5D9ab5522c64E1F6ef5e3627ECCc093f56167818",
+      "symbol": "BUSD",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://app.solarbeam.io/images/tokens/busd.png",
+      "provider": "Anyswap"
+    },
+    {
+      "name": "Ethereum",
+      "address": "0x639A647fbe20b6c8ac19E48E2de44ea792c62c5C",
+      "symbol": "ETH",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://app.solarbeam.io/images/tokens/eth.png",
+      "provider": "Anyswap"
+    },
+    {
+      "name": "Binance Coin",
+      "address": "0x2bF9b864cdc97b08B6D79ad4663e71B8aB65c45c",
+      "symbol": "BNB",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://app.solarbeam.io/images/tokens/bnb.png",
+      "provider": "Anyswap"
+    },
+    {
+      "name": "Wrapped BTC",
+      "address": "0x6aB6d61428fde76768D7b45D8BFeec19c6eF91A8",
+      "symbol": "WBTC",
+      "decimals": 8,
+      "chainId": 1285,
+      "logoURI": "https://app.solarbeam.io/images/tokens/wbtc.png",
+      "provider": "Anyswap"
+    },
+    {
+      "name": "Tether USD",
+      "address": "0xB44a9B6905aF7c801311e8F4E76932ee959c663C",
+      "symbol": "USDT",
+      "decimals": 6,
+      "chainId": 1285,
+      "logoURI": "https://app.solarbeam.io/images/tokens/usdt.png",
+      "provider": "Anyswap"
+    },
+    {
+      "name": "Magic Internet Money",
+      "address": "0x0caE51e1032e8461f4806e26332c030E34De3aDb",
+      "symbol": "MIM",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://app.solarbeam.io/images/tokens/mim.png",
+      "provider": "Anyswap"
+    },
+    {
+      "name": "Relay Token",
+      "address": "0xAd7F1844696652ddA7959a49063BfFccafafEfe7",
+      "symbol": "RELAY",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://app.solarbeam.io/images/tokens/relay.png",
+      "provider": "RelayChain"
+    },
+    {
+      "name": "Avalanche",
+      "address": "0x14a0243C333A5b238143068dC3A7323Ba4C30ECB",
+      "symbol": "AVAX",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://app.solarbeam.io/images/tokens/avax.png",
+      "provider": "RelayChain"
+    },
+    {
+      "name": "Matic",
+      "address": "0x682F81e57EAa716504090C3ECBa8595fB54561D8",
+      "symbol": "MATIC",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://app.solarbeam.io/images/tokens/matic.png",
+      "provider": "RelayChain"
+    },
+    {
+      "name": "miMatic",
+      "address": "0x7f5a79576620C046a293F54FFCdbd8f2468174F1",
+      "symbol": "MAI",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://app.solarbeam.io/images/tokens/mimatic.png",
+      "provider": "RelayChain"
+    },
+    {
+      "name": "Fantom Token",
+      "address": "0xaD12daB5959f30b9fF3c2d6709f53C335dC39908",
+      "symbol": "FTM",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://app.solarbeam.io/images/tokens/ftm.png",
+      "provider": "RelayChain"
+    },
+    {
+      "name": "Frax",
+      "address": "0x1A93B23281CC1CDE4C4741353F3064709A16197d",
+      "symbol": "FRAX",
+      "decimals": 18,
+      "chainId": 1285,
+      "logoURI": "https://app.solarbeam.io/images/tokens/frax-canonical.png",
+      "provider": "Synapse"
+    }
+  ]
+}
